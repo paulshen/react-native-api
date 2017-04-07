@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Data from '../../Data';
+
 export default class ModulePage extends React.Component {
   render() {
     return (
@@ -12,19 +14,16 @@ export default class ModulePage extends React.Component {
           <div style={Styles.RightColumn}>
             <div style={Styles.SectionHeader}>PROPS</div>
             <div>
-              <div style={Styles.PropRow}>
-                <div style={Styles.PropName}>autoCapitalize</div>
-                <div style={Styles.PropType}>enum</div>
-                <div style={Styles.PropMeta}>
-                  <div style={Styles.PropEnumValues}>'none', 'sentences', 'words', 'characters'</div>
-                  Can tell TextInput to automatically capitalize certain characters.
-                </div>
-              </div>
-              <div style={Styles.PropRow}>
-                <div style={Styles.PropName}>autoCorrect</div>
-                <div style={Styles.PropType}>bool</div>
-                <div style={Styles.PropMeta}>If false, disables auto-correct. The default value is true.</div>
-              </div>
+              {Object.keys(Data.TextInput.props).map((propName) => {
+                let prop = Data.TextInput.props[propName];
+                return (
+                  <div style={Styles.PropRow} key={propName}>
+                    <div style={Styles.PropName}>{propName}</div>
+                    <div style={Styles.PropType}>{prop.type.name}</div>
+                    <div style={Styles.PropMeta}>{prop.description}</div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
