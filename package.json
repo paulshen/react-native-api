@@ -1,0 +1,28 @@
+{
+  "name": "react-native-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Paul Shen <paulshen0@gmail.com>",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-plugin-module-alias": "^1.6.0",
+    "babel-preset-env": "^1.3.2",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-react": "^6.24.1"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "react",
+      "flow"
+    ],
+    "plugins": [
+      ["module-alias", [
+        { "src": "./stubs/AutodocsLayout", "expose": "AutodocsLayout" }
+      ]]
+    ]
+  },
+  "dependencies": {
+    "react": "^15.4.2"
+  }
+}
