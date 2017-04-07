@@ -1,4 +1,0 @@
-/**
- * @providesModule AutodocsLayout
- */
-export default {};

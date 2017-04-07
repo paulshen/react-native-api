@@ -18,7 +18,9 @@
     ],
     "plugins": [
       ["module-alias", [
-        { "src": "./stubs/AutodocsLayout", "expose": "AutodocsLayout" }
+        { "src": "./stubs/Layout", "expose": "AutodocsLayout" },
+        { "src": "./stubs/Layout", "expose": "DocsLayout" },
+        { "src": "./stubs/Layout", "expose": "RedirectLayout" }
       ]]
     ]
   },
