@@ -3,16 +3,15 @@ import React from 'react';
 import Data from '../../Data';
 import renderTypehint from '../utils/renderTypehint';
 
-const ModuleName = 'DatePickerIOS';
-
 export default class ModulePage extends React.Component {
   render() {
-    let module = Data[ModuleName];
+    let { moduleName } = this.props;
+    let module = Data[moduleName.toLowerCase()];
     return (
-      <div style={Styles.Page}>
+      <div style={Styles.Root}>
         <div style={Styles.Columns}>
           <div style={Styles.LeftColumn}>
-            <div style={Styles.ModuleName}>{ModuleName}</div>
+            <div style={Styles.ModuleName}>{module.componentName}</div>
             <div style={Styles.BodyText}>
               A foundational component for inputting text into the app via a keyboard. Props provide configurability for several features, such as auto-correction, auto-capitalization, placeholder text, and different keyboard types, such as a numeric keypad.
             </div>
@@ -71,9 +70,7 @@ export default class ModulePage extends React.Component {
 }
 
 const Styles = {
-  Page: {
-    margin: '0 auto',
-    maxWidth: 1000,
+  Root: {
     paddingTop: 100,
   },
   Columns: {

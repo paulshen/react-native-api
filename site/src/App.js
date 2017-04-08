@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import ModulePage from './ui/pages/ModulePage';
+import MainPage from './ui/pages/MainPage';
 
 class App extends Component {
   render() {
     return (
-      <ModulePage />
+      <MainPage />
     );
   }
 }

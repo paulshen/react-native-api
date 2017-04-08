@@ -8,12 +8,9 @@ fs.readdir(`${__dirname}/docs`, function(err, files) {
       let d = JSON.parse(f.content);
       switch (d.type) {
         case 'api':
-          console.log(d.name);
-          data[d.name] = d;
-          break;
         case 'component':
-          console.log(`<${d.componentName}>`);
-          data[d.componentName] = d;
+          console.log(d.componentName);
+          data[d.componentName.toLowerCase()] = d;
           break;
       }
     }
