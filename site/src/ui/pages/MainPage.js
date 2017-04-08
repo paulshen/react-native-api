@@ -14,8 +14,9 @@ export default class MainPage extends React.Component {
   _onChangeQuery = e => {
     let query = e.target.value;
     let [componentQuery] = query.split('.');
+    let regex = new RegExp(componentQuery.split('').join('.*'), 'i');
     let filteredComponents = DataKeys.filter(
-      componentName => componentName.indexOf(componentQuery.toLowerCase()) === 0
+      componentName => regex.exec(componentName)
     );
     this.setState({
       filteredComponents,
@@ -45,8 +46,16 @@ export default class MainPage extends React.Component {
             onKeyDown={this._onKeyDown}
           />
         </div>
-        {filteredComponents.length === 1
-          ? <ComponentPage componentName={filteredComponents[0]} propQuery={this.state.query.split('.')[1]} />
+        {filteredComponents.length <= 2
+          ? <div>
+              {filteredComponents.map(componentName => (
+                <ComponentPage
+                  componentName={componentName}
+                  propQuery={this.state.query.split('.')[1]}
+                  key={componentName}
+                />
+              ))}
+            </div>
           : <div style={Styles.ComponentList}>
               {filteredComponents.map(componentName => (
                 <div style={Styles.ComponentListEntry} key={componentName}>

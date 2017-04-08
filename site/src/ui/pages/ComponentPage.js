@@ -17,7 +17,8 @@ export default class ComponentPage extends React.Component {
   _filterNames = names => {
     let { propQuery } = this.props;
     if (propQuery) {
-      return names.filter(name => name.toLowerCase().indexOf(propQuery) === 0);
+      let regex = new RegExp(propQuery.split('').join('.*'), 'i');
+      return names.filter(name => regex.exec(name));
     }
     return names;
   };
@@ -46,7 +47,7 @@ export default class ComponentPage extends React.Component {
                     return (
                       <div style={Styles.PropRow} key={propName}>
                         <div style={Styles.PropName}>{propName}</div>
-                        <div style={Styles.PropType}>{prop.type.name}</div>
+                        <div style={Styles.PropType}>{prop.type && prop.type.name}</div>
                         <div style={Styles.PropMeta}>{prop.description}</div>
                       </div>
                     );
@@ -68,7 +69,7 @@ export default class ComponentPage extends React.Component {
                     } = method;
                     if (
                       propQuery &&
-                      name.toLowerCase().indexOf(propQuery.toLowerCase()) !== 0
+                      !(new RegExp(propQuery.split('').join('.*'), 'i')).exec(name)
                     ) {
                       return null;
                     }
@@ -78,7 +79,7 @@ export default class ComponentPage extends React.Component {
                         <div style={Styles.PropName}>{name}</div>
                         <div style={Styles.PropType}>
                           ({(params &&
-                            length &&
+                            params.length > 0 &&
                             params
                               .map(param => {
                                 let res = param.name;
