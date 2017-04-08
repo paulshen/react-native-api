@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Data from '../../Data';
+import Markdown from '../components/Markdown';
 import renderTypehint from '../utils/renderTypehint';
 
 function removeCommentsFromDocblock(docblock) {
@@ -33,13 +34,29 @@ export default class ComponentPage extends React.Component {
           <div style={Styles.LeftColumn}>
             <div style={Styles.ComponentName}>{component.componentName}</div>
             <div style={Styles.ComponentLinks}>
-              <div><a href={`https://facebook.github.io/react-native/docs/${componentName.toLowerCase()}.html`}>Official Docs</a></div>
-              <div><a href={`https://github.com/facebook/react-native/tree/master/${component.filepath}`}>Source</a></div>
+              <div>
+                <a
+                  href={
+                    `https://facebook.github.io/react-native/docs/${componentName.toLowerCase()}.html`
+                  }>
+                  Official Docs
+                </a>
+              </div>
+              <div>
+                <a
+                  href={
+                    `https://github.com/facebook/react-native/tree/master/${component.filepath}`
+                  }>
+                  Source
+                </a>
+              </div>
             </div>
-            <div style={Styles.BodyText}>
-              {component.description ||
-                (component.docblock &&
-                  removeCommentsFromDocblock(component.docblock))}
+            <div style={Styles.ComponentDescription}>
+              <Markdown>
+                {component.description ||
+                  (component.docblock &&
+                    removeCommentsFromDocblock(component.docblock))}
+              </Markdown>
             </div>
           </div>
           <div style={Styles.RightColumn}>
@@ -61,7 +78,11 @@ export default class ComponentPage extends React.Component {
                             {(prop.type || prop.flowType) &&
                               renderTypehint(prop.flowType || prop.type)}
                           </div>
-                          <div style={Styles.PropMeta}>{prop.description}</div>
+                          <div style={Styles.PropMeta}>
+                            <Markdown>
+                              {prop.description}
+                            </Markdown>
+                          </div>
                         </div>
                       </div>
                     );
@@ -83,7 +104,9 @@ export default class ComponentPage extends React.Component {
                     } = method;
                     if (
                       propQuery &&
-                      !new RegExp(propQuery.split('').join('.*'), 'i').exec(name)
+                      !new RegExp(propQuery.split('').join('.*'), 'i').exec(
+                        name
+                      )
                     ) {
                       return null;
                     }
@@ -93,7 +116,7 @@ export default class ComponentPage extends React.Component {
                         <div style={Styles.PropLeft}>
                           <div style={Styles.PropName}>{name}</div>
                         </div>
-                        <div style={Styles.PropInfo}>
+                        <div style={Styles.PropRight}>
                           <div style={Styles.PropType}>
                             ({(params &&
                               params.length > 0 &&
@@ -111,9 +134,11 @@ export default class ComponentPage extends React.Component {
                             {returns && `: ${renderTypehint(returns.type)}`}
                           </div>
                           <div style={Styles.PropMeta}>
-                            {description ||
-                              (docblock &&
-                                removeCommentsFromDocblock(docblock))}
+                            <Markdown>
+                              {description ||
+                                (docblock &&
+                                  removeCommentsFromDocblock(docblock))}
+                            </Markdown>
                           </div>
                         </div>
                       </div>
@@ -136,14 +161,14 @@ const Styles = {
     display: 'flex',
   },
   LeftColumn: {
-    flex: 1,
     paddingLeft: 30,
     paddingRight: 30,
+    width: '30%',
   },
   RightColumn: {
-    flex: 2,
     paddingLeft: 30,
     paddingRight: 30,
+    width: '70%',
   },
 
   ComponentName: {
@@ -156,11 +181,11 @@ const Styles = {
     fontSize: 14,
     marginBottom: 8,
   },
-  BodyText: {
+  ComponentDescription: {
     color: '#999999',
     fontSize: 12,
     lineHeight: 1.5,
-    whiteSpace: 'pre-wrap',
+    overflow: 'scroll',
   },
   Section: {
     marginBottom: 50,
@@ -194,7 +219,6 @@ const Styles = {
   PropMeta: {
     color: '#CCCCCC',
     fontSize: 12,
-    whiteSpace: 'pre-wrap',
   },
   PropEnumValues: {
     color: '#000000',

@@ -71,7 +71,7 @@ export default class MainPage extends React.Component {
 const Styles = {
   Page: {
     margin: '0 auto',
-    maxWidth: 1000,
+    maxWidth: 1200,
     paddingTop: 100,
   },
   ComponentList: {
