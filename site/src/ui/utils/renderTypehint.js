@@ -21,7 +21,7 @@ function renderType(type) {
 function spanJoinMapper(elements, callback, separator) {
   return <span>{elements.map((rawElement, ii) => {
     const el = callback(rawElement);
-    return (ii + 1 < elements.length) ? <span>{el}{separator}</span> : el;
+    return (ii + 1 < elements.length) ? <span key={ii}>{el}{separator}</span> : el;
   })}</span>;
 }
 

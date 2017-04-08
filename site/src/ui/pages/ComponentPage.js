@@ -26,13 +26,20 @@ export default class ComponentPage extends React.Component {
   render() {
     let { componentName, propQuery } = this.props;
     let component = Data[componentName.toLowerCase()];
+
     return (
       <div style={Styles.Root}>
         <div style={Styles.Columns}>
           <div style={Styles.LeftColumn}>
             <div style={Styles.ComponentName}>{component.componentName}</div>
+            <div style={Styles.ComponentLinks}>
+              <div><a href={`https://facebook.github.io/react-native/docs/${componentName.toLowerCase()}.html`}>Official Docs</a></div>
+              <div><a href={`https://github.com/facebook/react-native/tree/master/${component.filepath}`}>Source</a></div>
+            </div>
             <div style={Styles.BodyText}>
-              A foundational component for inputting text into the app via a keyboard. Props provide configurability for several features, such as auto-correction, auto-capitalization, placeholder text, and different keyboard types, such as a numeric keypad.
+              {component.description ||
+                (component.docblock &&
+                  removeCommentsFromDocblock(component.docblock))}
             </div>
           </div>
           <div style={Styles.RightColumn}>
@@ -46,9 +53,16 @@ export default class ComponentPage extends React.Component {
                     let prop = component.props[propName];
                     return (
                       <div style={Styles.PropRow} key={propName}>
-                        <div style={Styles.PropName}>{propName}</div>
-                        <div style={Styles.PropType}>{prop.type && prop.type.name}</div>
-                        <div style={Styles.PropMeta}>{prop.description}</div>
+                        <div style={Styles.PropLeft}>
+                          <div style={Styles.PropName}>{propName}</div>
+                        </div>
+                        <div style={Styles.PropRight}>
+                          <div style={Styles.PropType}>
+                            {(prop.type || prop.flowType) &&
+                              renderTypehint(prop.flowType || prop.type)}
+                          </div>
+                          <div style={Styles.PropMeta}>{prop.description}</div>
+                        </div>
                       </div>
                     );
                   })}
@@ -69,33 +83,38 @@ export default class ComponentPage extends React.Component {
                     } = method;
                     if (
                       propQuery &&
-                      !(new RegExp(propQuery.split('').join('.*'), 'i')).exec(name)
+                      !new RegExp(propQuery.split('').join('.*'), 'i').exec(name)
                     ) {
                       return null;
                     }
 
                     return (
                       <div style={Styles.PropRow} key={name}>
-                        <div style={Styles.PropName}>{name}</div>
-                        <div style={Styles.PropType}>
-                          ({(params &&
-                            params.length > 0 &&
-                            params
-                              .map(param => {
-                                let res = param.name;
-                                res += param.optional ? '?' : '';
-                                if (param.type && param.type.names) {
-                                  res += `: ${param.type.names.join(', ')}`;
-                                }
-                                return res;
-                              })
-                              .join(', ')) ||
-                            ''})
-                          {returns && `: ${renderTypehint(returns.type)}`}
+                        <div style={Styles.PropLeft}>
+                          <div style={Styles.PropName}>{name}</div>
                         </div>
-                        <div style={Styles.PropMeta}>
-                          {description ||
-                            (docblock && removeCommentsFromDocblock(docblock))}
+                        <div style={Styles.PropInfo}>
+                          <div style={Styles.PropType}>
+                            ({(params &&
+                              params.length > 0 &&
+                              params
+                                .map(param => {
+                                  let res = param.name;
+                                  res += param.optional ? '?' : '';
+                                  if (param.type && param.type.names) {
+                                    res += `: ${param.type.names.join(', ')}`;
+                                  }
+                                  return res;
+                                })
+                                .join(', ')) ||
+                              ''})
+                            {returns && `: ${renderTypehint(returns.type)}`}
+                          </div>
+                          <div style={Styles.PropMeta}>
+                            {description ||
+                              (docblock &&
+                                removeCommentsFromDocblock(docblock))}
+                          </div>
                         </div>
                       </div>
                     );
@@ -133,10 +152,15 @@ const Styles = {
     fontWeight: 700,
     marginBottom: 30,
   },
+  ComponentLinks: {
+    fontSize: 14,
+    marginBottom: 8,
+  },
   BodyText: {
     color: '#999999',
     fontSize: 12,
     lineHeight: 1.5,
+    whiteSpace: 'pre-wrap',
   },
   Section: {
     marginBottom: 50,
@@ -153,21 +177,24 @@ const Styles = {
     paddingBottom: 16,
     paddingTop: 16,
   },
+  PropLeft: {
+    width: '25%',
+  },
   PropName: {
     fontFamily: 'Inconsolata',
-    width: '25%',
     wordBreak: 'break-word',
+  },
+  PropRight: {
+    width: '75%',
   },
   PropType: {
     fontFamily: 'Inconsolata',
     fontWeight: 700,
-    width: '15%',
   },
   PropMeta: {
     color: '#CCCCCC',
     fontSize: 12,
     whiteSpace: 'pre-wrap',
-    width: '60%',
   },
   PropEnumValues: {
     color: '#000000',
