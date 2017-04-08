@@ -3,7 +3,7 @@ import React from 'react';
 import Data from '../../Data';
 import renderTypehint from '../utils/renderTypehint';
 
-export default class ModulePage extends React.Component {
+export default class ComponentPage extends React.Component {
   _filterNames = (names) => {
     let { propQuery } = this.props;
     if (propQuery) {
@@ -13,24 +13,24 @@ export default class ModulePage extends React.Component {
   };
 
   render() {
-    let { moduleName, propQuery } = this.props;
-    let module = Data[moduleName.toLowerCase()];
+    let { componentName, propQuery } = this.props;
+    let component = Data[componentName.toLowerCase()];
     return (
       <div style={Styles.Root}>
         <div style={Styles.Columns}>
           <div style={Styles.LeftColumn}>
-            <div style={Styles.ModuleName}>{module.componentName}</div>
+            <div style={Styles.ComponentName}>{component.componentName}</div>
             <div style={Styles.BodyText}>
               A foundational component for inputting text into the app via a keyboard. Props provide configurability for several features, such as auto-correction, auto-capitalization, placeholder text, and different keyboard types, such as a numeric keypad.
             </div>
           </div>
           <div style={Styles.RightColumn}>
-            {module.props &&
+            {component.props &&
               <div style={Styles.Section}>
                 <div style={Styles.SectionHeader}>PROPS</div>
                 <div>
-                  {this._filterNames(Object.keys(module.props)).map(propName => {
-                    let prop = module.props[propName];
+                  {this._filterNames(Object.keys(component.props)).map(propName => {
+                    let prop = component.props[propName];
                     return (
                       <div style={Styles.PropRow} key={propName}>
                         <div style={Styles.PropName}>{propName}</div>
@@ -41,11 +41,11 @@ export default class ModulePage extends React.Component {
                   })}
                 </div>
               </div>}
-            {module.methods && module.methods.length > 0 &&
+            {component.methods && component.methods.length > 0 &&
               <div style={Styles.Section}>
                 <div style={Styles.SectionHeader}>METHODS</div>
                 <div>
-                  {module.methods.map(method => {
+                  {component.methods.map(method => {
                     let { name, params, returns, description } = method;
                     if (propQuery && name.toLowerCase().indexOf(propQuery.toLowerCase()) !== 0) {
                       return null;
@@ -99,7 +99,7 @@ const Styles = {
     paddingRight: 30,
   },
 
-  ModuleName: {
+  ComponentName: {
     fontFamily: 'Inconsolata',
     fontSize: 24,
     fontWeight: 700,

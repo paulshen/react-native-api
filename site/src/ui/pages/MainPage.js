@@ -1,24 +1,24 @@
 import React from 'react';
 
 import Data from '../../Data';
-import ModulePage from './ModulePage';
+import ComponentPage from './ComponentPage';
 
 const DataKeys = Object.keys(Data);
 
 export default class MainPage extends React.Component {
   state = {
-    filteredModules: DataKeys,
+    filteredComponents: DataKeys,
     query: '',
   };
 
   _onChangeQuery = e => {
     let query = e.target.value;
     let [componentQuery] = query.split('.');
-    let filteredModules = DataKeys.filter(
-      moduleName => moduleName.indexOf(componentQuery.toLowerCase()) === 0
+    let filteredComponents = DataKeys.filter(
+      componentName => componentName.indexOf(componentQuery.toLowerCase()) === 0
     );
     this.setState({
-      filteredModules,
+      filteredComponents,
       query,
     });
   };
@@ -27,13 +27,13 @@ export default class MainPage extends React.Component {
     if (e.keyCode === 27) {
       this.setState({
         query: '',
-        filteredModules: DataKeys,
+        filteredComponents: DataKeys,
       });
     }
   };
 
   render() {
-    let { filteredModules } = this.state;
+    let { filteredComponents } = this.state;
 
     return (
       <div style={Styles.Page}>
@@ -45,12 +45,12 @@ export default class MainPage extends React.Component {
             onKeyDown={this._onKeyDown}
           />
         </div>
-        {filteredModules.length === 1
-          ? <ModulePage moduleName={filteredModules[0]} propQuery={this.state.query.split('.')[1]} />
-          : <div style={Styles.ModuleList}>
-              {filteredModules.map(moduleName => (
-                <div style={Styles.ModuleListEntry} key={moduleName}>
-                  {moduleName}
+        {filteredComponents.length === 1
+          ? <ComponentPage componentName={filteredComponents[0]} propQuery={this.state.query.split('.')[1]} />
+          : <div style={Styles.ComponentList}>
+              {filteredComponents.map(componentName => (
+                <div style={Styles.ComponentListEntry} key={componentName}>
+                  {componentName}
                 </div>
               ))}
             </div>}
@@ -65,8 +65,8 @@ const Styles = {
     maxWidth: 1000,
     paddingTop: 100,
   },
-  ModuleList: {
+  ComponentList: {
     WebkitColumnCount: 4,
   },
-  ModuleListEntry: {},
+  ComponentListEntry: {},
 };
