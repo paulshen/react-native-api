@@ -3,11 +3,21 @@ import React from 'react';
 import Data from '../../Data';
 import renderTypehint from '../utils/renderTypehint';
 
+function removeCommentsFromDocblock(docblock) {
+  return docblock
+    .trim('\n ')
+    .replace(/^\/\*+/, '')
+    .replace(/\*\/$/, '')
+    .split('\n')
+    .map(line => line.trim().replace(/^\* ?/, ''))
+    .join('\n');
+}
+
 export default class ComponentPage extends React.Component {
-  _filterNames = (names) => {
+  _filterNames = names => {
     let { propQuery } = this.props;
     if (propQuery) {
-      return names.filter((name) => name.toLowerCase().indexOf(propQuery) === 0);
+      return names.filter(name => name.toLowerCase().indexOf(propQuery) === 0);
     }
     return names;
   };
@@ -29,7 +39,9 @@ export default class ComponentPage extends React.Component {
               <div style={Styles.Section}>
                 <div style={Styles.SectionHeader}>PROPS</div>
                 <div>
-                  {this._filterNames(Object.keys(component.props)).map(propName => {
+                  {this._filterNames(
+                    Object.keys(component.props)
+                  ).map(propName => {
                     let prop = component.props[propName];
                     return (
                       <div style={Styles.PropRow} key={propName}>
@@ -41,13 +53,23 @@ export default class ComponentPage extends React.Component {
                   })}
                 </div>
               </div>}
-            {component.methods && component.methods.length > 0 &&
+            {component.methods &&
+              component.methods.length > 0 &&
               <div style={Styles.Section}>
                 <div style={Styles.SectionHeader}>METHODS</div>
                 <div>
                   {component.methods.map(method => {
-                    let { name, params, returns, description } = method;
-                    if (propQuery && name.toLowerCase().indexOf(propQuery.toLowerCase()) !== 0) {
+                    let {
+                      name,
+                      params,
+                      returns,
+                      description,
+                      docblock,
+                    } = method;
+                    if (
+                      propQuery &&
+                      name.toLowerCase().indexOf(propQuery.toLowerCase()) !== 0
+                    ) {
                       return null;
                     }
 
@@ -55,25 +77,30 @@ export default class ComponentPage extends React.Component {
                       <div style={Styles.PropRow} key={name}>
                         <div style={Styles.PropName}>{name}</div>
                         <div style={Styles.PropType}>
-                          ({(params && length && params.map(param => {
+                          ({(params &&
+                            length &&
+                            params
+                              .map(param => {
                                 let res = param.name;
                                 res += param.optional ? '?' : '';
-                                param.type &&
-                                  param.type.names &&
-                                  (res += `: ${param.type.names.join(', ')}`);
+                                if (param.type && param.type.names) {
+                                  res += `: ${param.type.names.join(', ')}`;
+                                }
                                 return res;
                               })
                               .join(', ')) ||
                             ''})
                           {returns && `: ${renderTypehint(returns.type)}`}
                         </div>
-                        <div style={Styles.PropMeta}>{description}</div>
+                        <div style={Styles.PropMeta}>
+                          {description ||
+                            (docblock && removeCommentsFromDocblock(docblock))}
+                        </div>
                       </div>
                     );
                   })}
                 </div>
-              </div>
-            }
+              </div>}
           </div>
         </div>
       </div>
@@ -138,6 +165,7 @@ const Styles = {
   PropMeta: {
     color: '#CCCCCC',
     fontSize: 12,
+    whiteSpace: 'pre-wrap',
     width: '60%',
   },
   PropEnumValues: {
