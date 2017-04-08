@@ -13,8 +13,9 @@ export default class MainPage extends React.Component {
 
   _onChangeQuery = e => {
     let query = e.target.value;
+    let [componentQuery] = query.split('.');
     let filteredModules = DataKeys.filter(
-      moduleName => moduleName.indexOf(query.toLowerCase()) === 0
+      moduleName => moduleName.indexOf(componentQuery.toLowerCase()) === 0
     );
     this.setState({
       filteredModules,
@@ -45,7 +46,7 @@ export default class MainPage extends React.Component {
           />
         </div>
         {filteredModules.length === 1
-          ? <ModulePage moduleName={filteredModules[0]} />
+          ? <ModulePage moduleName={filteredModules[0]} propQuery={this.state.query.split('.')[1]} />
           : <div style={Styles.ModuleList}>
               {filteredModules.map(moduleName => (
                 <div style={Styles.ModuleListEntry} key={moduleName}>

@@ -4,8 +4,16 @@ import Data from '../../Data';
 import renderTypehint from '../utils/renderTypehint';
 
 export default class ModulePage extends React.Component {
+  _filterNames = (names) => {
+    let { propQuery } = this.props;
+    if (propQuery) {
+      return names.filter((name) => name.toLowerCase().indexOf(propQuery) === 0);
+    }
+    return names;
+  };
+
   render() {
-    let { moduleName } = this.props;
+    let { moduleName, propQuery } = this.props;
     let module = Data[moduleName.toLowerCase()];
     return (
       <div style={Styles.Root}>
@@ -21,7 +29,7 @@ export default class ModulePage extends React.Component {
               <div style={Styles.Section}>
                 <div style={Styles.SectionHeader}>PROPS</div>
                 <div>
-                  {Object.keys(module.props).map(propName => {
+                  {this._filterNames(Object.keys(module.props)).map(propName => {
                     let prop = module.props[propName];
                     return (
                       <div style={Styles.PropRow} key={propName}>
@@ -39,6 +47,10 @@ export default class ModulePage extends React.Component {
                 <div>
                   {module.methods.map(method => {
                     let { name, params, returns, description } = method;
+                    if (propQuery && name.toLowerCase().indexOf(propQuery.toLowerCase()) !== 0) {
+                      return null;
+                    }
+
                     return (
                       <div style={Styles.PropRow} key={name}>
                         <div style={Styles.PropName}>{name}</div>
