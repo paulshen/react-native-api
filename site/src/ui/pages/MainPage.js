@@ -13,26 +13,28 @@ export default class MainPage extends React.Component {
 
   constructor(props) {
     super();
-    this.state = this._processParams(props.match.params.componentName);
+    this.state = {
+      filteredComponents: this._processParams(props.match.params.componentName),
+      query: '',
+    };
   }
 
   _processParams = (componentName) => {
     let filteredComponents = DataKeys;
-    let query = '';
     if (componentName) {
       let index = DataKeys.indexOf(componentName.toLowerCase());
       if (index !== -1) {
         filteredComponents = [DataKeys[index]];
-        query = componentName;
       }
     }
-    return { filteredComponents, query };
+    return filteredComponents;
   };
 
   componentWillReceiveProps(nextProps) {
-    // TODO
     if (nextProps.match.params.componentName !== this.props.match.params.componentName) {
-      this.setState(this._processParams(nextProps.match.params.componentName));
+      this.setState({
+        filteredComponents: this._processParams(nextProps.match.params.componentName),
+      });
     }
   }
 
