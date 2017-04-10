@@ -38,7 +38,7 @@ export default class ComponentPage extends React.Component {
                 <a
                   href={
                     `https://facebook.github.io/react-native/docs/${componentName.toLowerCase()}.html`
-                  }>
+                  } style={Styles.Link}>
                   Official Docs
                 </a>
               </div>
@@ -46,7 +46,7 @@ export default class ComponentPage extends React.Component {
                 <a
                   href={
                     `https://github.com/facebook/react-native/tree/master/${component.filepath}`
-                  }>
+                  } style={Styles.Link}>
                   Source
                 </a>
               </div>
@@ -155,7 +155,7 @@ export default class ComponentPage extends React.Component {
 
 const Styles = {
   Root: {
-    paddingTop: 100,
+    paddingTop: 40,
   },
   Columns: {
     display: 'flex',
@@ -203,14 +203,14 @@ const Styles = {
     paddingTop: 16,
   },
   PropLeft: {
-    width: '25%',
+    width: '30%',
   },
   PropName: {
     fontFamily: 'Inconsolata',
     wordBreak: 'break-word',
   },
   PropRight: {
-    width: '75%',
+    width: '70%',
   },
   PropType: {
     fontFamily: 'Inconsolata',
@@ -226,5 +226,9 @@ const Styles = {
     fontSize: 14,
     fontWeight: 700,
     marginBottom: 8,
+  },
+  Link: {
+    color: '#333333',
+    fontSize: 14,
   },
 };
