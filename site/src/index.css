@@ -4,10 +4,18 @@ body {
   font-family: Roboto, sans-serif;
 }
 
+input {
+  font-family: Inconsolata, monospace;
+}
+
 input::-webkit-input-placeholder {
   color: #d0d0d0;
 }
 
 pre {
   overflow: scroll;
+}
+
+a {
+  color: #333333;
 }

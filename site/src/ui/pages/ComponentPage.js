@@ -14,6 +14,27 @@ function removeCommentsFromDocblock(docblock) {
     .join('\n');
 }
 
+function PropRow({ prop, propName }) {
+  return (
+    <div style={Styles.PropRow} key={propName}>
+      <div style={Styles.PropLeft}>
+        <div style={Styles.PropName}>{propName}</div>
+      </div>
+      <div style={Styles.PropRight}>
+        <div style={Styles.PropType}>
+          {(prop.type || prop.flowType) &&
+            renderTypehint(prop.flowType || prop.type)}
+        </div>
+        <div style={Styles.PropMeta}>
+          <Markdown>
+            {prop.description}
+          </Markdown>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default class ComponentPage extends React.Component {
   _filterNames = names => {
     let { propQuery } = this.props;
@@ -38,7 +59,8 @@ export default class ComponentPage extends React.Component {
                 <a
                   href={
                     `https://facebook.github.io/react-native/docs/${componentName.toLowerCase()}.html`
-                  } style={Styles.Link}>
+                  }
+                  style={Styles.Link}>
                   Official Docs
                 </a>
               </div>
@@ -46,7 +68,8 @@ export default class ComponentPage extends React.Component {
                 <a
                   href={
                     `https://github.com/facebook/react-native/tree/master/${component.filepath}`
-                  } style={Styles.Link}>
+                  }
+                  style={Styles.Link}>
                   Source
                 </a>
               </div>
@@ -68,24 +91,7 @@ export default class ComponentPage extends React.Component {
                     Object.keys(component.props)
                   ).map(propName => {
                     let prop = component.props[propName];
-                    return (
-                      <div style={Styles.PropRow} key={propName}>
-                        <div style={Styles.PropLeft}>
-                          <div style={Styles.PropName}>{propName}</div>
-                        </div>
-                        <div style={Styles.PropRight}>
-                          <div style={Styles.PropType}>
-                            {(prop.type || prop.flowType) &&
-                              renderTypehint(prop.flowType || prop.type)}
-                          </div>
-                          <div style={Styles.PropMeta}>
-                            <Markdown>
-                              {prop.description}
-                            </Markdown>
-                          </div>
-                        </div>
-                      </div>
-                    );
+                    return <PropRow prop={prop} propName={propName} key={propName} />;
                   })}
                 </div>
               </div>}
@@ -185,7 +191,6 @@ const Styles = {
     color: '#999999',
     fontSize: 12,
     lineHeight: 1.5,
-    overflow: 'scroll',
   },
   Section: {
     marginBottom: 50,
@@ -217,8 +222,9 @@ const Styles = {
     fontWeight: 700,
   },
   PropMeta: {
-    color: '#CCCCCC',
     fontSize: 12,
+    lineHeight: 1.3,
+    opacity: 0.3,
   },
   PropEnumValues: {
     color: '#000000',

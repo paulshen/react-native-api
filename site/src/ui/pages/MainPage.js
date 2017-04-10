@@ -24,6 +24,10 @@ export default class MainPage extends React.Component {
     };
   }
 
+  componentDidMount() {
+    window.addEventListener('keydown', this._onKeyDown);
+  }
+
   _processParams = (componentName, query) => {
     let filteredComponents = DataKeys;
     if (componentName) {
@@ -53,6 +57,10 @@ export default class MainPage extends React.Component {
         ),
       });
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this._onKeyDown);
   }
 
   _filterListWithQuery = (list, query) => {
@@ -109,13 +117,12 @@ export default class MainPage extends React.Component {
 
     return (
       <div style={Styles.Page}>
-        <div>
+        <div style={Styles.InputSection}>
           <input
             type="text"
             value={this.state.query}
             placeholder="Start typing a component or API name..."
             onChange={this._onChangeQuery}
-            onKeyDown={this._onKeyDown}
             style={Styles.Input}
           />
         </div>
@@ -152,16 +159,25 @@ const Styles = {
     maxWidth: 1200,
     paddingTop: 100,
   },
+  InputSection: {
+    marginLeft: 30,
+    marginRight: 30,
+  },
   Input: {
-    border: 0,
+    borderColor: '#d0d0d0',
+    borderStyle: 'dashed',
+    borderWidth: '0 0 1px',
     display: 'block',
     fontSize: 24,
     marginBottom: 40,
+    outline: 'none',
     paddingBottom: 4,
     paddingTop: 4,
     width: '100%',
   },
   ComponentList: {
+    paddingLeft: 30,
+    paddingRight: 30,
     WebkitColumnCount: 4,
   },
   ComponentListEntry: {},
