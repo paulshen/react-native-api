@@ -1,4 +1,5 @@
 import React from 'react';
+import Radium from 'radium';
 
 import Data from '../../Data';
 import Markdown from '../components/Markdown';
@@ -14,27 +15,148 @@ function removeCommentsFromDocblock(docblock) {
     .join('\n');
 }
 
-function PropRow({ prop, propName }) {
-  return (
-    <div style={Styles.PropRow} key={propName}>
-      <div style={Styles.PropLeft}>
-        <div style={Styles.PropName}>{propName}</div>
-      </div>
-      <div style={Styles.PropRight}>
-        <div style={Styles.PropType}>
-          {(prop.type || prop.flowType) &&
-            renderTypehint(prop.flowType || prop.type)}
-        </div>
-        <div style={Styles.PropMeta}>
-          <Markdown>
-            {prop.description}
-          </Markdown>
-        </div>
-      </div>
-    </div>
-  );
-}
+class PropRow extends React.Component {
+  state = {
+    collapsed: true,
+  };
 
+  _toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  };
+
+  _onMouseOver = () => {
+    if (this.state.collapsed) {
+      this._mouseTimeout = setTimeout(
+        () =>
+          this.setState({
+            collapsed: false,
+          }),
+        300
+      );
+    }
+  };
+
+  _onMouseOut = () => {
+    clearTimeout(this._mouseTimeout);
+  };
+
+  render() {
+    let { prop, propName, forceExpand } = this.props;
+    let { collapsed } = this.state;
+    return (
+      <div style={Styles.PropRow} key={propName}>
+        <div style={Styles.PropLeft}>
+          <div style={Styles.PropName}>{propName}</div>
+        </div>
+        <div style={Styles.PropRight}>
+          <div style={Styles.PropType}>
+            {(prop.type || prop.flowType) &&
+              renderTypehint(prop.flowType || prop.type)}
+            {' '}
+            {!forceExpand && prop.description &&
+              <button onClick={this._toggle} style={Styles.ToggleButton}>
+                {collapsed ? '+' : '–'}
+              </button>}
+          </div>
+          <div
+            onMouseOver={this._onMouseOver}
+            onMouseOut={this._onMouseOut}
+            style={[
+              Styles.PropMeta,
+              collapsed && !forceExpand && Styles.PropMetaCollapsed,
+            ]}>
+            <Markdown>
+              {prop.description}
+            </Markdown>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+PropRow = Radium(PropRow);
+class MethodRow extends React.Component {
+  state = {
+    collapsed: true,
+  };
+  _toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  };
+  _onMouseOver = () => {
+    if (this.state.collapsed) {
+      this._mouseTimeout = setTimeout(
+        () =>
+          this.setState({
+            collapsed: false,
+          }),
+        300
+      );
+    }
+  };
+  _onMouseOut = () => {
+    clearTimeout(this._mouseTimeout);
+  };
+  render() {
+    let {
+      method: {
+        name,
+        params,
+        returns,
+        description,
+        docblock,
+      },
+      forceExpand,
+    } = this.props;
+    let { collapsed } = this.state;
+    return (
+      <div style={Styles.PropRow} key={name}>
+        <div style={Styles.PropLeft}>
+          <div style={Styles.PropName}>{name}</div>
+        </div>
+        <div style={Styles.PropRight}>
+          <div style={Styles.PropType}>
+            ({(params &&
+              params.length > 0 &&
+              params
+                .map(param => {
+                  let res = param.name;
+                  res += param.optional ? '?' : '';
+                  if (param.type && param.type.names) {
+                    res += `: ${param.type.names.join(', ')}`;
+                  }
+                  return res;
+                })
+                .join(', ')) ||
+              ''})
+            {returns && `: ${renderTypehint(returns.type)}`}
+            {' '}
+            {!forceExpand && (description || docblock) &&
+              <button onClick={this._toggle} style={Styles.ToggleButton}>
+                {collapsed ? '+' : '–'}
+              </button>}
+          </div>
+          <div
+            onMouseOver={this._onMouseOver}
+            onMouseOut={this._onMouseOut}
+            style={[
+              Styles.PropMeta,
+              collapsed && !forceExpand && Styles.PropMetaCollapsed,
+            ]}>
+            <Markdown>
+              {description ||
+                (docblock && removeCommentsFromDocblock(docblock))}
+            </Markdown>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+MethodRow = Radium(MethodRow);
 export default class ComponentPage extends React.Component {
   _filterNames = names => {
     let { propQuery } = this.props;
@@ -44,11 +166,13 @@ export default class ComponentPage extends React.Component {
     }
     return names;
   };
-
   render() {
     let { componentName, propQuery } = this.props;
     let component = Data[componentName.toLowerCase()];
-
+    let filteredProps = component.props &&
+      this._filterNames(Object.keys(component.props));
+    let filteredMethods = component.methods &&
+      this._filterNames(component.methods.map(m => m.name));
     return (
       <div style={Styles.Root}>
         <div style={Styles.Columns}>
@@ -86,78 +210,31 @@ export default class ComponentPage extends React.Component {
           </div>
           <div style={Styles.RightColumn}>
             <div style={Styles.ColumnInner}>
-              {component.props &&
+              {filteredProps && filteredProps.length > 0 &&
                 <div style={Styles.Section}>
                   <div style={Styles.SectionHeader}>PROPS</div>
                   <div>
-                    {this._filterNames(
-                      Object.keys(component.props)
-                    ).map(propName => {
+                    {filteredProps.map(propName => {
                       let prop = component.props[propName];
                       return (
                         <PropRow
                           prop={prop}
                           propName={propName}
+                          forceExpand={filteredProps.length <= 3}
                           key={propName}
                         />
                       );
                     })}
                   </div>
                 </div>}
-              {component.methods &&
-                component.methods.length > 0 &&
+              {filteredMethods &&
+                filteredMethods.length > 0 &&
                 <div style={Styles.Section}>
                   <div style={Styles.SectionHeader}>METHODS</div>
                   <div>
-                    {component.methods.map(method => {
-                      let {
-                        name,
-                        params,
-                        returns,
-                        description,
-                        docblock,
-                      } = method;
-                      if (
-                        propQuery &&
-                        !new RegExp(propQuery.split('').join('.*'), 'i').exec(
-                          name
-                        )
-                      ) {
-                        return null;
-                      }
-
-                      return (
-                        <div style={Styles.PropRow} key={name}>
-                          <div style={Styles.PropLeft}>
-                            <div style={Styles.PropName}>{name}</div>
-                          </div>
-                          <div style={Styles.PropRight}>
-                            <div style={Styles.PropType}>
-                              ({(params &&
-                                params.length > 0 &&
-                                params
-                                  .map(param => {
-                                    let res = param.name;
-                                    res += param.optional ? '?' : '';
-                                    if (param.type && param.type.names) {
-                                      res += `: ${param.type.names.join(', ')}`;
-                                    }
-                                    return res;
-                                  })
-                                  .join(', ')) ||
-                                ''})
-                              {returns && `: ${renderTypehint(returns.type)}`}
-                            </div>
-                            <div style={Styles.PropMeta}>
-                              <Markdown>
-                                {description ||
-                                  (docblock &&
-                                    removeCommentsFromDocblock(docblock))}
-                              </Markdown>
-                            </div>
-                          </div>
-                        </div>
-                      );
+                    {filteredMethods.map(methodName => {
+                      let method = component.methods.find(m => m.name === methodName);
+                      return <MethodRow method={method} forceExpand={filteredMethods.length <= 3} key={method.name} />;
                     })}
                   </div>
                 </div>}
@@ -168,7 +245,6 @@ export default class ComponentPage extends React.Component {
     );
   }
 }
-
 const Styles = {
   Root: {
     paddingTop: 40,
@@ -186,7 +262,6 @@ const Styles = {
     paddingLeft: 30,
     paddingRight: 30,
   },
-
   ComponentName: {
     fontFamily: 'Inconsolata',
     fontSize: 24,
@@ -226,7 +301,7 @@ const Styles = {
     wordBreak: 'break-word',
   },
   PropRight: {
-    width: '70%',
+    flex: 1,
   },
   PropType: {
     fontFamily: 'Inconsolata',
@@ -235,6 +310,10 @@ const Styles = {
   PropMeta: {
     fontSize: 12,
     lineHeight: 1.3,
+    overflow: 'hidden',
+  },
+  PropMetaCollapsed: {
+    maxHeight: 27,
     opacity: 0.3,
   },
   PropEnumValues: {
@@ -249,5 +328,12 @@ const Styles = {
     fontSize: 14,
     fontWeight: 500,
     textDecoration: 'none',
+  },
+  ToggleButton: {
+    border: 0,
+    backgroundColor: 'transparent',
+    fontSize: 14,
+    fontWeight: 700,
+    padding: 0,
   },
 };
