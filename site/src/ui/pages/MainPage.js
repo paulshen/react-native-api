@@ -125,8 +125,11 @@ export default class MainPage extends React.Component {
             onChange={this._onChangeQuery}
             style={Styles.Input}
           />
+          <div style={Styles.InputNote}>
+            {this.state.query ? 'Press ESC to clear' : ''}
+          </div>
         </div>
-        {filteredComponents.length <= 2
+        {filteredComponents.length <= 1
           ? <div>
               {filteredComponents.map(componentName => (
                 <ComponentPage
@@ -143,7 +146,7 @@ export default class MainPage extends React.Component {
                     href={`/${Data[componentName].componentName}`}
                     onClick={this._onClickComponent}
                     style={Styles.ComponentLink}>
-                    {componentName}
+                    {Data[componentName].componentName}
                   </a>
                 </div>
               ))}
@@ -162,6 +165,7 @@ const Styles = {
   InputSection: {
     marginLeft: 30,
     marginRight: 30,
+    position: 'relative',
   },
   Input: {
     borderColor: '#d0d0d0',
@@ -174,6 +178,14 @@ const Styles = {
     paddingBottom: 4,
     paddingTop: 4,
     width: '100%',
+  },
+  InputNote: {
+    color: '#999999',
+    fontSize: 12,
+    left: 0,
+    marginTop: 6,
+    position: 'absolute',
+    top: '100%',
   },
   ComponentList: {
     paddingLeft: 30,

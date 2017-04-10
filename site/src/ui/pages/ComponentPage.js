@@ -61,7 +61,7 @@ export default class ComponentPage extends React.Component {
                     `https://facebook.github.io/react-native/docs/${componentName.toLowerCase()}.html`
                   }
                   style={Styles.Link}>
-                  Official Docs
+                  Official Docs &rarr;
                 </a>
               </div>
               <div>
@@ -70,7 +70,7 @@ export default class ComponentPage extends React.Component {
                     `https://github.com/facebook/react-native/tree/master/${component.filepath}`
                   }
                   style={Styles.Link}>
-                  Source
+                  Source &rarr;
                 </a>
               </div>
             </div>
@@ -185,7 +185,7 @@ const Styles = {
   },
   ComponentLinks: {
     fontSize: 14,
-    marginBottom: 8,
+    marginBottom: 30,
   },
   ComponentDescription: {
     color: '#999999',
@@ -196,9 +196,10 @@ const Styles = {
     marginBottom: 50,
   },
   SectionHeader: {
+    color: '#0000FF',
     fontSize: 12,
     fontWeight: 700,
-    letterSpacing: 0.6,
+    letterSpacing: 1,
     marginBottom: 30,
   },
   PropRow: {
@@ -236,5 +237,7 @@ const Styles = {
   Link: {
     color: '#333333',
     fontSize: 14,
+    fontWeight: 500,
+    textDecoration: 'none',
   },
 };
