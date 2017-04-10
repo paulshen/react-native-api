@@ -21,6 +21,7 @@ export default class MainPage extends React.Component {
       query: filteredComponents.length === 1
         ? Data[filteredComponents[0]].componentName
         : '',
+      propQuery: '',
     };
   }
 
@@ -50,11 +51,13 @@ export default class MainPage extends React.Component {
       nextProps.match.params.componentName !==
       this.props.match.params.componentName
     ) {
+      let filteredComponents = this._processParams(
+        nextProps.match.params.componentName,
+        this.state.query
+      );
       this.setState({
-        filteredComponents: this._processParams(
-          nextProps.match.params.componentName,
-          this.state.query
-        ),
+        filteredComponents,
+        propQuery: '',
       });
     }
   }
@@ -70,15 +73,12 @@ export default class MainPage extends React.Component {
 
   _onChangeQuery = e => {
     let query = e.target.value;
-    let [componentQuery] = query.split('.');
-    let filteredComponents = this._filterListWithQuery(
-      DataKeys,
-      componentQuery
-    );
+    let filteredComponents = this._filterListWithQuery(DataKeys, query);
     this.setState(
       {
         filteredComponents,
         query,
+        propQuery: '',
       },
       () => {
         if (filteredComponents.length === 1) {
@@ -92,15 +92,27 @@ export default class MainPage extends React.Component {
     );
   };
 
+  _onChangePropQuery = e => {
+    this.setState({
+      propQuery: e.target.value,
+    });
+  };
+
   _onKeyDown = e => {
     if (e.keyCode === 27) {
-      this.setState(
-        {
-          query: '',
-          filteredComponents: DataKeys,
-        },
-        () => this.props.history.replace('/')
-      );
+      if (this.state.propQuery) {
+        this.setState({
+          propQuery: '',
+        });
+      } else {
+        this.setState(
+          {
+            query: '',
+            filteredComponents: DataKeys,
+          },
+          () => this.props.history.replace('/')
+        );
+      }
     }
   };
 
@@ -118,23 +130,39 @@ export default class MainPage extends React.Component {
     return (
       <div style={Styles.Page}>
         <div style={Styles.InputSection}>
-          <input
-            type="text"
-            value={this.state.query}
-            placeholder="Start typing a component or API name..."
-            onChange={this._onChangeQuery}
-            style={Styles.Input}
-          />
-          <div style={Styles.InputNote}>
-            {this.state.query ? 'Press ESC to clear' : ''}
+          <div style={Styles.InputLeft}>
+            <div style={Styles.InputWrapper}>
+              <input
+                type="text"
+                value={this.state.query}
+                placeholder="Start typing a component or API name..."
+                onChange={this._onChangeQuery}
+                style={Styles.Input}
+              />
+              <div style={Styles.InputNote}>
+                {this.state.query ? 'Press ESC to clear' : ''}
+              </div>
+            </div>
           </div>
+          {filteredComponents.length <= 1 &&
+            <div style={Styles.InputRight}>
+              <div style={Styles.InputWrapper}>
+                <input
+                  type="text"
+                  value={this.state.propQuery}
+                  placeholder="Filter props and methods..."
+                  onChange={this._onChangePropQuery}
+                  style={Styles.Input}
+                />
+              </div>
+            </div>}
         </div>
         {filteredComponents.length <= 1
           ? <div>
               {filteredComponents.map(componentName => (
                 <ComponentPage
                   componentName={componentName}
-                  propQuery={this.state.query.split('.')[1]}
+                  propQuery={this.state.propQuery}
                   key={componentName}
                 />
               ))}
@@ -163,6 +191,17 @@ const Styles = {
     paddingTop: 100,
   },
   InputSection: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginBottom: 40,
+  },
+  InputLeft: {
+    flex: 1,
+  },
+  InputRight: {
+    width: '65%',
+  },
+  InputWrapper: {
     marginLeft: 30,
     marginRight: 30,
     position: 'relative',
@@ -172,8 +211,8 @@ const Styles = {
     borderStyle: 'dashed',
     borderWidth: '0 0 1px',
     display: 'block',
+    flex: 1,
     fontSize: 24,
-    marginBottom: 40,
     outline: 'none',
     paddingBottom: 4,
     paddingTop: 4,

@@ -53,105 +53,115 @@ export default class ComponentPage extends React.Component {
       <div style={Styles.Root}>
         <div style={Styles.Columns}>
           <div style={Styles.LeftColumn}>
-            <div style={Styles.ComponentName}>{component.componentName}</div>
-            <div style={Styles.ComponentLinks}>
-              <div>
-                <a
-                  href={
-                    `https://facebook.github.io/react-native/docs/${componentName.toLowerCase()}.html`
-                  }
-                  style={Styles.Link}>
-                  Official Docs &rarr;
-                </a>
+            <div style={Styles.ColumnInner}>
+              <div style={Styles.ComponentName}>{component.componentName}</div>
+              <div style={Styles.ComponentLinks}>
+                <div>
+                  <a
+                    href={
+                      `https://facebook.github.io/react-native/docs/${componentName.toLowerCase()}.html`
+                    }
+                    style={Styles.Link}>
+                    Official Docs &rarr;
+                  </a>
+                </div>
+                <div>
+                  <a
+                    href={
+                      `https://github.com/facebook/react-native/tree/master/${component.filepath}`
+                    }
+                    style={Styles.Link}>
+                    Source &rarr;
+                  </a>
+                </div>
               </div>
-              <div>
-                <a
-                  href={
-                    `https://github.com/facebook/react-native/tree/master/${component.filepath}`
-                  }
-                  style={Styles.Link}>
-                  Source &rarr;
-                </a>
+              <div style={Styles.ComponentDescription}>
+                <Markdown>
+                  {component.description ||
+                    (component.docblock &&
+                      removeCommentsFromDocblock(component.docblock))}
+                </Markdown>
               </div>
-            </div>
-            <div style={Styles.ComponentDescription}>
-              <Markdown>
-                {component.description ||
-                  (component.docblock &&
-                    removeCommentsFromDocblock(component.docblock))}
-              </Markdown>
             </div>
           </div>
           <div style={Styles.RightColumn}>
-            {component.props &&
-              <div style={Styles.Section}>
-                <div style={Styles.SectionHeader}>PROPS</div>
-                <div>
-                  {this._filterNames(
-                    Object.keys(component.props)
-                  ).map(propName => {
-                    let prop = component.props[propName];
-                    return <PropRow prop={prop} propName={propName} key={propName} />;
-                  })}
-                </div>
-              </div>}
-            {component.methods &&
-              component.methods.length > 0 &&
-              <div style={Styles.Section}>
-                <div style={Styles.SectionHeader}>METHODS</div>
-                <div>
-                  {component.methods.map(method => {
-                    let {
-                      name,
-                      params,
-                      returns,
-                      description,
-                      docblock,
-                    } = method;
-                    if (
-                      propQuery &&
-                      !new RegExp(propQuery.split('').join('.*'), 'i').exec(
-                        name
-                      )
-                    ) {
-                      return null;
-                    }
+            <div style={Styles.ColumnInner}>
+              {component.props &&
+                <div style={Styles.Section}>
+                  <div style={Styles.SectionHeader}>PROPS</div>
+                  <div>
+                    {this._filterNames(
+                      Object.keys(component.props)
+                    ).map(propName => {
+                      let prop = component.props[propName];
+                      return (
+                        <PropRow
+                          prop={prop}
+                          propName={propName}
+                          key={propName}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>}
+              {component.methods &&
+                component.methods.length > 0 &&
+                <div style={Styles.Section}>
+                  <div style={Styles.SectionHeader}>METHODS</div>
+                  <div>
+                    {component.methods.map(method => {
+                      let {
+                        name,
+                        params,
+                        returns,
+                        description,
+                        docblock,
+                      } = method;
+                      if (
+                        propQuery &&
+                        !new RegExp(propQuery.split('').join('.*'), 'i').exec(
+                          name
+                        )
+                      ) {
+                        return null;
+                      }
 
-                    return (
-                      <div style={Styles.PropRow} key={name}>
-                        <div style={Styles.PropLeft}>
-                          <div style={Styles.PropName}>{name}</div>
-                        </div>
-                        <div style={Styles.PropRight}>
-                          <div style={Styles.PropType}>
-                            ({(params &&
-                              params.length > 0 &&
-                              params
-                                .map(param => {
-                                  let res = param.name;
-                                  res += param.optional ? '?' : '';
-                                  if (param.type && param.type.names) {
-                                    res += `: ${param.type.names.join(', ')}`;
-                                  }
-                                  return res;
-                                })
-                                .join(', ')) ||
-                              ''})
-                            {returns && `: ${renderTypehint(returns.type)}`}
+                      return (
+                        <div style={Styles.PropRow} key={name}>
+                          <div style={Styles.PropLeft}>
+                            <div style={Styles.PropName}>{name}</div>
                           </div>
-                          <div style={Styles.PropMeta}>
-                            <Markdown>
-                              {description ||
-                                (docblock &&
-                                  removeCommentsFromDocblock(docblock))}
-                            </Markdown>
+                          <div style={Styles.PropRight}>
+                            <div style={Styles.PropType}>
+                              ({(params &&
+                                params.length > 0 &&
+                                params
+                                  .map(param => {
+                                    let res = param.name;
+                                    res += param.optional ? '?' : '';
+                                    if (param.type && param.type.names) {
+                                      res += `: ${param.type.names.join(', ')}`;
+                                    }
+                                    return res;
+                                  })
+                                  .join(', ')) ||
+                                ''})
+                              {returns && `: ${renderTypehint(returns.type)}`}
+                            </div>
+                            <div style={Styles.PropMeta}>
+                              <Markdown>
+                                {description ||
+                                  (docblock &&
+                                    removeCommentsFromDocblock(docblock))}
+                              </Markdown>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>}
+                      );
+                    })}
+                  </div>
+                </div>}
+            </div>
           </div>
         </div>
       </div>
@@ -167,14 +177,14 @@ const Styles = {
     display: 'flex',
   },
   LeftColumn: {
-    paddingLeft: 30,
-    paddingRight: 30,
-    width: '30%',
+    width: '35%',
   },
   RightColumn: {
+    width: '65%',
+  },
+  ColumnInner: {
     paddingLeft: 30,
     paddingRight: 30,
-    width: '70%',
   },
 
   ComponentName: {
