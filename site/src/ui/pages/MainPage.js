@@ -72,7 +72,10 @@ export default class MainPage extends React.Component {
   };
 
   _onChangeQuery = e => {
-    let query = e.target.value;
+    this._updateQuery(e.target.value);
+  };
+
+  _updateQuery = query => {
     let filteredComponents = this._filterListWithQuery(DataKeys, query);
     this.setState(
       {
@@ -113,6 +116,14 @@ export default class MainPage extends React.Component {
           () => this.props.history.replace('/')
         );
       }
+    } else {
+      if (
+        document.activeElement.tagName !== 'INPUT' &&
+        e.keyCode >= 65 &&
+        e.keyCode <= 90
+      ) {
+        this._input.focus();
+      }
     }
   };
 
@@ -137,10 +148,11 @@ export default class MainPage extends React.Component {
                 value={this.state.query}
                 placeholder="Start typing a component or API name..."
                 onChange={this._onChangeQuery}
+                ref={c => this._input = c}
                 style={Styles.Input}
               />
               <div style={Styles.InputNote}>
-                {this.state.query ? 'Press ESC to clear' : ''}
+                {(this.state.query && !this.state.propQuery) ? 'Press ESC to clear' : ''}
               </div>
             </div>
           </div>
@@ -154,6 +166,9 @@ export default class MainPage extends React.Component {
                   onChange={this._onChangePropQuery}
                   style={Styles.Input}
                 />
+              <div style={Styles.InputNote}>
+                {this.state.propQuery ? 'Press ESC to clear' : ''}
+              </div>
               </div>
             </div>}
         </div>
