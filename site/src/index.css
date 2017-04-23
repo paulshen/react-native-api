@@ -28,3 +28,8 @@ pre, ul {
 a {
   color: #333333;
 }
+
+ul {
+  line-height: 1.5;
+  padding-left: 20px;
+}
