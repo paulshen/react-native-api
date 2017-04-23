@@ -6,6 +6,14 @@ import ComponentPage from './ComponentPage';
 
 const DataKeys = Object.keys(Data);
 
+function formatComponentName(componentName) {
+  let name = Data[componentName].componentName;
+  if (Data[componentName].type === 'component') {
+    return `<${name}>`;
+  }
+  return name;
+}
+
 export default class MainPage extends React.Component {
   props: {
     match: Object,
@@ -152,7 +160,9 @@ export default class MainPage extends React.Component {
                 style={Styles.Input}
               />
               <div style={Styles.InputNote}>
-                {(this.state.query && !this.state.propQuery) ? 'Press ESC to clear' : ''}
+                {this.state.query && !this.state.propQuery
+                  ? 'Press ESC to clear'
+                  : ''}
               </div>
             </div>
           </div>
@@ -166,9 +176,9 @@ export default class MainPage extends React.Component {
                   onChange={this._onChangePropQuery}
                   style={Styles.Input}
                 />
-              <div style={Styles.InputNote}>
-                {this.state.propQuery ? 'Press ESC to clear' : ''}
-              </div>
+                <div style={Styles.InputNote}>
+                  {this.state.propQuery ? 'Press ESC to clear' : ''}
+                </div>
               </div>
             </div>}
         </div>
@@ -189,7 +199,7 @@ export default class MainPage extends React.Component {
                     href={`/${Data[componentName].componentName}`}
                     onClick={this._onClickComponent}
                     style={Styles.ComponentLink}>
-                    {Data[componentName].componentName}
+                    {formatComponentName(componentName)}
                   </a>
                 </div>
               ))}

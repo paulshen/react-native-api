@@ -58,7 +58,7 @@ class PropRow extends React.Component {
             {!forceExpand &&
               prop.description &&
               <button onClick={this._toggle} style={Styles.ToggleButton}>
-                {collapsed ? 'expand' : 'collapse'}
+                {collapsed ? 'EXPAND' : 'COLLAPSE'}
               </button>}
           </div>
           <div
@@ -140,7 +140,7 @@ class MethodRow extends React.Component {
             {!forceExpand &&
               (description || docblock) &&
               <button onClick={this._toggle} style={Styles.ToggleButton}>
-                {collapsed ? 'expand' : 'collapse'}
+                {collapsed ? 'EXPAND' : 'COLLAPSE'}
               </button>}
           </div>
           <div
