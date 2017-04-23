@@ -58,7 +58,7 @@ class PropRow extends React.Component {
             {!forceExpand &&
               prop.description &&
               <button onClick={this._toggle} style={Styles.ToggleButton}>
-                {collapsed ? '+' : '–'}
+                {collapsed ? 'expand' : 'collapse'}
               </button>}
           </div>
           <div
@@ -140,7 +140,7 @@ class MethodRow extends React.Component {
             {!forceExpand &&
               (description || docblock) &&
               <button onClick={this._toggle} style={Styles.ToggleButton}>
-                {collapsed ? '+' : '–'}
+                {collapsed ? 'expand' : 'collapse'}
               </button>}
           </div>
           <div
@@ -352,8 +352,14 @@ const Styles = {
   ToggleButton: {
     border: 0,
     backgroundColor: 'transparent',
-    fontSize: 14,
-    fontWeight: 700,
+    fontSize: 10,
+    opacity: 0.3,
+    outline: 'none',
     padding: 0,
+    textTransform: 'uppercase',
+    transition: 'opacity 0.2s',
+    ':hover': {
+      opacity: 0.5,
+    },
   },
 };
