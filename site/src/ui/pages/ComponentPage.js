@@ -55,7 +55,8 @@ class PropRow extends React.Component {
             {(prop.type || prop.flowType) &&
               renderTypehint(prop.flowType || prop.type)}
             {' '}
-            {!forceExpand && prop.description &&
+            {!forceExpand &&
+              prop.description &&
               <button onClick={this._toggle} style={Styles.ToggleButton}>
                 {collapsed ? '+' : '–'}
               </button>}
@@ -108,6 +109,7 @@ class MethodRow extends React.Component {
         returns,
         description,
         docblock,
+        modifiers,
       },
       forceExpand,
     } = this.props;
@@ -119,6 +121,7 @@ class MethodRow extends React.Component {
         </div>
         <div style={Styles.PropRight}>
           <div style={Styles.PropType}>
+            {modifiers.length > 0 ? `${modifiers.join(' ')} ` : ''}
             ({(params &&
               params.length > 0 &&
               params
@@ -134,7 +137,8 @@ class MethodRow extends React.Component {
               ''})
             {returns && `: ${renderTypehint(returns.type)}`}
             {' '}
-            {!forceExpand && (description || docblock) &&
+            {!forceExpand &&
+              (description || docblock) &&
               <button onClick={this._toggle} style={Styles.ToggleButton}>
                 {collapsed ? '+' : '–'}
               </button>}
@@ -157,7 +161,7 @@ class MethodRow extends React.Component {
   }
 }
 MethodRow = Radium(MethodRow);
-export default class ComponentPage extends React.Component {
+class ComponentPage extends React.Component {
   _filterNames = names => {
     let { propQuery } = this.props;
     if (propQuery) {
@@ -210,7 +214,8 @@ export default class ComponentPage extends React.Component {
           </div>
           <div style={Styles.RightColumn}>
             <div style={Styles.ColumnInner}>
-              {filteredProps && filteredProps.length > 0 &&
+              {filteredProps &&
+                filteredProps.length > 0 &&
                 <div style={Styles.Section}>
                   <div style={Styles.SectionHeader}>PROPS</div>
                   <div>
@@ -233,8 +238,16 @@ export default class ComponentPage extends React.Component {
                   <div style={Styles.SectionHeader}>METHODS</div>
                   <div>
                     {filteredMethods.map(methodName => {
-                      let method = component.methods.find(m => m.name === methodName);
-                      return <MethodRow method={method} forceExpand={filteredMethods.length <= 3} key={method.name} />;
+                      let method = component.methods.find(
+                        m => m.name === methodName
+                      );
+                      return (
+                        <MethodRow
+                          method={method}
+                          forceExpand={filteredMethods.length <= 3}
+                          key={method.name}
+                        />
+                      );
                     })}
                   </div>
                 </div>}
@@ -245,6 +258,7 @@ export default class ComponentPage extends React.Component {
     );
   }
 }
+export default Radium(ComponentPage);
 const Styles = {
   Root: {
     paddingTop: 40,
@@ -273,9 +287,13 @@ const Styles = {
     marginBottom: 30,
   },
   ComponentDescription: {
-    color: '#999999',
     fontSize: 12,
     lineHeight: 1.5,
+    opacity: 0.5,
+    transition: 'opacity 0.2s',
+    ':hover': {
+      opacity: 1,
+    },
   },
   Section: {
     marginBottom: 50,
@@ -294,14 +312,16 @@ const Styles = {
     paddingTop: 16,
   },
   PropLeft: {
-    width: '30%',
+    boxSizing: 'border-box',
+    paddingRight: 20,
+    width: '34%',
   },
   PropName: {
     fontFamily: 'Inconsolata',
     wordBreak: 'break-word',
   },
   PropRight: {
-    flex: 1,
+    width: '66%',
   },
   PropType: {
     fontFamily: 'Inconsolata',

@@ -8,11 +8,20 @@ input, code {
   font-family: Inconsolata, monospace;
 }
 
+pre, code {
+  background-color: #f6f6f6;
+}
+
+pre {
+  padding-bottom: 8px;
+  padding-top: 8px;
+}
+
 input::-webkit-input-placeholder {
   color: #d0d0d0;
 }
 
-pre {
+pre, ul {
   overflow: scroll;
 }
 
