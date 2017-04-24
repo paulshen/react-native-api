@@ -1,6 +1,7 @@
 import React from 'react';
 import Radium from 'radium';
 
+import Config from '../../Config';
 import Data from '../../Data';
 import Markdown from '../components/Markdown';
 import renderTypehint from '../utils/renderTypehint';
@@ -167,7 +168,7 @@ class ComponentPage extends React.Component {
                 <div>
                   <a
                     href={
-                      `https://facebook.github.io/react-native/docs/${componentName.toLowerCase()}.html`
+                      `https://facebook.github.io/react-native/releases/${Config.Branch.replace('-stable', '')}/docs/${componentName.toLowerCase()}.html`
                     }
                     style={Styles.Link}>
                     Official Docs &rarr;
@@ -176,7 +177,7 @@ class ComponentPage extends React.Component {
                 <div>
                   <a
                     href={
-                      `https://github.com/facebook/react-native/tree/master/${component.filepath}`
+                      `https://github.com/facebook/react-native/tree/${Config.Branch}/${component.filepath}`
                     }
                     style={Styles.Link}>
                     Source &rarr;
