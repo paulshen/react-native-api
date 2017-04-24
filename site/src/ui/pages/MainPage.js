@@ -135,9 +135,9 @@ export default class MainPage extends React.Component {
     }
   };
 
-  _onClickComponent = e => {
+  _onClickComponent = (e, componentName) => {
     this.setState({
-      query: e.target.innerText,
+      query: componentName,
     });
     this.props.history.replace(e.target.getAttribute('href'));
     e.preventDefault();
@@ -197,7 +197,7 @@ export default class MainPage extends React.Component {
                 <div style={Styles.ComponentListEntry} key={componentName}>
                   <a
                     href={`/${Data[componentName].componentName}`}
-                    onClick={this._onClickComponent}
+                    onClick={(e) => this._onClickComponent(e, componentName)}
                     style={Styles.ComponentLink}>
                     {formatComponentName(componentName)}
                   </a>

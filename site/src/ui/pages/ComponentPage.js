@@ -26,20 +26,10 @@ class PropRow extends React.Component {
     });
   };
 
-  _onMouseOver = () => {
-    if (this.state.collapsed) {
-      this._mouseTimeout = setTimeout(
-        () =>
-          this.setState({
-            collapsed: false,
-          }),
-        300
-      );
-    }
-  };
-
-  _onMouseOut = () => {
-    clearTimeout(this._mouseTimeout);
+  _expand = () => {
+    this.setState({
+      collapsed: false,
+    });
   };
 
   render() {
@@ -48,7 +38,7 @@ class PropRow extends React.Component {
     return (
       <div style={Styles.PropRow} key={propName}>
         <div style={Styles.PropLeft}>
-          <div style={Styles.PropName}>{propName}</div>
+          <div style={Styles.PropName} onClick={this._expand}>{propName}</div>
         </div>
         <div style={Styles.PropRight}>
           <div style={Styles.PropType}>
@@ -62,8 +52,6 @@ class PropRow extends React.Component {
               </button>}
           </div>
           <div
-            onMouseOver={this._onMouseOver}
-            onMouseOut={this._onMouseOut}
             style={[
               Styles.PropMeta,
               collapsed && !forceExpand && Styles.PropMetaCollapsed,
@@ -82,25 +70,19 @@ class MethodRow extends React.Component {
   state = {
     collapsed: true,
   };
+
   _toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed,
     });
   };
-  _onMouseOver = () => {
-    if (this.state.collapsed) {
-      this._mouseTimeout = setTimeout(
-        () =>
-          this.setState({
-            collapsed: false,
-          }),
-        300
-      );
-    }
+
+  _expand = () => {
+    this.setState({
+      collapsed: false,
+    });
   };
-  _onMouseOut = () => {
-    clearTimeout(this._mouseTimeout);
-  };
+
   render() {
     let {
       method: {
@@ -117,7 +99,7 @@ class MethodRow extends React.Component {
     return (
       <div style={Styles.PropRow} key={name}>
         <div style={Styles.PropLeft}>
-          <div style={Styles.PropName}>{name}</div>
+          <div style={Styles.PropName} onClick={this._expand}>{name}</div>
         </div>
         <div style={Styles.PropRight}>
           <div style={Styles.PropType}>
@@ -144,8 +126,6 @@ class MethodRow extends React.Component {
               </button>}
           </div>
           <div
-            onMouseOver={this._onMouseOver}
-            onMouseOut={this._onMouseOut}
             style={[
               Styles.PropMeta,
               collapsed && !forceExpand && Styles.PropMetaCollapsed,
@@ -225,7 +205,7 @@ class ComponentPage extends React.Component {
                         <PropRow
                           prop={prop}
                           propName={propName}
-                          forceExpand={filteredProps.length <= 3}
+                          forceExpand={filteredProps.length + (filteredMethods ? filteredMethods.length : 0) <= 3}
                           key={propName}
                         />
                       );
@@ -244,7 +224,7 @@ class ComponentPage extends React.Component {
                       return (
                         <MethodRow
                           method={method}
-                          forceExpand={filteredMethods.length <= 3}
+                          forceExpand={(filteredProps ? filteredProps.length : 0) + filteredMethods.length <= 3}
                           key={method.name}
                         />
                       );
@@ -261,6 +241,7 @@ class ComponentPage extends React.Component {
 export default Radium(ComponentPage);
 const Styles = {
   Root: {
+    paddingBottom: 100,
     paddingTop: 40,
   },
   Columns: {
@@ -314,14 +295,14 @@ const Styles = {
   PropLeft: {
     boxSizing: 'border-box',
     paddingRight: 20,
-    width: '34%',
+    width: '36%',
   },
   PropName: {
     fontFamily: 'Inconsolata',
     wordBreak: 'break-word',
   },
   PropRight: {
-    width: '66%',
+    width: '64%',
   },
   PropType: {
     fontFamily: 'Inconsolata',
@@ -333,8 +314,7 @@ const Styles = {
     overflow: 'hidden',
   },
   PropMetaCollapsed: {
-    maxHeight: 27,
-    opacity: 0.3,
+    display: 'none',
   },
   PropEnumValues: {
     color: '#000000',
