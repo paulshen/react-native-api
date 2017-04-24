@@ -186,6 +186,7 @@ class ComponentPage extends React.Component {
               <div style={Styles.ComponentDescription}>
                 <Markdown>
                   {component.description ||
+                    (component.class && component.class[0] && component.class[0].description) ||
                     (component.docblock &&
                       removeCommentsFromDocblock(component.docblock))}
                 </Markdown>
