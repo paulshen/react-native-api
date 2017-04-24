@@ -159,7 +159,7 @@ class ComponentPage extends React.Component {
       this._filterNames(Object.keys(component.props));
     let filteredMethods = component.methods &&
       this._filterNames(component.methods.map(m => m.name));
-    let officialDocUrl = `https://facebook.github.io/react-native/releases/${Config.Branch.replace('-stable', '')}/docs/${componentName.toLowerCase()}.html`;
+    let officialDocUrl = `${Config.OfficialDocsUrl}docs/${componentName.toLowerCase()}.html`;
     return (
       <div style={Styles.Root}>
         <div style={Styles.Columns}>

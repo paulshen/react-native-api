@@ -1,6 +1,8 @@
 // https://github.com/facebook/react-native/blob/3d3cd86/website/layout/AutodocsLayout.js
 import React from 'react';
 
+import Config from '../../Config';
+
 var slugify = require('slugify');
 
 const styleReferencePattern = /^[^.]+\.propTypes\.style$/;
@@ -66,10 +68,10 @@ function renderBaseType(type) {
   if (type.name === 'custom') {
     if (styleReferencePattern.test(type.raw)) {
       var name = type.raw.substring(0, type.raw.indexOf('.'));
-      return <a href={'docs/' + slugify(name) + '.html#style'}>{name}#style</a>;
+      return <a href={`${Config.OfficialDocsUrl}docs/${slugify(name)}.html#style`}>{name}#style</a>;
     }
     if (type.raw === 'ColorPropType') {
-      return <a href={'docs/colors.html'}>color</a>;
+      return <a href={`${Config.OfficialDocsUrl}docs/colors.html`}>color</a>;
     }
     if (type.raw === 'EdgeInsetsPropType') {
       return '{top: number, left: number, bottom: number, right: number}';
