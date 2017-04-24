@@ -10,6 +10,8 @@ fs.readdir(`${__dirname}/docs`, function(err, files) {
         case 'api':
         case 'component':
           console.log(d.componentName);
+          d.hasExamples = d.examples && d.examples.length > 0;
+          delete d.examples;
           data[d.componentName.toLowerCase()] = d;
           break;
       }

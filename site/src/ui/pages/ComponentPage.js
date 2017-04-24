@@ -159,19 +159,18 @@ class ComponentPage extends React.Component {
       this._filterNames(Object.keys(component.props));
     let filteredMethods = component.methods &&
       this._filterNames(component.methods.map(m => m.name));
+    let officialDocUrl = `https://facebook.github.io/react-native/releases/${Config.Branch.replace('-stable', '')}/docs/${componentName.toLowerCase()}.html`;
     return (
       <div style={Styles.Root}>
         <div style={Styles.Columns}>
           <div style={Styles.LeftColumn}>
             <div style={Styles.ColumnInner}>
-              <div style={Styles.ComponentName}>{formatComponentName(componentName)}</div>
+              <div style={Styles.ComponentName}>
+                {formatComponentName(componentName)}
+              </div>
               <div style={Styles.ComponentLinks}>
                 <div>
-                  <a
-                    href={
-                      `https://facebook.github.io/react-native/releases/${Config.Branch.replace('-stable', '')}/docs/${componentName.toLowerCase()}.html`
-                    }
-                    style={Styles.Link}>
+                  <a href={officialDocUrl} style={Styles.Link}>
                     Official Docs &rarr;
                   </a>
                 </div>
@@ -184,11 +183,19 @@ class ComponentPage extends React.Component {
                     Source &rarr;
                   </a>
                 </div>
+                {component.hasExamples &&
+                  <div>
+                    <a href={`${officialDocUrl}#examples`} style={Styles.Link}>
+                      Examples &rarr;
+                    </a>
+                  </div>}
               </div>
               <div style={Styles.ComponentDescription}>
                 <Markdown>
                   {component.description ||
-                    (component.class && component.class[0] && component.class[0].description) ||
+                    (component.class &&
+                      component.class[0] &&
+                      component.class[0].description) ||
                     (component.docblock &&
                       removeCommentsFromDocblock(component.docblock))}
                 </Markdown>
@@ -208,7 +215,11 @@ class ComponentPage extends React.Component {
                         <PropRow
                           prop={prop}
                           propName={propName}
-                          forceExpand={filteredProps.length + (filteredMethods ? filteredMethods.length : 0) <= 3}
+                          forceExpand={
+                            filteredProps.length +
+                              (filteredMethods ? filteredMethods.length : 0) <=
+                              3
+                          }
                           key={propName}
                         />
                       );
@@ -227,7 +238,11 @@ class ComponentPage extends React.Component {
                       return (
                         <MethodRow
                           method={method}
-                          forceExpand={(filteredProps ? filteredProps.length : 0) + filteredMethods.length <= 3}
+                          forceExpand={
+                            (filteredProps ? filteredProps.length : 0) +
+                              filteredMethods.length <=
+                              3
+                          }
                           key={method.name}
                         />
                       );
