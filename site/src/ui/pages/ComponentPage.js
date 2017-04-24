@@ -4,6 +4,7 @@ import Radium from 'radium';
 import Config from '../../Config';
 import Data from '../../Data';
 import Markdown from '../components/Markdown';
+import formatComponentName from '../utils/formatComponentName';
 import renderTypehint from '../utils/renderTypehint';
 
 function removeCommentsFromDocblock(docblock) {
@@ -163,7 +164,7 @@ class ComponentPage extends React.Component {
         <div style={Styles.Columns}>
           <div style={Styles.LeftColumn}>
             <div style={Styles.ColumnInner}>
-              <div style={Styles.ComponentName}>{component.componentName}</div>
+              <div style={Styles.ComponentName}>{formatComponentName(componentName)}</div>
               <div style={Styles.ComponentLinks}>
                 <div>
                   <a

@@ -3,16 +3,9 @@ import { Link } from 'react-router-dom';
 
 import Data from '../../Data';
 import ComponentPage from './ComponentPage';
+import formatComponentName from '../utils/formatComponentName';
 
 const DataKeys = Object.keys(Data);
-
-function formatComponentName(componentName) {
-  let name = Data[componentName].componentName;
-  if (Data[componentName].type === 'component') {
-    return `<${name}>`;
-  }
-  return name;
-}
 
 export default class MainPage extends React.Component {
   props: {
