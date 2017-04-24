@@ -66,7 +66,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"handling-touches","title":"Handling Touches","layout":"docs","category":"Guides","permalink":"docs/handling-touches.html","next":"animations","previous":"more-resources","filename":"HandlingTouches.md"}}>
+      <Layout metadata={{"id":"handling-touches","title":"Handling Touches","layout":"docs","category":"Guides","permalink":"docs/handling-touches.html","next":"animations","previous":"images","filename":"HandlingTouches.md"}}>
         {content}
       </Layout>
     );

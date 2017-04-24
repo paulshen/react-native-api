@@ -4,34 +4,8 @@
 var React = require("React");
 var Layout = require("AutodocsLayout");
 var content = `\{
-  "description": "A performant interface for rendering sectioned lists, supporting the most handy features:\\n\\n - Fully cross-platform.\\n - Configurable viewability callbacks.\\n - List header support.\\n - List footer support.\\n - Item separator support.\\n - Section header support.\\n - Section separator support.\\n - Heterogeneous data and item rendering support.\\n - Pull to Refresh.\\n - Scroll loading.\\n\\nIf you don't need section support and want a simpler interface, use\\n[\`<FlatList>\`](/react-native/docs/flatlist.html).\\n\\nSimple Examples:\\n\\n    <SectionList\\n      renderItem=\{(\{item}) => <ListItem title=\{item.title}}\\n      renderSectionHeader=\{(\{section}) => <H1 title=\{section.key} />}\\n      sections=\{[ // homogenous rendering between sections\\n        \{data: [...], key: ...},\\n        \{data: [...], key: ...},\\n        \{data: [...], key: ...},\\n      ]}\\n    />\\n\\n    <SectionList\\n      sections=\{[ // heterogeneous rendering between sections\\n        \{data: [...], key: ..., renderItem: ...},\\n        \{data: [...], key: ..., renderItem: ...},\\n        \{data: [...], key: ..., renderItem: ...},\\n      ]}\\n    />\\n\\nThis is a convenience wrapper around [\`<VirtualizedList>\`](docs/virtualizedlist.html),\\nand thus inherits it's props (as well as those of \`ScrollView\`) that aren't explicitly listed\\nhere, along with the following caveats:\\n\\n- Internal state is not preserved when content scrolls out of the render window. Make sure all\\n  your data is captured in the item data or external stores like Flux, Redux, or Relay.\\n- This is a \`PureComponent\` which means that it will not re-render if \`props\` remain shallow-\\n  equal. Make sure that everything your \`renderItem\` function depends on is passed as a prop\\n  (e.g. \`extraData\`) that is not \`===\` after updates, otherwise your UI may not update on\\n  changes. This includes the \`data\` prop and parent component state.\\n- In order to constrain memory and enable smooth scrolling, content is rendered asynchronously\\n  offscreen. This means it's possible to scroll faster than the fill rate ands momentarily see\\n  blank content. This is a tradeoff that can be adjusted to suit the needs of each application,\\n  and we are working on improving it behind the scenes.\\n- By default, the list looks for a \`key\` prop on each item and uses that for the React key.\\n  Alternatively, you can provide a custom \`keyExtractor\` prop.\\n\\nNOTE: \`removeClippedSubviews\` might not be necessary and may cause bugs. If you see issues with\\ncontent not rendering, e.g when using \`LayoutAnimation\`, try setting\\n\`removeClippedSubviews=\{false}\`, and we may change the default in the future after more\\nexperimentation in production apps.",
-  "methods": [
-    \{
-      "name": "scrollToLocation",
-      "docblock": "Scrolls to the item at the specified \`sectionIndex\` and \`itemIndex\` (within the section)\\npositioned in the viewable area such that \`viewPosition\` 0 places it at the top (and may be\\ncovered by a sticky header), 1 at the bottom, and 0.5 centered in the middle. \`viewOffset\` is a\\nfixed number of pixels to offset the final target position, e.g. to compensate for sticky\\nheaders.\\n\\nNote: cannot scroll to locations outside the render window without specifying the\\n\`getItemLayout\` prop.",
-      "modifiers": [],
-      "params": [
-        \{
-          "name": "params",
-          "type": \{
-            "names": [
-              "object"
-            ]
-          }
-        }
-      ],
-      "returns": null,
-      "description": "Scrolls to the item at the specified \`sectionIndex\` and \`itemIndex\` (within the section)\\npositioned in the viewable area such that \`viewPosition\` 0 places it at the top (and may be\\ncovered by a sticky header), 1 at the bottom, and 0.5 centered in the middle. \`viewOffset\` is a\\nfixed number of pixels to offset the final target position, e.g. to compensate for sticky\\nheaders.\\n\\nNote: cannot scroll to locations outside the render window without specifying the\\n\`getItemLayout\` prop."
-    },
-    \{
-      "name": "recordInteraction",
-      "docblock": "Tells the list an interaction has occured, which should trigger viewability calculations, e.g.\\nif \`waitForInteractions\` is true and the user has not scrolled. This is typically called by\\ntaps on items or by navigation actions.",
-      "modifiers": [],
-      "params": [],
-      "returns": null,
-      "description": "Tells the list an interaction has occured, which should trigger viewability calculations, e.g.\\nif \`waitForInteractions\` is true and the user has not scrolled. This is typically called by\\ntaps on items or by navigation actions."
-    }
-  ],
+  "description": "A performant interface for rendering sectioned lists, supporting the most handy features:\\n\\n - Fully cross-platform.\\n - Configurable viewability callbacks.\\n - List header support.\\n - List footer support.\\n - Item separator support.\\n - Section header support.\\n - Section separator support.\\n - Heterogeneous data and item rendering support.\\n - Pull to Refresh.\\n - Scroll loading.\\n\\nIf you don't need section support and want a simpler interface, use [\`<FlatList>\`](/react-native/docs/flatlist.html).\\n\\nIf you need _sticky_ section header support, use \`ListView\` for now.\\n\\nSimple Examples:\\n\\n    <SectionList\\n      renderItem=\{(\{item}) => <ListItem title=\{item.title}}\\n      renderSectionHeader=\{(\{section}) => <H1 title=\{section.key} />}\\n      sections=\{[ // homogenous rendering between sections\\n        \{data: [...], key: ...},\\n        \{data: [...], key: ...},\\n        \{data: [...], key: ...},\\n      ]}\\n    />\\n\\n    <SectionList\\n      sections=\{[ // heterogeneous rendering between sections\\n        \{data: [...], key: ..., renderItem: ...},\\n        \{data: [...], key: ..., renderItem: ...},\\n        \{data: [...], key: ..., renderItem: ...},\\n      ]}\\n    />\\n\\nThis is a convenience wrapper around [\`<VirtualizedList>\`](/react-native/docs/virtualizedlist.html),\\nand thus inherits the following caveats:\\n\\n- Internal state is not preserved when content scrolls out of the render window. Make sure all\\n  your data is captured in the item data or external stores like Flux, Redux, or Relay.\\n- This is a \`PureComponent\` which means that it will not re-render if \`props\` remain shallow-\\n  equal. Make sure that everything your \`renderItem\` function depends on is passed as a prop that\\n  is not \`===\` after updates, otherwise your UI may not update on changes. This includes the\\n  \`data\` prop and parent component state.\\n- In order to constrain memory and enable smooth scrolling, content is rendered asynchronously\\n  offscreen. This means it's possible to scroll faster than the fill rate ands momentarily see\\n  blank content. This is a tradeoff that can be adjusted to suit the needs of each application,\\n  and we are working on improving it behind the scenes.\\n- By default, the list looks for a \`key\` prop on each item and uses that for the React key.\\n  Alternatively, you can provide a custom \`keyExtractor\` prop.",
+  "methods": [],
   "props": \{
     "sections": \{
       "flowType": \{
@@ -136,6 +110,48 @@ var content = `\{
       "required": false,
       "description": "Rendered at the very end of the list."
     },
+    "renderSectionHeader": \{
+      "flowType": \{
+        "name": "signature",
+        "type": "function",
+        "raw": "(info: \{section: SectionT}) => ?React.Element<any>",
+        "signature": \{
+          "arguments": [
+            \{
+              "name": "info",
+              "type": \{
+                "name": "signature",
+                "type": "object",
+                "raw": "\{section: SectionT}",
+                "signature": \{
+                  "properties": [
+                    \{
+                      "key": "section",
+                      "value": \{
+                        "name": "SectionT",
+                        "required": true
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "return": \{
+            "elements": [
+              \{
+                "name": "any"
+              }
+            ],
+            "raw": "React.Element<any>",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "required": false,
+      "description": "Rendered at the top of each section. Sticky headers are not yet supported."
+    },
     "SectionSeparatorComponent": \{
       "flowType": \{
         "name": "ReactClass",
@@ -149,20 +165,6 @@ var content = `\{
       },
       "required": false,
       "description": "Rendered in between each section."
-    },
-    "extraData": \{
-      "flowType": \{
-        "name": "any"
-      },
-      "required": false,
-      "description": "A marker property for telling the list to re-render (since it implements \`PureComponent\`). If\\nany of your \`renderItem\`, Header, Footer, etc. functions depend on anything outside of the\\n\`data\` prop, stick it here and treat it immutably."
-    },
-    "initialNumToRender": \{
-      "flowType": \{
-        "name": "number"
-      },
-      "required": true,
-      "description": "How many items to render in the initial batch. This should be enough to fill the screen but not\\nmuch more. Note these items will never be unmounted as part of the windowed rendering in order\\nto improve perceived performance of scroll-to-top actions."
     },
     "keyExtractor": \{
       "flowType": \{
@@ -226,15 +228,7 @@ var content = `\{
         "nullable": true
       },
       "required": false,
-      "description": "Called once when the scroll position gets within \`onEndReachedThreshold\` of the rendered\\ncontent."
-    },
-    "onEndReachedThreshold": \{
-      "flowType": \{
-        "name": "number",
-        "nullable": true
-      },
-      "required": false,
-      "description": "How far from the end (in units of visible length of the list) the bottom edge of the\\nlist must be from the end of the content to trigger the \`onEndReached\` callback.\\nThus a value of 0.5 will trigger \`onEndReached\` when the end of the content is\\nwithin half the visible length of the list."
+      "description": ""
     },
     "onRefresh": \{
       "flowType": \{
@@ -256,7 +250,7 @@ var content = `\{
       "flowType": \{
         "name": "signature",
         "type": "function",
-        "raw": "(info: \{\\n  viewableItems: Array<ViewToken>,\\n  changed: Array<ViewToken>,\\n}) => void",
+        "raw": "(info: \{viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => void",
         "signature": \{
           "arguments": [
             \{
@@ -264,7 +258,7 @@ var content = `\{
               "type": \{
                 "name": "signature",
                 "type": "object",
-                "raw": "\{\\n  viewableItems: Array<ViewToken>,\\n  changed: Array<ViewToken>,\\n}",
+                "raw": "\{viewableItems: Array<ViewToken>, changed: Array<ViewToken>}",
                 "signature": \{
                   "properties": [
                     \{
@@ -315,25 +309,58 @@ var content = `\{
       "required": false,
       "description": "Set this true while waiting for new data from a refresh."
     },
-    "renderSectionHeader": \{
+    "shouldItemUpdate": \{
       "flowType": \{
         "name": "signature",
         "type": "function",
-        "raw": "(info: \{section: SectionT}) => ?React.Element<any>",
+        "raw": "(\\n  prevProps: \{item: Item, index: number},\\n  nextProps: \{item: Item, index: number}\\n) => boolean",
         "signature": \{
           "arguments": [
             \{
-              "name": "info",
+              "name": "prevProps",
               "type": \{
                 "name": "signature",
                 "type": "object",
-                "raw": "\{section: SectionT}",
+                "raw": "\{item: Item, index: number}",
                 "signature": \{
                   "properties": [
                     \{
-                      "key": "section",
+                      "key": "item",
                       "value": \{
-                        "name": "SectionT",
+                        "name": "any",
+                        "required": true
+                      }
+                    },
+                    \{
+                      "key": "index",
+                      "value": \{
+                        "name": "number",
+                        "required": true
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            \{
+              "name": "nextProps",
+              "type": \{
+                "name": "signature",
+                "type": "object",
+                "raw": "\{item: Item, index: number}",
+                "signature": \{
+                  "properties": [
+                    \{
+                      "key": "item",
+                      "value": \{
+                        "name": "any",
+                        "required": true
+                      }
+                    },
+                    \{
+                      "key": "index",
+                      "value": \{
+                        "name": "number",
                         "required": true
                       }
                     }
@@ -343,34 +370,16 @@ var content = `\{
             }
           ],
           "return": \{
-            "elements": [
-              \{
-                "name": "any"
-              }
-            ],
-            "raw": "React.Element<any>",
-            "nullable": true
+            "name": "boolean"
           }
-        },
-        "nullable": true
+        }
       },
-      "required": false,
-      "description": "Rendered at the top of each section. These stick to the top of the \`ScrollView\` by default on\\niOS. See \`stickySectionHeadersEnabled\`."
-    },
-    "stickySectionHeadersEnabled": \{
-      "flowType": \{
-        "name": "boolean"
-      },
-      "required": false,
-      "description": "Makes section headers stick to the top of the screen until the next one pushes it off. Only\\nenabled by default on iOS because that is the platform standard there.",
-      "defaultValue": \{
-        "value": "Platform.OS === 'ios'",
-        "computed": false
-      }
+      "required": true,
+      "description": "This is an optional optimization to minimize re-rendering items."
     }
   },
   "type": "component",
-  "filepath": "Libraries/Lists/SectionList.js",
+  "filepath": "Libraries/CustomComponents/Lists/SectionList.js",
   "componentName": "SectionList",
   "componentPlatform": "cross",
   "styles": \{
@@ -1007,7 +1016,7 @@ var content = `\{
     \{
       "path": "Examples/UIExplorer/js/SectionListExample.js",
       "title": "",
-      "content": "/**\\n * Copyright (c) 2013-present, Facebook, Inc.\\n * All rights reserved.\\n *\\n * This source code is licensed under the BSD-style license found in the\\n * LICENSE file in the root directory of this source tree. An additional grant\\n * of patent rights can be found in the PATENTS file in the same directory.\\n *\\n * The examples provided by Facebook are for non-commercial testing and\\n * evaluation purposes only.\\n *\\n * Facebook reserves all rights not expressly granted.\\n *\\n * THE SOFTWARE IS PROVIDED \\"AS IS\\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\\n * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\\n * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL\\n * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN\\n * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN\\n * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\\n *\\n * @flow\\n * @providesModule SectionListExample\\n */\\n'use strict';\\n\\nconst React = require\('react');\\nconst ReactNative = require\('react-native');\\nconst \{\\n  Animated,\\n  SectionList,\\n  StyleSheet,\\n  Text,\\n  View,\\n} = ReactNative;\\n\\nconst UIExplorerPage = require\('./UIExplorerPage');\\n\\nconst infoLog = require\('infoLog');\\n\\nconst \{\\n  HeaderComponent,\\n  FooterComponent,\\n  ItemComponent,\\n  PlainInput,\\n  SeparatorComponent,\\n  Spindicator,\\n  genItemData,\\n  pressItem,\\n  renderSmallSwitchOption,\\n  renderStackedItem,\\n} = require\('./ListExampleShared');\\n\\nconst AnimatedSectionList = Animated.createAnimatedComponent(SectionList);\\n\\nconst VIEWABILITY_CONFIG = \{\\n  minimumViewTime: 3000,\\n  viewAreaCoveragePercentThreshold: 100,\\n  waitForInteraction: true,\\n};\\n\\nconst renderSectionHeader = (\{section}) => (\\n  <View style=\{styles.header}>\\n    <Text style=\{styles.headerText}>SECTION HEADER: \{section.key}</Text>\\n    <SeparatorComponent />\\n  </View>\\n);\\n\\nconst CustomSeparatorComponent = (\{text}) => (\\n  <View>\\n    <SeparatorComponent />\\n    <Text style=\{styles.separatorText}>\{text}</Text>\\n    <SeparatorComponent />\\n  </View>\\n);\\n\\nclass SectionListExample extends React.PureComponent \{\\n  static title = '<SectionList>';\\n  static description = 'Performant, scrollable list of data.';\\n\\n  state = \{\\n    data: genItemData(1000),\\n    debug: false,\\n    filterText: '',\\n    logViewable: false,\\n    virtualized: true,\\n  };\\n\\n  _scrollPos = new Animated.Value(0);\\n  _scrollSinkY = Animated.event(\\n    [\{nativeEvent: \{ contentOffset: \{ y: this._scrollPos } }}],\\n    \{useNativeDriver: true},\\n  );\\n\\n  render() \{\\n    const filterRegex = new RegExp(String(this.state.filterText), 'i');\\n    const filter = (item) => (\\n      filterRegex.test(item.text) || filterRegex.test(item.title)\\n    );\\n    const filteredData = this.state.data.filter(filter);\\n    const filteredSectionData = [];\\n    let startIndex = 0;\\n    const endIndex = filteredData.length - 1;\\n    for (let ii = 10; ii <= endIndex + 10; ii += 10) \{\\n      filteredSectionData.push(\{\\n        key: \`$\{filteredData[startIndex].key} - $\{filteredData[Math.min(ii - 1, endIndex)].key}\`,\\n        data: filteredData.slice(startIndex, ii),\\n      });\\n      startIndex = ii;\\n    }\\n    return (\\n      <UIExplorerPage\\n        noSpacer=\{true}\\n        noScroll=\{true}>\\n        <View style=\{styles.searchRow}>\\n          <PlainInput\\n            onChangeText=\{filterText => \{\\n              this.setState(() => (\{filterText}));\\n            }}\\n            placeholder=\\"Search...\\"\\n            value=\{this.state.filterText}\\n          />\\n          <View style=\{styles.optionSection}>\\n            \{renderSmallSwitchOption(this, 'virtualized')}\\n            \{renderSmallSwitchOption(this, 'logViewable')}\\n            \{renderSmallSwitchOption(this, 'debug')}\\n            <Spindicator value=\{this._scrollPos} />\\n          </View>\\n        </View>\\n        <SeparatorComponent />\\n        <AnimatedSectionList\\n          ListHeaderComponent=\{HeaderComponent}\\n          ListFooterComponent=\{FooterComponent}\\n          SectionSeparatorComponent=\{() =>\\n            <CustomSeparatorComponent text=\\"SECTION SEPARATOR\\" />\\n          }\\n          ItemSeparatorComponent=\{() =>\\n            <CustomSeparatorComponent text=\\"ITEM SEPARATOR\\" />\\n          }\\n          debug=\{this.state.debug}\\n          enableVirtualization=\{this.state.virtualized}\\n          onRefresh=\{() => alert('onRefresh: nothing to refresh :P')}\\n          onScroll=\{this._scrollSinkY}\\n          onViewableItemsChanged=\{this._onViewableItemsChanged}\\n          refreshing=\{false}\\n          renderItem=\{this._renderItemComponent}\\n          renderSectionHeader=\{renderSectionHeader}\\n          stickySectionHeadersEnabled\\n          sections=\{[\\n            \{renderItem: renderStackedItem, key: 's1', data: [\\n              \{title: 'Item In Header Section', text: 'Section s1', key: '0'},\\n            ]},\\n            \{key: 's2', data: [\\n              \{noImage: true, title: '1st item', text: 'Section s2', key: '0'},\\n              \{noImage: true, title: '2nd item', text: 'Section s2', key: '1'},\\n            ]},\\n            ...filteredSectionData,\\n          ]}\\n          viewabilityConfig=\{VIEWABILITY_CONFIG}\\n        />\\n      </UIExplorerPage>\\n    );\\n  }\\n  _renderItemComponent = (\{item}) => (\\n    <ItemComponent item=\{item} onPress=\{this._pressItem} />\\n  );\\n  // This is called when items change viewability by scrolling into our out of\\n  // the viewable area.\\n  _onViewableItemsChanged = (info: \{\\n    changed: Array<\{\\n      key: string,\\n      isViewable: boolean,\\n      item: \{columns: Array<*>},\\n      index: ?number,\\n      section?: any\\n    }>},\\n  ) => \{\\n    // Impressions can be logged here\\n    if (this.state.logViewable) \{\\n      infoLog('onViewableItemsChanged: ', info.changed.map((v: Object) => (\\n        \{...v, item: '...', section: v.section.key}\\n      )));\\n    }\\n  };\\n  _pressItem = (index: number) => \{\\n    pressItem(this, index);\\n  };\\n}\\n\\nconst styles = StyleSheet.create(\{\\n  header: \{\\n    backgroundColor: '#e9eaed',\\n  },\\n  headerText: \{\\n    padding: 4,\\n  },\\n  optionSection: \{\\n    flexDirection: 'row',\\n  },\\n  searchRow: \{\\n    paddingHorizontal: 10,\\n  },\\n  separatorText: \{\\n    color: 'gray',\\n    alignSelf: 'center',\\n    padding: 4,\\n    fontSize: 9,\\n  },\\n});\\n\\nmodule.exports = SectionListExample;\\n"
+      "content": "/**\\n * Copyright (c) 2013-present, Facebook, Inc.\\n * All rights reserved.\\n *\\n * This source code is licensed under the BSD-style license found in the\\n * LICENSE file in the root directory of this source tree. An additional grant\\n * of patent rights can be found in the PATENTS file in the same directory.\\n *\\n * The examples provided by Facebook are for non-commercial testing and\\n * evaluation purposes only.\\n *\\n * Facebook reserves all rights not expressly granted.\\n *\\n * THE SOFTWARE IS PROVIDED \\"AS IS\\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\\n * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\\n * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL\\n * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN\\n * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN\\n * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\\n *\\n * @flow\\n * @providesModule SectionListExample\\n */\\n'use strict';\\n\\nconst React = require\('react');\\nconst ReactNative = require\('react-native');\\nconst \{\\n  SectionList,\\n  StyleSheet,\\n  Text,\\n  View,\\n} = ReactNative;\\n\\nconst UIExplorerPage = require\('./UIExplorerPage');\\n\\nconst infoLog = require\('infoLog');\\n\\nconst \{\\n  HeaderComponent,\\n  FooterComponent,\\n  ItemComponent,\\n  PlainInput,\\n  SeparatorComponent,\\n  genItemData,\\n  pressItem,\\n  renderSmallSwitchOption,\\n  renderStackedItem,\\n} = require\('./ListExampleShared');\\n\\nconst VIEWABILITY_CONFIG = \{\\n  minimumViewTime: 3000,\\n  viewAreaCoveragePercentThreshold: 100,\\n  waitForInteraction: true,\\n};\\n\\nconst renderSectionHeader = (\{section}) => (\\n  <View>\\n    <Text style=\{styles.headerText}>SECTION HEADER: \{section.key}</Text>\\n    <SeparatorComponent />\\n  </View>\\n);\\n\\nconst CustomSeparatorComponent = (\{text}) => (\\n  <View>\\n    <SeparatorComponent />\\n    <Text style=\{styles.separatorText}>\{text}</Text>\\n    <SeparatorComponent />\\n  </View>\\n);\\n\\nclass SectionListExample extends React.PureComponent \{\\n  static title = '<SectionList>';\\n  static description = 'Performant, scrollable list of data.';\\n\\n  state = \{\\n    data: genItemData(1000),\\n    filterText: '',\\n    logViewable: false,\\n    virtualized: true,\\n  };\\n  render() \{\\n    const filterRegex = new RegExp(String(this.state.filterText), 'i');\\n    const filter = (item) => (\\n      filterRegex.test(item.text) || filterRegex.test(item.title)\\n    );\\n    const filteredData = this.state.data.filter(filter);\\n    return (\\n      <UIExplorerPage\\n        noSpacer=\{true}\\n        noScroll=\{true}>\\n        <View style=\{styles.searchRow}>\\n          <PlainInput\\n            onChangeText=\{filterText => \{\\n              this.setState(() => (\{filterText}));\\n            }}\\n            placeholder=\\"Search...\\"\\n            value=\{this.state.filterText}\\n          />\\n          <View style=\{styles.optionSection}>\\n            \{renderSmallSwitchOption(this, 'virtualized')}\\n            \{renderSmallSwitchOption(this, 'logViewable')}\\n          </View>\\n        </View>\\n        <SeparatorComponent />\\n        <SectionList\\n          ListHeaderComponent=\{HeaderComponent}\\n          ListFooterComponent=\{FooterComponent}\\n          SectionSeparatorComponent=\{() =>\\n            <CustomSeparatorComponent text=\\"SECTION SEPARATOR\\" />\\n          }\\n          ItemSeparatorComponent=\{() =>\\n            <CustomSeparatorComponent text=\\"ITEM SEPARATOR\\" />\\n          }\\n          enableVirtualization=\{this.state.virtualized}\\n          onRefresh=\{() => alert('onRefresh: nothing to refresh :P')}\\n          onViewableItemsChanged=\{this._onViewableItemsChanged}\\n          refreshing=\{false}\\n          renderItem=\{this._renderItemComponent}\\n          renderSectionHeader=\{renderSectionHeader}\\n          sections=\{[\\n            \{renderItem: renderStackedItem, key: 's1', data: [\\n              \{title: 'Item In Header Section', text: 'Section s1', key: '0'},\\n            ]},\\n            \{key: 's2', data: [\\n              \{noImage: true, title: '1st item', text: 'Section s2', key: '0'},\\n              \{noImage: true, title: '2nd item', text: 'Section s2', key: '1'},\\n            ]},\\n            \{key: 'Filtered Items', data: filteredData},\\n          ]}\\n          viewabilityConfig=\{VIEWABILITY_CONFIG}\\n        />\\n      </UIExplorerPage>\\n    );\\n  }\\n  _renderItemComponent = (\{item}) => (\\n    <ItemComponent item=\{item} onPress=\{this._pressItem} />\\n  );\\n  // This is called when items change viewability by scrolling into our out of\\n  // the viewable area.\\n  _onViewableItemsChanged = (info: \{\\n    changed: Array<\{\\n      key: string,\\n      isViewable: boolean,\\n      item: \{columns: Array<*>},\\n      index: ?number,\\n      section?: any\\n    }>},\\n  ) => \{\\n    // Impressions can be logged here\\n    if (this.state.logViewable) \{\\n      infoLog('onViewableItemsChanged: ', info.changed.map((v: Object) => (\\n        \{...v, item: '...', section: v.section.key}\\n      )));\\n    }\\n  };\\n  _pressItem = (index: number) => \{\\n    pressItem(this, index);\\n  };\\n}\\n\\nconst styles = StyleSheet.create(\{\\n  headerText: \{\\n    padding: 4,\\n  },\\n  optionSection: \{\\n    flexDirection: 'row',\\n  },\\n  searchRow: \{\\n    paddingHorizontal: 10,\\n  },\\n  separatorText: \{\\n    color: 'gray',\\n    alignSelf: 'center',\\n    padding: 4,\\n    fontSize: 9,\\n  },\\n});\\n\\nmodule.exports = SectionListExample;\\n"
     }
   ]
 }`;
@@ -1015,7 +1024,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"sectionlist","title":"SectionList","layout":"autodocs","category":"components","permalink":"docs/sectionlist.html","platform":"cross","next":"segmentedcontrolios","previous":"scrollview","sidebar":true,"runnable":true,"path":"Libraries/Lists/SectionList.js","filename":null}}>
+      <Layout metadata={{"id":"sectionlist","title":"SectionList","layout":"autodocs","category":"components","permalink":"docs/sectionlist.html","platform":"cross","next":"segmentedcontrolios","previous":"scrollview","sidebar":true,"runnable":true,"path":"Libraries/CustomComponents/Lists/SectionList.js","filename":null}}>
         {content}
       </Layout>
     );

@@ -84,7 +84,7 @@ var content = `\{
     "contentContainerStyle": \{
       "type": \{
         "name": "custom",
-        "raw": "ViewPropTypes.style"
+        "raw": "View.propTypes.style"
       },
       "required": false,
       "description": "The style of the content container(View) when behavior is 'position'."
@@ -102,7 +102,7 @@ var content = `\{
     }
   },
   "composes": [
-    "ViewPropTypes"
+    "View"
   ],
   "type": "component",
   "filepath": "Libraries/Components/Keyboard/KeyboardAvoidingView.js",

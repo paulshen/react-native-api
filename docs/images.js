@@ -109,7 +109,7 @@ and the load is considered to have failed.
 \`\`\`javascript
 <Image source=\{\{uri: 'https://facebook.github.io/react/img/logo_og.png', cache: 'only-if-cached'}}
        style=\{\{width: 400, height: 400}} />
-\`\`\`
+\`\`\`\`
 
 ## Local Filesystem Images
 
@@ -173,7 +173,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"images","title":"Images","layout":"docs","category":"Guides","permalink":"docs/images.html","next":"colors","previous":"navigation","filename":"Images.md"}}>
+      <Layout metadata={{"id":"images","title":"Images","layout":"docs","category":"Guides","permalink":"docs/images.html","next":"handling-touches","previous":"colors","filename":"Images.md"}}>
         {content}
       </Layout>
     );

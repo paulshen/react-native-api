@@ -8,7 +8,7 @@ var content = `\{
   "docblock": "/**\\n * Provides efficient data processing and access to the\\n * \`ListView\` component.  A \`ListViewDataSource\` is created with functions for\\n * extracting data from the input blob, and comparing elements (with default\\n * implementations for convenience).  The input blob can be as simple as an\\n * array of strings, or an object with rows nested inside section objects.\\n *\\n * To update the data in the datasource, use \`cloneWithRows\` (or\\n * \`cloneWithRowsAndSections\` if you care about sections).  The data in the\\n * data source is immutable, so you can't modify it directly.  The clone methods\\n * suck in the new data and compute a diff for each row so ListView knows\\n * whether to re-render it or not.\\n *\\n * In this example, a component receives data in chunks, handled by\\n * \`_onDataArrived\`, which concats the new data onto the old data and updates the\\n * data source.  We use \`concat\` to create a new array - mutating \`this._data\`,\\n * e.g. with \`this._data.push(newRowData)\`, would be an error. \`_rowHasChanged\`\\n * understands the shape of the row data and knows how to efficiently compare\\n * it.\\n *\\n * \`\`\`\\n * getInitialState: function() \{\\n *   var ds = new ListViewDataSource(\{rowHasChanged: this._rowHasChanged});\\n *   return \{ds};\\n * },\\n * _onDataArrived(newData) \{\\n *   this._data = this._data.concat(newData);\\n *   this.setState(\{\\n *     ds: this.state.ds.cloneWithRows(this._data)\\n *   });\\n * }\\n * \`\`\`\\n */\\n",
   "methods": [
     \{
-      "line": 103,
+      "line": 119,
       "source": "constructor(params: ParamType) \{\\n    invariant(\\n      params && typeof params.rowHasChanged === 'function',\\n      'Must provide a rowHasChanged function.'\\n    );\\n    this._rowHasChanged = params.rowHasChanged;\\n    this._getRowData = params.getRowData || defaultGetRowData;\\n    this._sectionHeaderHasChanged = params.sectionHeaderHasChanged;\\n    this._getSectionHeaderData =\\n      params.getSectionHeaderData || defaultGetSectionHeaderData;\\n\\n    this._dataBlob = null;\\n    this._dirtyRows = [];\\n    this._dirtySections = [];\\n    this._cachedRowCount = 0;\\n\\n    // These two private variables are accessed by outsiders because ListView\\n    // uses them to iterate over the data in this class.\\n    this.rowIdentities = [];\\n    this.sectionIdentities = [];\\n  }",
       "docblock": "/**\\n   * You can provide custom extraction and \`hasChanged\` functions for section\\n   * headers and rows.  If absent, data will be extracted with the\\n   * \`defaultGetRowData\` and \`defaultGetSectionHeaderData\` functions.\\n   *\\n   * The default extractor expects data of one of the following forms:\\n   *\\n   *      \{ sectionID_1: \{ rowID_1: <rowData1>, ... }, ... }\\n   *\\n   *    or\\n   *\\n   *      \{ sectionID_1: [ <rowData1>, <rowData2>, ... ], ... }\\n   *\\n   *    or\\n   *\\n   *      [ [ <rowData1>, <rowData2>, ... ], ... ]\\n   *\\n   * The constructor takes in a params argument that can contain any of the\\n   * following:\\n   *\\n   * - getRowData(dataBlob, sectionID, rowID);\\n   * - getSectionHeaderData(dataBlob, sectionID);\\n   * - rowHasChanged(prevRowData, nextRowData);\\n   * - sectionHeaderHasChanged(prevSectionData, nextSectionData);\\n   */\\n",
       "modifiers": [],
@@ -23,7 +23,7 @@ var content = `\{
       "name": "constructor"
     },
     \{
-      "line": 141,
+      "line": 157,
       "source": "cloneWithRows(\\n       dataBlob: Array<any> | \{[key: string]: any},\\n       rowIdentities: ?Array<string>\\n   ): ListViewDataSource \{\\n    var rowIds = rowIdentities ? [rowIdentities] : null;\\n    if (!this._sectionHeaderHasChanged) \{\\n      this._sectionHeaderHasChanged = () => false;\\n    }\\n    return this.cloneWithRowsAndSections(\{s1: dataBlob}, ['s1'], rowIds);\\n  }",
       "docblock": "/**\\n   * Clones this \`ListViewDataSource\` with the specified \`dataBlob\` and\\n   * \`rowIdentities\`. The \`dataBlob\` is just an arbitrary blob of data. At\\n   * construction an extractor to get the interesting information was defined\\n   * (or the default was used).\\n   *\\n   * The \`rowIdentities\` is a 2D array of identifiers for rows.\\n   * ie. [['a1', 'a2'], ['b1', 'b2', 'b3'], ...].  If not provided, it's\\n   * assumed that the keys of the section data are the row identities.\\n   *\\n   * Note: This function does NOT clone the data in this data source. It simply\\n   * passes the functions defined at construction to a new data source with\\n   * the data specified. If you wish to maintain the existing data you must\\n   * handle merging of old and new data separately and then pass that into\\n   * this function as the \`dataBlob\`.\\n   */\\n",
       "modifiers": [],
@@ -42,7 +42,7 @@ var content = `\{
       "name": "cloneWithRows"
     },
     \{
-      "line": 163,
+      "line": 179,
       "source": "cloneWithRowsAndSections(\\n      dataBlob: any,\\n      sectionIdentities: ?Array<string>,\\n      rowIdentities: ?Array<Array<string>>\\n  ): ListViewDataSource \{\\n    invariant(\\n      typeof this._sectionHeaderHasChanged === 'function',\\n      'Must provide a sectionHeaderHasChanged function with section data.'\\n    );\\n    invariant(\\n      !sectionIdentities || !rowIdentities || sectionIdentities.length === rowIdentities.length,\\n      'row and section ids lengths must be the same'\\n    );\\n\\n    var newSource = new ListViewDataSource(\{\\n      getRowData: this._getRowData,\\n      getSectionHeaderData: this._getSectionHeaderData,\\n      rowHasChanged: this._rowHasChanged,\\n      sectionHeaderHasChanged: this._sectionHeaderHasChanged,\\n    });\\n    newSource._dataBlob = dataBlob;\\n    if (sectionIdentities) \{\\n      newSource.sectionIdentities = sectionIdentities;\\n    } else \{\\n      newSource.sectionIdentities = Object.keys(dataBlob);\\n    }\\n    if (rowIdentities) \{\\n      newSource.rowIdentities = rowIdentities;\\n    } else \{\\n      newSource.rowIdentities = [];\\n      newSource.sectionIdentities.forEach((sectionID) => \{\\n        newSource.rowIdentities.push(Object.keys(dataBlob[sectionID]));\\n      });\\n    }\\n    newSource._cachedRowCount = countRows(newSource.rowIdentities);\\n\\n    newSource._calculateDirtyArrays(\\n      this._dataBlob,\\n      this.sectionIdentities,\\n      this.rowIdentities\\n    );\\n\\n    return newSource;\\n  }",
       "docblock": "/**\\n   * This performs the same function as the \`cloneWithRows\` function but here\\n   * you also specify what your \`sectionIdentities\` are. If you don't care\\n   * about sections you should safely be able to use \`cloneWithRows\`.\\n   *\\n   * \`sectionIdentities\` is an array of identifiers for  sections.\\n   * ie. ['s1', 's2', ...].  If not provided, it's assumed that the\\n   * keys of dataBlob are the section identities.\\n   *\\n   * Note: this returns a new object!\\n   */\\n",
       "modifiers": [],
@@ -65,7 +65,7 @@ var content = `\{
       "name": "cloneWithRowsAndSections"
     },
     \{
-      "line": 208,
+      "line": 224,
       "source": "getRowCount(): number \{\\n    return this._cachedRowCount;\\n  }",
       "modifiers": [],
       "params": [],
@@ -74,7 +74,7 @@ var content = `\{
       "name": "getRowCount"
     },
     \{
-      "line": 212,
+      "line": 228,
       "source": "getRowAndSectionCount(): number \{\\n   return (this._cachedRowCount + this.sectionIdentities.length);\\n  }",
       "modifiers": [],
       "params": [],
@@ -83,7 +83,7 @@ var content = `\{
       "name": "getRowAndSectionCount"
     },
     \{
-      "line": 219,
+      "line": 235,
       "source": "rowShouldUpdate(sectionIndex: number, rowIndex: number): bool \{\\n    var needsUpdate = this._dirtyRows[sectionIndex][rowIndex];\\n    warning(needsUpdate !== undefined,\\n      'missing dirtyBit for section, row: ' + sectionIndex + ', ' + rowIndex);\\n    return needsUpdate;\\n  }",
       "docblock": "/**\\n   * Returns if the row is dirtied and needs to be rerendered\\n   */\\n",
       "modifiers": [],
@@ -102,7 +102,7 @@ var content = `\{
       "name": "rowShouldUpdate"
     },
     \{
-      "line": 229,
+      "line": 245,
       "source": "getRowData(sectionIndex: number, rowIndex: number): any \{\\n    var sectionID = this.sectionIdentities[sectionIndex];\\n    var rowID = this.rowIdentities[sectionIndex][rowIndex];\\n    warning(\\n      sectionID !== undefined && rowID !== undefined,\\n      'rendering invalid section, row: ' + sectionIndex + ', ' + rowIndex\\n    );\\n    return this._getRowData(this._dataBlob, sectionID, rowID);\\n  }",
       "docblock": "/**\\n   * Gets the data required to render the row.\\n   */\\n",
       "modifiers": [],
@@ -121,7 +121,7 @@ var content = `\{
       "name": "getRowData"
     },
     \{
-      "line": 243,
+      "line": 259,
       "source": "getRowIDForFlatIndex(index: number): ?string \{\\n    var accessIndex = index;\\n    for (var ii = 0; ii < this.sectionIdentities.length; ii++) \{\\n      if (accessIndex >= this.rowIdentities[ii].length) \{\\n        accessIndex -= this.rowIdentities[ii].length;\\n      } else \{\\n        return this.rowIdentities[ii][accessIndex];\\n      }\\n    }\\n    return null;\\n  }",
       "docblock": "/**\\n   * Gets the rowID at index provided if the dataSource arrays were flattened,\\n   * or null of out of range indexes.\\n   */\\n",
       "modifiers": [],
@@ -136,7 +136,7 @@ var content = `\{
       "name": "getRowIDForFlatIndex"
     },
     \{
-      "line": 259,
+      "line": 275,
       "source": "getSectionIDForFlatIndex(index: number): ?string \{\\n    var accessIndex = index;\\n    for (var ii = 0; ii < this.sectionIdentities.length; ii++) \{\\n      if (accessIndex >= this.rowIdentities[ii].length) \{\\n        accessIndex -= this.rowIdentities[ii].length;\\n      } else \{\\n        return this.sectionIdentities[ii];\\n      }\\n    }\\n    return null;\\n  }",
       "docblock": "/**\\n   * Gets the sectionID at index provided if the dataSource arrays were flattened,\\n   * or null for out of range indexes.\\n   */\\n",
       "modifiers": [],
@@ -151,7 +151,7 @@ var content = `\{
       "name": "getSectionIDForFlatIndex"
     },
     \{
-      "line": 274,
+      "line": 290,
       "source": "getSectionLengths(): Array<number> \{\\n    var results = [];\\n    for (var ii = 0; ii < this.sectionIdentities.length; ii++) \{\\n      results.push(this.rowIdentities[ii].length);\\n    }\\n    return results;\\n  }",
       "docblock": "/**\\n   * Returns an array containing the number of rows in each section\\n   */\\n",
       "modifiers": [],
@@ -161,7 +161,7 @@ var content = `\{
       "name": "getSectionLengths"
     },
     \{
-      "line": 285,
+      "line": 301,
       "source": "sectionHeaderShouldUpdate(sectionIndex: number): bool \{\\n    var needsUpdate = this._dirtySections[sectionIndex];\\n    warning(needsUpdate !== undefined,\\n      'missing dirtyBit for section: ' + sectionIndex);\\n    return needsUpdate;\\n  }",
       "docblock": "/**\\n   * Returns if the section header is dirtied and needs to be rerendered\\n   */\\n",
       "modifiers": [],
@@ -176,7 +176,7 @@ var content = `\{
       "name": "sectionHeaderShouldUpdate"
     },
     \{
-      "line": 295,
+      "line": 311,
       "source": "getSectionHeaderData(sectionIndex: number): any \{\\n    if (!this._getSectionHeaderData) \{\\n      return null;\\n    }\\n    var sectionID = this.sectionIdentities[sectionIndex];\\n    warning(sectionID !== undefined,\\n      'renderSection called on invalid section: ' + sectionIndex);\\n    return this._getSectionHeaderData(this._dataBlob, sectionID);\\n  }",
       "docblock": "/**\\n   * Gets the data required to render the section header\\n   */\\n",
       "modifiers": [],
@@ -192,7 +192,7 @@ var content = `\{
     }
   ],
   "type": "api",
-  "line": 76,
+  "line": 92,
   "requires": [
     \{
       "name": "fbjs/lib/invariant"
@@ -204,7 +204,7 @@ var content = `\{
       "name": "fbjs/lib/warning"
     }
   ],
-  "filepath": "Libraries/Lists/ListView/ListViewDataSource.js",
+  "filepath": "Libraries/CustomComponents/ListView/ListViewDataSource.js",
   "componentName": "ListViewDataSource",
   "componentPlatform": "cross",
   "examples": []
@@ -213,7 +213,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"listviewdatasource","title":"ListViewDataSource","layout":"autodocs","category":"APIs","permalink":"docs/listviewdatasource.html","platform":"cross","next":"nativemethodsmixin","previous":"linking","sidebar":false,"runnable":false,"path":"Libraries/Lists/ListView/ListViewDataSource.js","filename":null}}>
+      <Layout metadata={{"id":"listviewdatasource","title":"ListViewDataSource","layout":"autodocs","category":"APIs","permalink":"docs/listviewdatasource.html","platform":"cross","next":"nativemethodsmixin","previous":"linking","sidebar":false,"runnable":false,"path":"Libraries/CustomComponents/ListView/ListViewDataSource.js","filename":null}}>
         {content}
       </Layout>
     );

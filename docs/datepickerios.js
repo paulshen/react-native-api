@@ -125,7 +125,7 @@ var content = `\{
     }
   },
   "composes": [
-    "ViewPropTypes"
+    "View"
   ],
   "type": "component",
   "filepath": "Libraries/Components/DatePicker/DatePickerIOS.ios.js",

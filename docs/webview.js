@@ -172,7 +172,7 @@ var content = `\{
     "style": \{
       "type": \{
         "name": "custom",
-        "raw": "ViewPropTypes.style"
+        "raw": "View.propTypes.style"
       },
       "required": false,
       "description": "The style to apply to the \`WebView\`."
@@ -302,38 +302,10 @@ var content = `\{
       },
       "required": false,
       "description": "Boolean that determines whether HTML5 audio and video requires the user\\nto tap them before they start playing. The default value is \`true\`."
-    },
-    "injectJavaScript": \{
-      "type": \{
-        "name": "func"
-      },
-      "required": false,
-      "description": "Function that accepts a string that will be passed to the WebView and\\nexecuted immediately as JavaScript."
-    },
-    "mixedContentMode": \{
-      "type": \{
-        "name": "enum",
-        "value": [
-          \{
-            "value": "'never'",
-            "computed": false
-          },
-          \{
-            "value": "'always'",
-            "computed": false
-          },
-          \{
-            "value": "'compatibility'",
-            "computed": false
-          }
-        ]
-      },
-      "required": false,
-      "description": "Specifies the mixed content mode. i.e WebView will allow a secure origin to load content from any other origin.\\n\\nPossible values for \`mixedContentMode\` are:\\n\\n- \`'never'\` (default) - WebView will not allow a secure origin to load content from an insecure origin.\\n- \`'always'\` - WebView will allow a secure origin to load content from any other origin, even if that origin is insecure.\\n- \`'compatibility'\` -  WebView will attempt to be compatible with the approach of a modern web browser with regard to mixed content.\\n@platform android"
     }
   },
   "composes": [
-    "ViewPropTypes"
+    "View"
   ],
   "type": "component",
   "filepath": "Libraries/Components/WebView/WebView.ios.js",

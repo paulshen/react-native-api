@@ -175,9 +175,9 @@ var content = `\{
         "name": "bool"
       },
       "required": false,
-      "description": "Makes the sections headers sticky. The sticky behavior means that it\\nwill scroll with the content at the top of the section until it reaches\\nthe top of the screen, at which point it will stick to the top until it\\nis pushed off the screen by the next section header. This property is\\nnot supported in conjunction with \`horizontal=\{true}\`. Only enabled by\\ndefault on iOS because of typical platform standards.",
+      "description": "Makes the sections headers sticky. The sticky behavior means that it\\nwill scroll with the content at the top of the section until it reaches\\nthe top of the screen, at which point it will stick to the top until it\\nis pushed off the screen by the next section header.\\n@platform ios",
       "defaultValue": \{
-        "value": "Platform.OS === 'ios'",
+        "value": "true",
         "computed": false
       }
     },
@@ -189,7 +189,7 @@ var content = `\{
         }
       },
       "required": true,
-      "description": "An array of child indices determining which children get docked to the\\ntop of the screen when scrolling. For example, passing\\n\`stickyHeaderIndices=\{[0]}\` will cause the first child to be fixed to the\\ntop of the scroll view. This property is not supported in conjunction\\nwith \`horizontal=\{true}\`.",
+      "description": "An array of child indices determining which children get docked to the\\ntop of the screen when scrolling. For example, passing\\n\`stickyHeaderIndices=\{[0]}\` will cause the first child to be fixed to the\\ntop of the scroll view. This property is not supported in conjunction\\nwith \`horizontal=\{true}\`.\\n@platform ios",
       "defaultValue": \{
         "value": "[]",
         "computed": false
@@ -207,7 +207,7 @@ var content = `\{
     "ScrollView"
   ],
   "type": "component",
-  "filepath": "Libraries/Lists/ListView/ListView.js",
+  "filepath": "Libraries/CustomComponents/ListView/ListView.js",
   "componentName": "ListView",
   "componentPlatform": "cross",
   "styles": \{
@@ -852,7 +852,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"listview","title":"ListView","layout":"autodocs","category":"components","permalink":"docs/listview.html","platform":"cross","next":"modal","previous":"keyboardavoidingview","sidebar":true,"runnable":true,"path":"Libraries/Lists/ListView/ListView.js","filename":null}}>
+      <Layout metadata={{"id":"listview","title":"ListView","layout":"autodocs","category":"components","permalink":"docs/listview.html","platform":"cross","next":"mapview","previous":"keyboardavoidingview","sidebar":true,"runnable":true,"path":"Libraries/CustomComponents/ListView/ListView.js","filename":null}}>
         {content}
       </Layout>
     );

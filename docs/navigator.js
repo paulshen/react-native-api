@@ -4,67 +4,327 @@
 var React = require("React");
 var Layout = require("AutodocsLayout");
 var content = `\{
-  "description": "A wrapper for making views respond properly to touches.\\nOn press down, the opacity of the wrapped view is decreased, which allows\\nthe underlay color to show through, darkening or tinting the view.\\n\\nThe underlay comes from wrapping the child in a new View, which can affect\\nlayout, and sometimes cause unwanted visual artifacts if not used correctly,\\nfor example if the backgroundColor of the wrapped view isn't explicitly set\\nto an opaque color.\\n\\nTouchableHighlight must have one child (not zero or more than one).\\nIf you wish to have several child components, wrap them in a View.\\n\\nExample:\\n\\n\`\`\`\\nrenderButton: function() \{\\n  return (\\n    <TouchableHighlight onPress=\{this._onPressButton}>\\n      <Image\\n        style=\{styles.button}\\n        source=\{require\('./myButton.png')}\\n      />\\n    </TouchableHighlight>\\n  );\\n},\\n\`\`\`",
-  "methods": [],
+  "description": "\`Navigator\` handles the transition between different scenes in your app.\\nIt is implemented in JavaScript and is available on both iOS and Android. If\\nyou are targeting iOS only, you may also want to consider using\\n[\`NavigatorIOS\`](docs/navigatorios.html) as it leverages native UIKit\\nnavigation.\\n\\nTo set up the \`Navigator\` you provide one or more objects called routes,\\nto identify each scene. You also provide a \`renderScene\` function that\\nrenders the scene for each route object.\\n\\n\`\`\`\\nimport React, \{ Component } from 'react';\\nimport \{ Text, Navigator, TouchableHighlight } from 'react-native';\\n\\nexport default class NavAllDay extends Component \{\\n  render() \{\\n    return (\\n      <Navigator\\n        initialRoute=\{\{ title: 'Awesome Scene', index: 0 }}\\n        renderScene=\{(route, navigator) =>\\n          <Text>Hello \{route.title}!</Text>\\n        }\\n        style=\{\{padding: 100}}\\n      />\\n    );\\n  }\\n}\\n\`\`\`\\n\\nIn the above example, \`initialRoute\` is used to specify the first route. It\\ncontains a \`title\` property that identifies the route. The \`renderScene\`\\nprop returns a function that displays text based on the route's title.\\n\\n### Additional Scenes\\n\\nThe first example demonstrated one scene. To set up multiple scenes, you pass\\nthe \`initialRouteStack\` prop to \`Navigator\`:\\n\\n\`\`\`\\nrender() \{\\n  const routes = [\\n    \{title: 'First Scene', index: 0},\\n    \{title: 'Second Scene', index: 1},\\n  ];\\n  return (\\n    <Navigator\\n      initialRoute=\{routes[0]}\\n      initialRouteStack=\{routes}\\n      renderScene=\{(route, navigator) =>\\n        <TouchableHighlight onPress=\{() => \{\\n          if (route.index === 0) \{\\n            navigator.push(routes[1]);\\n          } else \{\\n            navigator.pop();\\n          }\\n        }}>\\n        <Text>Hello \{route.title}!</Text>\\n        </TouchableHighlight>\\n      }\\n      style=\{\{padding: 100}}\\n    />\\n  );\\n}\\n\`\`\`\\n\\nIn the above example, a \`routes\` variable is defined with two route objects\\nrepresenting two scenes. Each route has an \`index\` property that is used to\\nmanage the scene being rendered. The \`renderScene\` method is changed to\\neither push or pop the navigator depending on the current route's index.\\nFinally, the \`Text\` component in the scene is now wrapped in a\\n\`TouchableHighlight\` component to help trigger the navigator transitions.\\n\\n### Navigation Bar\\n\\nYou can optionally pass in your own navigation bar by returning a\\n\`Navigator.NavigationBar\` component to the \`navigationBar\` prop in\\n\`Navigator\`. You can configure the navigation bar properties, through\\nthe \`routeMapper\` prop. There you set up the left, right, and title\\nproperties of the navigation bar:\\n\\n\`\`\`\\n<Navigator\\n  renderScene=\{(route, navigator) =>\\n    // ...\\n  }\\n  navigationBar=\{\\n     <Navigator.NavigationBar\\n       routeMapper=\{\{\\n         LeftButton: (route, navigator, index, navState) =>\\n          \{ return (<Text>Cancel</Text>); },\\n         RightButton: (route, navigator, index, navState) =>\\n           \{ return (<Text>Done</Text>); },\\n         Title: (route, navigator, index, navState) =>\\n           \{ return (<Text>Awesome Nav Bar</Text>); },\\n       }}\\n       style=\{\{backgroundColor: 'gray'}}\\n     />\\n  }\\n/>\\n\`\`\`\\n\\nWhen configuring the left, right, and title items for the navigation bar,\\nyou have access to info such as the current route object and navigation\\nstate. This allows you to customize the title for each scene as well as\\nthe buttons. For example, you can choose to hide the left button for one of\\nthe scenes.\\n\\nTypically you want buttons to represent the left and right buttons. Building\\non the previous example, you can set this up as follows:\\n\\n\`\`\`\\nLeftButton: (route, navigator, index, navState) =>\\n  \{\\n    if (route.index === 0) \{\\n      return null;\\n    } else \{\\n      return (\\n        <TouchableHighlight onPress=\{() => navigator.pop()}>\\n          <Text>Back</Text>\\n        </TouchableHighlight>\\n      );\\n    }\\n  },\\n\`\`\`\\n\\nThis sets up a left navigator bar button that's visible on scenes after the\\nthe first one. When the button is tapped the navigator is popped.\\n\\nAnother type of navigation bar, with breadcrumbs, is provided by\\n\`Navigator.BreadcrumbNavigationBar\`. You can also provide your own navigation\\nbar by passing it through the \`navigationBar\` prop. See the\\n[UIExplorer](https://github.com/facebook/react-native/tree/master/Examples/UIExplorer)\\ndemo to try out both built-in navigation bars out and see how to use them.\\n\\n### Scene Transitions\\n\\nTo change the animation or gesture properties of the scene, provide a\\n\`configureScene\` prop to get the config object for a given route:\\n\\n\`\`\`\\n<Navigator\\n  renderScene=\{(route, navigator) =>\\n    // ...\\n  }\\n  configureScene=\{(route, routeStack) =>\\n    Navigator.SceneConfigs.FloatFromBottom}\\n/>\\n\`\`\`\\nIn the above example, the newly pushed scene will float up from the bottom.\\nSee \`Navigator.SceneConfigs\` for default animations and more info on\\navailable [scene config options](docs/navigator.html#configurescene).",
+  "methods": [
+    \{
+      "name": "immediatelyResetRouteStack",
+      "docblock": "Reset every scene with an array of routes.\\n\\n@param \{RouteStack} nextRouteStack Next route stack to reinitialize.\\nAll existing route stacks are destroyed and potentially recreated. There\\nis no accompanying animation and this method immediately replaces and\\nre-renders the navigation bar and the stack items.",
+      "modifiers": [],
+      "params": [
+        \{
+          "name": "nextRouteStack",
+          "description": "Next route stack to reinitialize.\\nAll existing route stacks are destroyed and potentially recreated. There\\nis no accompanying animation and this method immediately replaces and\\nre-renders the navigation bar and the stack items.",
+          "type": \{
+            "names": [
+              "RouteStack"
+            ]
+          }
+        }
+      ],
+      "returns": null,
+      "description": "Reset every scene with an array of routes."
+    },
+    \{
+      "name": "jumpTo",
+      "docblock": "Transition to an existing scene without unmounting.\\n@param \{object} route Route to transition to. The specified route must\\nbe in the currently mounted set of routes defined in \`routeStack\`.",
+      "modifiers": [],
+      "params": [
+        \{
+          "name": "route",
+          "description": "Route to transition to. The specified route must\\nbe in the currently mounted set of routes defined in \`routeStack\`.",
+          "type": \{
+            "names": [
+              "object"
+            ]
+          }
+        }
+      ],
+      "returns": null,
+      "description": "Transition to an existing scene without unmounting."
+    },
+    \{
+      "name": "jumpForward",
+      "docblock": "Jump forward to the next scene in the route stack.",
+      "modifiers": [],
+      "params": [],
+      "returns": null,
+      "description": "Jump forward to the next scene in the route stack."
+    },
+    \{
+      "name": "jumpBack",
+      "docblock": "Jump backward without unmounting the current scene.",
+      "modifiers": [],
+      "params": [],
+      "returns": null,
+      "description": "Jump backward without unmounting the current scene."
+    },
+    \{
+      "name": "push",
+      "docblock": "Navigate forward to a new scene, squashing any scenes that you could\\njump forward to.\\n@param \{object} route Route to push into the navigator stack.",
+      "modifiers": [],
+      "params": [
+        \{
+          "name": "route",
+          "description": "Route to push into the navigator stack.",
+          "type": \{
+            "names": [
+              "object"
+            ]
+          }
+        }
+      ],
+      "returns": null,
+      "description": "Navigate forward to a new scene, squashing any scenes that you could\\njump forward to."
+    },
+    \{
+      "name": "popN",
+      "docblock": "Go back N scenes at once. When N=1, behavior matches \`pop()\`.\\nWhen N is invalid(negative or bigger than current routes count), do nothing.\\n@param \{number} n The number of scenes to pop. Should be an integer.",
+      "modifiers": [],
+      "params": [
+        \{
+          "name": "n",
+          "description": "The number of scenes to pop. Should be an integer.",
+          "type": \{
+            "names": [
+              "number"
+            ]
+          }
+        }
+      ],
+      "returns": null,
+      "description": "Go back N scenes at once. When N=1, behavior matches \`pop()\`.\\nWhen N is invalid(negative or bigger than current routes count), do nothing."
+    },
+    \{
+      "name": "pop",
+      "docblock": "Transition back and unmount the current scene.",
+      "modifiers": [],
+      "params": [],
+      "returns": null,
+      "description": "Transition back and unmount the current scene."
+    },
+    \{
+      "name": "replaceAtIndex",
+      "docblock": "Replace a scene as specified by an index.\\n@param \{object} route Route representing the new scene to render.\\n@param \{number} index The route in the stack that should be replaced.\\n  If negative, it counts from the back of the stack.\\n@param \{Function} cb Callback function when the scene has been replaced.",
+      "modifiers": [],
+      "params": [
+        \{
+          "name": "route",
+          "description": "Route representing the new scene to render.",
+          "type": \{
+            "names": [
+              "object"
+            ]
+          }
+        },
+        \{
+          "name": "index",
+          "description": "The route in the stack that should be replaced.\\n  If negative, it counts from the back of the stack.",
+          "type": \{
+            "names": [
+              "number"
+            ]
+          }
+        },
+        \{
+          "name": "cb",
+          "description": "Callback function when the scene has been replaced.",
+          "type": \{
+            "names": [
+              "Function"
+            ]
+          }
+        }
+      ],
+      "returns": null,
+      "description": "Replace a scene as specified by an index."
+    },
+    \{
+      "name": "replace",
+      "docblock": "Replace the current scene with a new route.\\n@param \{object} route Route that replaces the current scene.",
+      "modifiers": [],
+      "params": [
+        \{
+          "name": "route",
+          "description": "Route that replaces the current scene.",
+          "type": \{
+            "names": [
+              "object"
+            ]
+          }
+        }
+      ],
+      "returns": null,
+      "description": "Replace the current scene with a new route."
+    },
+    \{
+      "name": "replacePrevious",
+      "docblock": "Replace the previous scene.\\n@param \{object} route Route that replaces the previous scene.",
+      "modifiers": [],
+      "params": [
+        \{
+          "name": "route",
+          "description": "Route that replaces the previous scene.",
+          "type": \{
+            "names": [
+              "object"
+            ]
+          }
+        }
+      ],
+      "returns": null,
+      "description": "Replace the previous scene."
+    },
+    \{
+      "name": "popToTop",
+      "docblock": "Pop to the first scene in the stack, unmounting every other scene.",
+      "modifiers": [],
+      "params": [],
+      "returns": null,
+      "description": "Pop to the first scene in the stack, unmounting every other scene."
+    },
+    \{
+      "name": "popToRoute",
+      "docblock": "Pop to a particular scene, as specified by its route.\\nAll scenes after it will be unmounted.\\n@param \{object} route Route to pop to.",
+      "modifiers": [],
+      "params": [
+        \{
+          "name": "route",
+          "description": "Route to pop to.",
+          "type": \{
+            "names": [
+              "object"
+            ]
+          }
+        }
+      ],
+      "returns": null,
+      "description": "Pop to a particular scene, as specified by its route.\\nAll scenes after it will be unmounted."
+    },
+    \{
+      "name": "replacePreviousAndPop",
+      "docblock": "Replace the previous scene and pop to it.\\n@param \{object} route Route that replaces the previous scene.",
+      "modifiers": [],
+      "params": [
+        \{
+          "name": "route",
+          "description": "Route that replaces the previous scene.",
+          "type": \{
+            "names": [
+              "object"
+            ]
+          }
+        }
+      ],
+      "returns": null,
+      "description": "Replace the previous scene and pop to it."
+    },
+    \{
+      "name": "resetTo",
+      "docblock": "Navigate to a new scene and reset route stack.\\n@param \{object} route Route to navigate to.",
+      "modifiers": [],
+      "params": [
+        \{
+          "name": "route",
+          "description": "Route to navigate to.",
+          "type": \{
+            "names": [
+              "object"
+            ]
+          }
+        }
+      ],
+      "returns": null,
+      "description": "Navigate to a new scene and reset route stack."
+    },
+    \{
+      "name": "getCurrentRoutes",
+      "docblock": "Returns the current list of routes.",
+      "modifiers": [],
+      "params": [],
+      "returns": null,
+      "description": "Returns the current list of routes."
+    }
+  ],
   "props": \{
-    "activeOpacity": \{
+    "configureScene": \{
       "type": \{
-        "name": "number"
+        "name": "func"
       },
       "required": false,
-      "description": "Determines what the opacity of the wrapped view should be when touch is\\nactive."
+      "description": "Optional function where you can configure scene animations and\\ngestures. Will be invoked with \`route\` and \`routeStack\` parameters,\\nwhere \`route\` corresponds to the current scene being rendered by the\\n\`Navigator\` and \`routeStack\` is the set of currently mounted routes\\nthat the navigator could transition to.\\n\\nThe function should return a scene configuration object.\\n\\n\`\`\`\\n(route, routeStack) => Navigator.SceneConfigs.FloatFromRight\\n\`\`\`\\n\\nAvailable scene configuration options are:\\n\\n - Navigator.SceneConfigs.PushFromRight (default)\\n - Navigator.SceneConfigs.FloatFromRight\\n - Navigator.SceneConfigs.FloatFromLeft\\n - Navigator.SceneConfigs.FloatFromBottom\\n - Navigator.SceneConfigs.FloatFromBottomAndroid\\n - Navigator.SceneConfigs.FadeAndroid\\n - Navigator.SceneConfigs.SwipeFromLeft\\n - Navigator.SceneConfigs.HorizontalSwipeJump\\n - Navigator.SceneConfigs.HorizontalSwipeJumpFromRight\\n - Navigator.SceneConfigs.HorizontalSwipeJumpFromLeft\\n - Navigator.SceneConfigs.VerticalUpSwipeJump\\n - Navigator.SceneConfigs.VerticalDownSwipeJump",
+      "defaultValue": \{
+        "value": "() => NavigatorSceneConfigs.PushFromRight",
+        "computed": false
+      }
     },
-    "underlayColor": \{
+    "renderScene": \{
       "type": \{
-        "name": "custom",
-        "raw": "ColorPropType"
+        "name": "func"
+      },
+      "required": true,
+      "description": "Required function which renders the scene for a given route. Will be\\ninvoked with the \`route\` and the \`navigator\` object.\\n\\n\`\`\`\\n(route, navigator) =>\\n  <MySceneComponent title=\{route.title} navigator=\{navigator} />\\n\`\`\`"
+    },
+    "initialRoute": \{
+      "type": \{
+        "name": "object"
       },
       "required": false,
-      "description": "The color of the underlay that will show through when the touch is\\nactive."
+      "description": "The initial route for navigation. A route is an object that the navigator\\nwill use to identify each scene it renders.\\n\\nIf both \`initialRoute\` and \`initialRouteStack\` props are passed to\\n\`Navigator\`, then \`initialRoute\` must be in a route in\\n\`initialRouteStack\`. If \`initialRouteStack\` is passed as a prop but\\n\`initialRoute\` is not, then \`initialRoute\` will default internally to\\nthe last item in \`initialRouteStack\`."
     },
-    "style": \{
+    "initialRouteStack": \{
+      "type": \{
+        "name": "arrayOf",
+        "value": \{
+          "name": "object"
+        }
+      },
+      "required": false,
+      "description": "Pass this in to provide a set of routes to initially mount. This prop\\nis required if \`initialRoute\` is not provided to the navigator. If this\\nprop is not passed in, it will default internally to an array\\ncontaining only \`initialRoute\`."
+    },
+    "onWillFocus": \{
+      "type": \{
+        "name": "func"
+      },
+      "required": false,
+      "description": "Pass in a function to get notified with the target route when\\nthe navigator component is mounted and before each navigator transition."
+    },
+    "onDidFocus": \{
+      "type": \{
+        "name": "func"
+      },
+      "required": false,
+      "description": "Will be called with the new route of each scene after the transition is\\ncomplete or after the initial mounting."
+    },
+    "navigationBar": \{
+      "type": \{
+        "name": "node"
+      },
+      "required": false,
+      "description": "Use this to provide an optional component representing a navigation bar\\nthat is persisted across scene transitions. This component will receive\\ntwo props: \`navigator\` and \`navState\` representing the navigator\\ncomponent and its state. The component is re-rendered when the route\\nchanges."
+    },
+    "navigator": \{
+      "type": \{
+        "name": "object"
+      },
+      "required": false,
+      "description": "Optionally pass in the navigator object from a parent \`Navigator\`."
+    },
+    "sceneStyle": \{
       "type": \{
         "name": "custom",
         "raw": "View.propTypes.style"
       },
       "required": false,
-      "description": ""
-    },
-    "onShowUnderlay": \{
-      "type": \{
-        "name": "func"
-      },
-      "required": false,
-      "description": "Called immediately after the underlay is shown"
-    },
-    "onHideUnderlay": \{
-      "type": \{
-        "name": "func"
-      },
-      "required": false,
-      "description": "Called immediately after the underlay is hidden"
-    },
-    "hasTVPreferredFocus": \{
-      "type": \{
-        "name": "bool"
-      },
-      "required": false,
-      "description": "*(Apple TV only)* TV preferred focus (see documentation for the View component).\\n\\n@platform ios"
-    },
-    "tvParallaxProperties": \{
-      "type": \{
-        "name": "object"
-      },
-      "required": false,
-      "description": "*(Apple TV only)* Object with properties to control Apple TV parallax effects.\\n\\nenabled: If true, parallax effects are enabled.  Defaults to true.\\nshiftDistanceX: Defaults to 2.0.\\nshiftDistanceY: Defaults to 2.0.\\ntiltAngle: Defaults to 0.05.\\nmagnification: Defaults to 1.0.\\n\\n@platform ios"
+      "description": "Styles to apply to the container of each scene.",
+      "defaultValue": \{
+        "value": "styles.defaultSceneStyle",
+        "computed": true
+      }
     }
   },
-  "composes": [
-    "TouchableWithoutFeedback"
-  ],
   "type": "component",
-  "filepath": "Libraries/Components/Touchable/TouchableHighlight.js",
-  "componentName": "TouchableHighlight",
+  "filepath": "Libraries/CustomComponents/Navigator/Navigator.js",
+  "componentName": "Navigator",
   "componentPlatform": "cross",
   "styles": \{
     "ViewStylePropTypes": \{
@@ -702,7 +962,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"touchablehighlight","title":"TouchableHighlight","layout":"autodocs","category":"components","permalink":"docs/touchablehighlight.html","platform":"cross","next":"touchablenativefeedback","previous":"toolbarandroid","sidebar":true,"runnable":false,"path":"Libraries/Components/Touchable/TouchableHighlight.js","filename":null}}>
+      <Layout metadata={{"id":"navigator","title":"Navigator","layout":"autodocs","category":"components","permalink":"docs/navigator.html","platform":"cross","next":"navigatorios","previous":"modal","sidebar":true,"runnable":false,"path":"Libraries/CustomComponents/Navigator/Navigator.js","filename":null}}>
         {content}
       </Layout>
     );

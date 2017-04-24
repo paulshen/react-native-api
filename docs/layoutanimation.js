@@ -6,7 +6,7 @@ var Layout = require("AutodocsLayout");
 var content = `\{
   "methods": [
     \{
-      "line": 151,
+      "line": 152,
       "source": "function configureNext(config: Config, onAnimationDidEnd?: Function) \{\\n  if (__DEV__) \{\\n    checkConfig(config, 'config', 'LayoutAnimation.configureNext');\\n  }\\n  UIManager.configureNextLayoutAnimation(\\n    config, onAnimationDidEnd || function() \{}, function() \{ /* unused */ }\\n  );\\n}",
       "docblock": "/**\\n   * Schedules an animation to happen on the next layout.\\n   *\\n   * @param config Specifies animation properties:\\n   *\\n   *   - \`duration\` in milliseconds\\n   *   - \`create\`, config for animating in new views (see \`Anim\` type)\\n   *   - \`update\`, config for animating views that have been updated\\n   * (see \`Anim\` type)\\n   *\\n   * @param onAnimationDidEnd Called when the animation finished.\\n   * Only supported on iOS.\\n   * @param onError Called on error. Only supported on iOS.\\n   */\\n",
       "modifiers": [
@@ -27,7 +27,7 @@ var content = `\{
       "name": "configureNext"
     },
     \{
-      "line": 155,
+      "line": 156,
       "source": "function create(duration: number, type, creationProp): Config \{\\n  return \{\\n    duration,\\n    create: \{\\n      type,\\n      property: creationProp,\\n    },\\n    update: \{\\n      type,\\n    },\\n    delete: \{\\n      type,\\n      property: creationProp,\\n    },\\n  };\\n}",
       "docblock": "/**\\n   * Helper for creating a config for \`configureNext\`.\\n   */\\n",
       "modifiers": [
@@ -52,7 +52,7 @@ var content = `\{
       "name": "create"
     },
     \{
-      "line": 158,
+      "line": 159,
       "source": "function checkConfig(config: Config, location: string, name: string) \{\\n  checkPropTypes(\{config: configType}, \{config}, location, name);\\n}",
       "modifiers": [
         "static"
@@ -153,7 +153,7 @@ var content = `\{
   "classes": [],
   "superClass": null,
   "type": "api",
-  "line": 136,
+  "line": 137,
   "name": "LayoutAnimation",
   "docblock": "/**\\n * Automatically animates views to their new positions when the\\n * next layout happens.\\n *\\n * A common way to use this API is to call it before calling \`setState\`.\\n *\\n * Note that in order to get this to work on **Android** you need to set the following flags via \`UIManager\`:\\n *\\n *     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);\\n */\\n",
   "requires": [

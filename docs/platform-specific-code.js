@@ -96,7 +96,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"platform-specific-code","title":"Platform Specific Code","layout":"docs","category":"Guides","permalink":"docs/platform-specific-code.html","next":"debugging","previous":"colors","filename":"PlatformSpecificInformation.md"}}>
+      <Layout metadata={{"id":"platform-specific-code","title":"Platform Specific Code","layout":"docs","category":"Guides","permalink":"docs/platform-specific-code.html","next":"gesture-responder-system","previous":"upgrading","filename":"PlatformSpecificInformation.md"}}>
         {content}
       </Layout>
     );

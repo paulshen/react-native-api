@@ -58,7 +58,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"headless-js-android","title":"Headless JS","layout":"docs","category":"Guides (Android)","permalink":"docs/headless-js-android.html","banner":"ejected","next":"signed-apk-android","previous":"native-components-android","filename":"HeadlessJSAndroid.md"}}>
+      <Layout metadata={{"id":"headless-js-android","title":"Headless JS","layout":"docs","category":"Guides (Android)","permalink":"docs/headless-js-android.html","next":"signed-apk-android","previous":"native-components-android","filename":"HeadlessJSAndroid.md"}}>
         {content}
       </Layout>
     );

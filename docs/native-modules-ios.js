@@ -190,7 +190,7 @@ Refactoring the above code to use a promise instead of callbacks looks like this
 
 \`\`\`objective-c
 RCT_REMAP_METHOD(findEvents,
-                 findEventsWithResolver:(RCTPromiseResolveBlock)resolve
+                 resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 \{
   NSArray *events = ...
@@ -398,13 +398,13 @@ You will receive a warning if you expend resources unnecessarily by emitting an 
 }
 
 // Will be called when this module's first listener is added.
--(void)startObserving \{
+-(void)startObserving \{ 
     hasListeners = YES;
     // Set up any upstream listeners or background tasks as necessary
 }
 
 // Will be called when this module's last listener is removed, or on dealloc.
--(void)stopObserving \{
+-(void)stopObserving \{ 
     hasListeners = NO;
     // Remove upstream listeners, stop unnecessary background tasks
 }
@@ -465,7 +465,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"native-modules-ios","title":"Native Modules","layout":"docs","category":"Guides (iOS)","permalink":"docs/native-modules-ios.html","banner":"ejected","next":"native-components-ios","previous":"upgrading","filename":"NativeModulesIOS.md"}}>
+      <Layout metadata={{"id":"native-modules-ios","title":"Native Modules","layout":"docs","category":"Guides (iOS)","permalink":"docs/native-modules-ios.html","next":"native-components-ios","previous":"gesture-responder-system","filename":"NativeModulesIOS.md"}}>
         {content}
       </Layout>
     );

@@ -88,13 +88,13 @@ var content = `\{
   "line": 24,
   "requires": [
     \{
-      "name": "DeviceInfo"
-    },
-    \{
       "name": "EventEmitter"
     },
     \{
       "name": "Platform"
+    },
+    \{
+      "name": "UIManager"
     },
     \{
       "name": "RCTDeviceEventEmitter"

@@ -89,7 +89,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"linking-libraries-ios","title":"Linking Libraries","layout":"docs","category":"Guides (iOS)","permalink":"docs/linking-libraries-ios.html","banner":"ejected","next":"running-on-simulator-ios","previous":"native-components-ios","filename":"LinkingLibraries.md"}}>
+      <Layout metadata={{"id":"linking-libraries-ios","title":"Linking Libraries","layout":"docs","category":"Guides (iOS)","permalink":"docs/linking-libraries-ios.html","next":"running-on-simulator-ios","previous":"native-components-ios","filename":"LinkingLibraries.md"}}>
         {content}
       </Layout>
     );

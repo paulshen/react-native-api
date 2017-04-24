@@ -84,7 +84,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"javascript-environment","title":"JavaScript Environment","layout":"docs","category":"Guides","permalink":"docs/javascript-environment.html","next":"direct-manipulation","previous":"timers","filename":"JavaScriptEnvironment.md"}}>
+      <Layout metadata={{"id":"javascript-environment","title":"JavaScript Environment","layout":"docs","category":"Guides","permalink":"docs/javascript-environment.html","next":"navigation","previous":"testing","filename":"JavaScriptEnvironment.md"}}>
         {content}
       </Layout>
     );

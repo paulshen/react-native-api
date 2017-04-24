@@ -6,9 +6,6 @@ var Layout = require("AutodocsLayout");
 var content = `\{
   "description": "The most fundamental component for building a UI, \`View\` is a container that supports layout with\\n[flexbox](docs/flexbox.html), [style](docs/style.html),\\n[some touch handling](docs/handling-touches.html), and\\n[accessibility](docs/accessibility.html) controls. \`View\` maps directly to the\\nnative view equivalent on whatever platform React Native is running on, whether that is a\\n\`UIView\`, \`<div>\`, \`android.view\`, etc.\\n\\n\`View\` is designed to be nested inside other views and can have 0 to many children of any type.\\n\\nThis example creates a \`View\` that wraps two colored boxes and a text component in a row with\\npadding.\\n\\n\`\`\`javascript\\nclass ViewColoredBoxesWithText extends Component \{\\n  render() \{\\n    return (\\n      <View style=\{\{flexDirection: 'row', height: 100, padding: 20}}>\\n        <View style=\{\{backgroundColor: 'blue', flex: 0.3}} />\\n        <View style=\{\{backgroundColor: 'red', flex: 0.5}} />\\n        <Text>Hello World!</Text>\\n      </View>\\n    );\\n  }\\n}\\n\`\`\`\\n\\n> \`View\`s are designed to be used with [\`StyleSheet\`](docs/style.html) for clarity\\n> and performance, although inline styles are also supported.\\n\\n### Synthetic Touch Events\\n\\nFor \`View\` responder props (e.g., \`onResponderMove\`), the synthetic touch event passed to them\\nare of the following form:\\n\\n- \`nativeEvent\`\\n  - \`changedTouches\` - Array of all touch events that have changed since the last event.\\n  - \`identifier\` - The ID of the touch.\\n  - \`locationX\` - The X position of the touch, relative to the element.\\n  - \`locationY\` - The Y position of the touch, relative to the element.\\n  - \`pageX\` - The X position of the touch, relative to the root element.\\n  - \`pageY\` - The Y position of the touch, relative to the root element.\\n  - \`target\` - The node id of the element receiving the touch event.\\n  - \`timestamp\` - A time identifier for the touch, useful for velocity calculation.\\n  - \`touches\` - Array of all current touches on the screen.",
   "methods": [],
-  "composes": [
-    "ViewPropTypes"
-  ],
   "props": \{
     "accessible": \{
       "type": \{
@@ -241,8 +238,8 @@ var content = `\{
     },
     "style": \{
       "type": \{
-        "name": "custom",
-        "raw": "stylePropType"
+        "name": "stylesheet",
+        "value": "ViewStylePropTypes"
       },
       "required": false,
       "description": ""

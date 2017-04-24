@@ -6,7 +6,7 @@ var Layout = require("AutodocsLayout");
 var content = `\{
   "methods": [
     \{
-      "line": 76,
+      "line": 71,
       "source": "registerConfig(config: Array<AppConfig>): void \{\\n    config.forEach((appConfig) => \{\\n      if (appConfig.run) \{\\n        AppRegistry.registerRunnable(appConfig.appKey, appConfig.run);\\n      } else \{\\n        invariant(\\n          appConfig.component != null,\\n          'AppRegistry.registerConfig(...): Every config is expected to set ' +\\n          'either \`run\` or \`component\`, but \`%s\` has neither.',\\n          appConfig.appKey\\n        );\\n        AppRegistry.registerComponent(\\n          appConfig.appKey,\\n          appConfig.component,\\n          appConfig.section,\\n        );\\n      }\\n    });\\n  }",
       "modifiers": [
         "static"
@@ -22,8 +22,8 @@ var content = `\{
       "name": "registerConfig"
     },
     \{
-      "line": 96,
-      "source": "registerComponent(\\n    appKey: string,\\n    component: ComponentProvider,\\n    section?: boolean,\\n  ): string \{\\n    runnables[appKey] = \{\\n      component,\\n      run: (appParameters) =>\\n        renderApplication(\\n          componentProviderInstrumentationHook(component),\\n          appParameters.initialProps,\\n          appParameters.rootTag\\n        )\\n    };\\n    if (section) \{\\n      sections[appKey] = runnables[appKey];\\n    }\\n    return appKey;\\n  }",
+      "line": 91,
+      "source": "registerComponent(\\n    appKey: string,\\n    component: ComponentProvider,\\n    section?: boolean,\\n  ): string \{\\n    runnables[appKey] = \{\\n      component,\\n      run: (appParameters) =>\\n        renderApplication(component(), appParameters.initialProps, appParameters.rootTag)\\n    };\\n    if (section) \{\\n      sections[appKey] = runnables[appKey];\\n    }\\n    return appKey;\\n  }",
       "modifiers": [
         "static"
       ],
@@ -46,7 +46,7 @@ var content = `\{
       "name": "registerComponent"
     },
     \{
-      "line": 116,
+      "line": 107,
       "source": "registerRunnable(appKey: string, run: Function): string \{\\n    runnables[appKey] = \{run};\\n    return appKey;\\n  }",
       "modifiers": [
         "static"
@@ -66,7 +66,7 @@ var content = `\{
       "name": "registerRunnable"
     },
     \{
-      "line": 121,
+      "line": 112,
       "source": "registerSection(appKey: string, component: ComponentProvider): void \{\\n    AppRegistry.registerComponent(appKey, component, true);\\n  }",
       "modifiers": [
         "static"
@@ -86,7 +86,7 @@ var content = `\{
       "name": "registerSection"
     },
     \{
-      "line": 125,
+      "line": 116,
       "source": "getAppKeys(): Array<string> \{\\n    return Object.keys(runnables);\\n  }",
       "modifiers": [
         "static"
@@ -97,7 +97,7 @@ var content = `\{
       "name": "getAppKeys"
     },
     \{
-      "line": 129,
+      "line": 120,
       "source": "getSectionKeys(): Array<string> \{\\n    return Object.keys(sections);\\n  }",
       "modifiers": [
         "static"
@@ -108,7 +108,7 @@ var content = `\{
       "name": "getSectionKeys"
     },
     \{
-      "line": 133,
+      "line": 124,
       "source": "getSections(): Runnables \{\\n    return \{\\n      ...sections\\n    };\\n  }",
       "modifiers": [
         "static"
@@ -119,7 +119,7 @@ var content = `\{
       "name": "getSections"
     },
     \{
-      "line": 139,
+      "line": 130,
       "source": "getRunnable(appKey: string): ?Runnable \{\\n    return runnables[appKey];\\n  }",
       "modifiers": [
         "static"
@@ -135,7 +135,7 @@ var content = `\{
       "name": "getRunnable"
     },
     \{
-      "line": 143,
+      "line": 134,
       "source": "getRegistry(): Registry \{\\n    return \{\\n      sections: AppRegistry.getSectionKeys(),\\n      runnables: \{...runnables},\\n    };\\n  }",
       "modifiers": [
         "static"
@@ -146,24 +146,8 @@ var content = `\{
       "name": "getRegistry"
     },
     \{
-      "line": 150,
-      "source": "setComponentProviderInstrumentationHook(hook: ComponentProviderInstrumentationHook) \{\\n    componentProviderInstrumentationHook = hook;\\n  }",
-      "modifiers": [
-        "static"
-      ],
-      "params": [
-        \{
-          "typehint": "\{\\"type\\":\\"simple\\",\\"value\\":\\"ComponentProviderInstrumentationHook\\",\\"length\\":1}",
-          "name": "hook"
-        }
-      ],
-      "tparams": null,
-      "returntypehint": null,
-      "name": "setComponentProviderInstrumentationHook"
-    },
-    \{
-      "line": 154,
-      "source": "runApplication(appKey: string, appParameters: any): void \{\\n    const msg =\\n      'Running application \\"' + appKey + '\\" with appParams: ' +\\n      JSON.stringify(appParameters) + '. ' +\\n      '__DEV__ === ' + String(__DEV__) +\\n      ', development-level warning are ' + (__DEV__ ? 'ON' : 'OFF') +\\n      ', performance optimizations are ' + (__DEV__ ? 'OFF' : 'ON');\\n    infoLog(msg);\\n    BugReporting.addSource('AppRegistry.runApplication' + runCount++, () => msg);\\n    invariant(\\n      runnables[appKey] && runnables[appKey].run,\\n      'Application ' + appKey + ' has not been registered.\\\\n\\\\n' +\\n      'Hint: This error often happens when you\\\\'re running the packager ' +\\n      '(local dev server) from a wrong folder. For example you have ' +\\n      'multiple apps and the packager is still running for the app you ' +\\n      'were working on before.\\\\nIf this is the case, simply kill the old ' +\\n      'packager instance (e.g. close the packager terminal window) ' +\\n      'and start the packager in the correct app folder (e.g. cd into app ' +\\n      'folder and run \\\\'npm start\\\\').\\\\n\\\\n' +\\n      'This error can also happen due to a require\() error during ' +\\n      'initialization or failure to call AppRegistry.registerComponent.\\\\n\\\\n'\\n    );\\n    FrameRateLogger.setContext(appKey);\\n    runnables[appKey].run(appParameters);\\n  }",
+      "line": 141,
+      "source": "runApplication(appKey: string, appParameters: any): void \{\\n    const msg =\\n      'Running application \\"' + appKey + '\\" with appParams: ' +\\n      JSON.stringify(appParameters) + '. ' +\\n      '__DEV__ === ' + String(__DEV__) +\\n      ', development-level warning are ' + (__DEV__ ? 'ON' : 'OFF') +\\n      ', performance optimizations are ' + (__DEV__ ? 'OFF' : 'ON');\\n    infoLog(msg);\\n    BugReporting.addSource('AppRegistry.runApplication' + runCount++, () => msg);\\n    invariant(\\n      runnables[appKey] && runnables[appKey].run,\\n      'Application ' + appKey + ' has not been registered.\\\\n\\\\n' +\\n      'Hint: This error often happens when you\\\\'re running the packager ' +\\n      '(local dev server) from a wrong folder. For example you have ' +\\n      'multiple apps and the packager is still running for the app you ' +\\n      'were working on before.\\\\nIf this is the case, simply kill the old ' +\\n      'packager instance (e.g. close the packager terminal window) ' +\\n      'and start the packager in the correct app folder (e.g. cd into app ' +\\n      'folder and run \\\\'npm start\\\\').\\\\n\\\\n' +\\n      'This error can also happen due to a require\() error during ' +\\n      'initialization or failure to call AppRegistry.registerComponent.\\\\n\\\\n'\\n    );\\n    runnables[appKey].run(appParameters);\\n  }",
       "modifiers": [
         "static"
       ],
@@ -182,7 +166,7 @@ var content = `\{
       "name": "runApplication"
     },
     \{
-      "line": 180,
+      "line": 166,
       "source": "unmountApplicationComponentAtRootTag(rootTag: number): void \{\\n    ReactNative.unmountComponentAtNodeAndRemoveContainer(rootTag);\\n  }",
       "modifiers": [
         "static"
@@ -198,7 +182,7 @@ var content = `\{
       "name": "unmountApplicationComponentAtRootTag"
     },
     \{
-      "line": 191,
+      "line": 177,
       "source": "registerHeadlessTask(taskKey: string, task: TaskProvider): void \{\\n    if (tasks.has(taskKey)) \{\\n      console.warn(\`registerHeadlessTask called multiple times for same key '$\{taskKey}'\`);\\n    }\\n    tasks.set(taskKey, task);\\n  }",
       "docblock": "/**\\n   * Register a headless task. A headless task is a bit of code that runs without a UI.\\n   * @param taskKey the key associated with this task\\n   * @param task    a promise returning function that takes some data passed from the native side as\\n   *                the only argument; when the promise is resolved or rejected the native side is\\n   *                notified of this event and it may decide to destroy the JS context.\\n   */\\n",
       "modifiers": [
@@ -219,7 +203,7 @@ var content = `\{
       "name": "registerHeadlessTask"
     },
     \{
-      "line": 205,
+      "line": 191,
       "source": "startHeadlessTask(taskId: number, taskKey: string, data: any): void \{\\n    const taskProvider = tasks.get(taskKey);\\n    if (!taskProvider) \{\\n      throw new Error(\`No task registered for key $\{taskKey}\`);\\n    }\\n    taskProvider()(data)\\n      .then(() => NativeModules.HeadlessJsTaskSupport.notifyTaskFinished(taskId))\\n      .catch(reason => \{\\n        console.error(reason);\\n        NativeModules.HeadlessJsTaskSupport.notifyTaskFinished(taskId);\\n      });\\n  }",
       "docblock": "/**\\n   * Only called from native code. Starts a headless task.\\n   *\\n   * @param taskId the native id for this task instance to keep track of its execution\\n   * @param taskKey the key for the task to start\\n   * @param data the data to pass to the task\\n   */\\n",
       "modifiers": [
@@ -248,7 +232,7 @@ var content = `\{
   "classes": [],
   "superClass": null,
   "type": "api",
-  "line": 75,
+  "line": 70,
   "name": "AppRegistry",
   "docblock": "/**\\n * \`AppRegistry\` is the JS entry point to running all React Native apps.  App\\n * root components should register themselves with\\n * \`AppRegistry.registerComponent\`, then the native system can load the bundle\\n * for the app and then actually run the app when it's ready by invoking\\n * \`AppRegistry.runApplication\`.\\n *\\n * To \\"stop\\" an application when a view should be destroyed, call\\n * \`AppRegistry.unmountApplicationComponentAtRootTag\` with the tag that was\\n * passed into \`runApplication\`. These should always be used as a pair.\\n *\\n * \`AppRegistry\` should be \`require\`d early in the \`require\` sequence to make\\n * sure the JS execution environment is setup before other modules are\\n * \`require\`d.\\n */\\n",
   "requires": [
@@ -257,9 +241,6 @@ var content = `\{
     },
     \{
       "name": "BugReporting"
-    },
-    \{
-      "name": "FrameRateLogger"
     },
     \{
       "name": "NativeModules"

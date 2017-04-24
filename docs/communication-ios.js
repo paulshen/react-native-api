@@ -219,7 +219,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"communication-ios","title":"Communication between native and React Native","layout":"docs","category":"Guides (iOS)","permalink":"docs/communication-ios.html","banner":"ejected","next":"building-for-apple-tv","previous":"linking-libraries-ios","filename":"CommunicationIOS.md"}}>
+      <Layout metadata={{"id":"communication-ios","title":"Communication between native and React Native","layout":"docs","category":"Guides (iOS)","permalink":"docs/communication-ios.html","next":"native-modules-android","previous":"running-on-simulator-ios","filename":"CommunicationIOS.md"}}>
         {content}
       </Layout>
     );

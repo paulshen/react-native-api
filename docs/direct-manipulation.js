@@ -90,10 +90,7 @@ ReactNativeBaseComponent.js](https://github.com/facebook/react/blob/master/src/r
 Composite components are not backed by a native view, so you cannot call
 \`setNativeProps\` on them. Consider this example:
 
-\`\`\`SnackPlayer?name=setNativeProps%20with%20Composite%20Components
-import React from 'react';
-import \{ Text, TouchableOpacity, View } from 'react-native';
-
+\`\`\`javascript
 class MyButton extends React.Component \{
   render() \{
     return (
@@ -104,7 +101,7 @@ class MyButton extends React.Component \{
   }
 }
 
-export default class App extends React.Component \{
+class App extends React.Component \{
   render() \{
     return (
       <TouchableOpacity>
@@ -114,6 +111,7 @@ export default class App extends React.Component \{
   }
 }
 \`\`\`
+[Run this example](https://rnplay.org/apps/JXkgmQ)
 
 If you run this you will immediately see this error: \`Touchable child
 must either be native or forward setNativeProps to a native component\`.
@@ -131,12 +129,9 @@ All we need to do is provide a \`setNativeProps\` method on our component
 that calls \`setNativeProps\` on the appropriate child with the given
 arguments.
 
-\`\`\`SnackPlayer?name=Forwarding%20setNativeProps
-import React from 'react';
-import \{ Text, TouchableOpacity, View } from 'react-native';
-
+\`\`\`javascript
 class MyButton extends React.Component \{
-  setNativeProps = (nativeProps) => \{
+  setNativeProps(nativeProps) \{
     this._root.setNativeProps(nativeProps);
   }
 
@@ -148,17 +143,8 @@ class MyButton extends React.Component \{
     )
   }
 }
-
-export default class App extends React.Component \{
-  render() \{
-    return (
-      <TouchableOpacity>
-        <MyButton label="Press me!" />
-      </TouchableOpacity>
-    )
-  }
-}
 \`\`\`
+[Run this example](https://rnplay.org/apps/YJxnEQ)
 
 You can now use \`MyButton\` inside of \`TouchableOpacity\`! A sidenote for
 clarity: we used the [ref callback](https://facebook.github.io/react/docs/more-about-refs.html#the-ref-callback-attribute) syntax here, rather than the traditional string-based ref.
@@ -183,22 +169,22 @@ use \`setNativeProps\` to directly manipulate the TextInput value when
 necessary. For example, the following code demonstrates clearing the
 input when you tap a button:
 
-\`\`\`SnackPlayer?name=Clear%20text
-import React from 'react';
-import \{ TextInput, Text, TouchableOpacity, View } from 'react-native';
+\`\`\`javascript
+class App extends React.Component \{
+  constructor(props) \{
+    super(props);
+    this.clearText = this.clearText.bind(this);
+  }
 
-export default class App extends React.Component \{
-  clearText = () => \{
+  clearText() \{
     this._textInput.setNativeProps(\{text: ''});
   }
 
   render() \{
     return (
-      <View style=\{\{flex: 1}}>
-        <TextInput
-          ref=\{component => this._textInput = component}
-          style=\{\{height: 50, flex: 1, marginHorizontal: 20, borderWidth: 1, borderColor: '#ccc'}}
-        />
+      <View style=\{styles.container}>
+        <TextInput ref=\{component => this._textInput = component}
+                   style=\{styles.textInput} />
         <TouchableOpacity onPress=\{this.clearText}>
           <Text>Clear text</Text>
         </TouchableOpacity>
@@ -207,6 +193,7 @@ export default class App extends React.Component \{
   }
 }
 \`\`\`
+[Run this example](https://rnplay.org/plays/pOI9bA)
 
 ## Avoiding conflicts with the render function
 
@@ -214,7 +201,9 @@ If you update a property that is also managed by the render function,
 you might end up with some unpredictable and confusing bugs because
 anytime the component re-renders and that property changes, whatever
 value was previously set from \`setNativeProps\` will be completely
-ignored and overridden.
+ignored and overridden. [See this example](https://rnplay.org/apps/bp1DvQ)
+for a demonstration of what can happen if these two collide - notice
+the jerky animation each 250ms when \`setState\` triggers a re-render.
 
 ## setNativeProps & shouldComponentUpdate
 
@@ -228,7 +217,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"direct-manipulation","title":"Direct Manipulation","layout":"docs","category":"Guides","permalink":"docs/direct-manipulation.html","next":"performance","previous":"javascript-environment","filename":"DirectManipulation.md"}}>
+      <Layout metadata={{"id":"direct-manipulation","title":"Direct Manipulation","layout":"docs","category":"Guides","permalink":"docs/direct-manipulation.html","next":"debugging","previous":"timers","filename":"DirectManipulation.md"}}>
         {content}
       </Layout>
     );

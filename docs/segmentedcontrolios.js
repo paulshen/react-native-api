@@ -69,7 +69,7 @@ var content = `\{
     }
   },
   "composes": [
-    "ViewPropTypes"
+    "View"
   ],
   "type": "component",
   "filepath": "Libraries/Components/SegmentedControlIOS/SegmentedControlIOS.ios.js",

@@ -6,9 +6,9 @@ var Layout = require("AutodocsLayout");
 var content = `\{
   "methods": [
     \{
-      "line": 107,
+      "line": 104,
       "source": "addListener(eventName: KeyboardEventName, callback: KeyboardEventListener) \{\\n    invariant(false, 'Dummy method used for documentation');\\n  }",
-      "docblock": "/**\\n   * The \`addListener\` function connects a JavaScript function to an identified native\\n   * keyboard notification event.\\n   *\\n   * This function then returns the reference to the listener.\\n   *\\n   * @param \{string} eventName The \`nativeEvent\` is the string that identifies the event you're listening for.  This\\n   *can be any of the following:\\n   *\\n   * - \`keyboardWillShow\`\\n   * - \`keyboardDidShow\`\\n   * - \`keyboardWillHide\`\\n   * - \`keyboardDidHide\`\\n   * - \`keyboardWillChangeFrame\`\\n   * - \`keyboardDidChangeFrame\`\\n   *\\n   * Note that if you set \`android:windowSoftInputMode\` to \`adjustResize\`  or \`adjustNothing\`,\\n   * only \`keyboardDidShow\` and \`keyboardDidHide\` events will available on Android.\\n   *\\n   * @param \{function} callback function to be called when the event fires.\\n   */\\n",
+      "docblock": "/**\\n   * The \`addListener\` function connects a JavaScript function to an identified native\\n   * keyboard notification event.\\n   *\\n   * This function then returns the reference to the listener.\\n   *\\n   * @param \{string} eventName The \`nativeEvent\` is the string that identifies the event you're listening for.  This\\n   *can be any of the following:\\n   *\\n   * - \`keyboardWillShow\`\\n   * - \`keyboardDidShow\`\\n   * - \`keyboardWillHide\`\\n   * - \`keyboardDidHide\`\\n   * - \`keyboardWillChangeFrame\`\\n   * - \`keyboardDidChangeFrame\`\\n   *\\n   * @param \{function} callback function to be called when the event fires.\\n   */\\n",
       "modifiers": [
         "static"
       ],
@@ -27,7 +27,7 @@ var content = `\{
       "name": "addListener"
     },
     \{
-      "line": 117,
+      "line": 114,
       "source": "removeListener(eventName: KeyboardEventName, callback: Function) \{\\n    invariant(false, 'Dummy method used for documentation');\\n  }",
       "docblock": "/**\\n   * Removes a specific listener.\\n   *\\n   * @param \{string} eventName The \`nativeEvent\` is the string that identifies the event you're listening for.\\n   * @param \{function} callback function to be called when the event fires.\\n   */\\n",
       "modifiers": [
@@ -48,7 +48,7 @@ var content = `\{
       "name": "removeListener"
     },
     \{
-      "line": 126,
+      "line": 123,
       "source": "removeAllListeners(eventName: KeyboardEventName) \{\\n    invariant(false, 'Dummy method used for documentation');\\n  }",
       "docblock": "/**\\n   * Removes all listeners for a specific event type.\\n   *\\n   * @param \{string} eventType The native event string listeners are watching which will be removed.\\n   */\\n",
       "modifiers": [
@@ -65,7 +65,7 @@ var content = `\{
       "name": "removeAllListeners"
     },
     \{
-      "line": 133,
+      "line": 130,
       "source": "dismiss() \{\\n    invariant(false, 'Dummy method used for documentation');\\n  }",
       "docblock": "/**\\n   * Dismisses the active keyboard and removes focus.\\n   */\\n",
       "modifiers": [

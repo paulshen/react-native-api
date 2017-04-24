@@ -100,7 +100,7 @@ var content = `\{
     }
   },
   "composes": [
-    "ViewPropTypes"
+    "View"
   ],
   "typedef": [
     \{

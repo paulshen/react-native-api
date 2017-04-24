@@ -71,7 +71,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"gesture-responder-system","title":"Gesture Responder System","layout":"docs","category":"Guides","permalink":"docs/gesture-responder-system.html","next":"testing","previous":"performance","filename":"GestureResponderSystem.md"}}>
+      <Layout metadata={{"id":"gesture-responder-system","title":"Gesture Responder System","layout":"docs","category":"Guides","permalink":"docs/gesture-responder-system.html","next":"native-modules-ios","previous":"platform-specific-code","filename":"GestureResponderSystem.md"}}>
         {content}
       </Layout>
     );

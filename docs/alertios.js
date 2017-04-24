@@ -91,51 +91,22 @@ var content = `\{
       ]
     },
     \{
-      "name": "ButtonsArray",
-      "description": "Array or buttons",
-      "type": \{
-        "names": [
-          "Array"
-        ]
-      },
-      "values": [
-        \{
-          "type": \{
-            "names": [
-              "string"
-            ]
-          },
-          "description": "Button label",
-          "name": "text"
-        },
-        \{
-          "type": \{
-            "names": [
-              "Function"
-            ]
-          },
-          "description": "Callback function when button pressed",
-          "name": "onPress"
-        },
-        \{
-          "type": \{
-            "names": [
-              "$Enum"
-            ]
-          },
-          "description": "Button style",
-          "name": "style"
-        }
-      ],
       "meta": \{
         "range": [
           500,
           724
         ],
-        "filename": "6s60rw0vhjl4h31ql8e0j2a9k9v3588emu4j6vd95dacj7qr529.js",
+        "filename": "0syfnmk6vl06nh77h7opta9k9tshiyj7b39xn3agodweg919k9.js",
         "lineno": 27,
         "path": "/var/folders/hl/d8sjg4t57cv829d_b9hz1rbc0000gp/T",
         "code": \{}
+      },
+      "description": "Array or buttons",
+      "name": "ButtonsArray",
+      "type": \{
+        "names": [
+          "Array"
+        ]
       },
       "properties": [
         \{
@@ -181,7 +152,7 @@ var content = `\{
           1301,
           6425
         ],
-        "filename": "6s60rw0vhjl4h31ql8e0j2a9k9v3588emu4j6vd95dacj7qr529.js",
+        "filename": "0syfnmk6vl06nh77h7opta9k9tshiyj7b39xn3agodweg919k9.js",
         "lineno": 64,
         "path": "/var/folders/hl/d8sjg4t57cv829d_b9hz1rbc0000gp/T",
         "code": \{
@@ -205,7 +176,7 @@ var content = `\{
           1320,
           2364
         ],
-        "filename": "6s60rw0vhjl4h31ql8e0j2a9k9v3588emu4j6vd95dacj7qr529.js",
+        "filename": "0syfnmk6vl06nh77h7opta9k9tshiyj7b39xn3agodweg919k9.js",
         "lineno": 65,
         "path": "/var/folders/hl/d8sjg4t57cv829d_b9hz1rbc0000gp/T",
         "code": \{}
@@ -280,7 +251,7 @@ var content = `\{
           2746,
           4559
         ],
-        "filename": "6s60rw0vhjl4h31ql8e0j2a9k9v3588emu4j6vd95dacj7qr529.js",
+        "filename": "0syfnmk6vl06nh77h7opta9k9tshiyj7b39xn3agodweg919k9.js",
         "lineno": 101,
         "path": "/var/folders/hl/d8sjg4t57cv829d_b9hz1rbc0000gp/T",
         "code": \{}

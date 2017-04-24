@@ -18,7 +18,7 @@ var content = `\{
       "type": \{
         "name": "enum",
         "computed": true,
-        "value": "AccessibilityComponentTypes"
+        "value": "View.AccessibilityComponentType"
       },
       "required": false,
       "description": ""
@@ -30,14 +30,14 @@ var content = `\{
           \{
             "name": "enum",
             "computed": true,
-            "value": "AccessibilityTraits"
+            "value": "View.AccessibilityTraits"
           },
           \{
             "name": "arrayOf",
             "value": \{
               "name": "enum",
               "computed": true,
-              "value": "AccessibilityTraits"
+              "value": "View.AccessibilityTraits"
             }
           }
         ]

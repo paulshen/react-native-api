@@ -29,7 +29,7 @@ var content = `\{
     }
   },
   "composes": [
-    "ViewPropTypes"
+    "View"
   ],
   "type": "component",
   "filepath": "Libraries/RCTTest/SnapshotViewIOS.ios.js",

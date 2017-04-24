@@ -63,7 +63,7 @@ var content = `\{
     }
   },
   "composes": [
-    "ViewPropTypes"
+    "View"
   ],
   "type": "component",
   "filepath": "Libraries/Components/ProgressViewIOS/ProgressViewIOS.ios.js",

@@ -26,7 +26,7 @@ var content = `\{
         ]
       },
       "required": false,
-      "description": "The \`animationType\` prop controls how the modal animates.\\n\\n- \`slide\` slides in from the bottom\\n- \`fade\` fades into view\\n- \`none\` appears without an animation\\n\\nDefault is set to \`none\`."
+      "description": "The \`animationType\` prop controls how the modal animates.\\n\\n- \`slide\` slides in from the bottom\\n- \`fade\` fades into view\\n- \`none\` appears without an animation"
     },
     "transparent": \{
       "type": \{
@@ -766,7 +766,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"modal","title":"Modal","layout":"autodocs","category":"components","permalink":"docs/modal.html","platform":"cross","next":"navigatorios","previous":"listview","sidebar":true,"runnable":true,"path":"Libraries/Modal/Modal.js","filename":null}}>
+      <Layout metadata={{"id":"modal","title":"Modal","layout":"autodocs","category":"components","permalink":"docs/modal.html","platform":"cross","next":"navigator","previous":"mapview","sidebar":true,"runnable":true,"path":"Libraries/Modal/Modal.js","filename":null}}>
         {content}
       </Layout>
     );

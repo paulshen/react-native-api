@@ -85,10 +85,10 @@ The generated APK can be found under \`android/app/build/outputs/apk/app-release
 Before uploading the release build to the Play Store, make sure you test it thoroughly. Install it on the device using:
 
 \`\`\`sh
-$ react-native run-android --variant=release
+$ react-native run-android --configuration=release
 \`\`\`
 
-Note that \`--variant=release\` is only available if you've set up signing as described above.
+Note that \`--configuration=release\` is only available if you've set up signing as described above.
 
 You can kill any running packager instances, all your and framework JavaScript code is bundled in the APK's assets.
 
@@ -111,7 +111,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"signed-apk-android","title":"Generating Signed APK","layout":"docs","category":"Guides (Android)","permalink":"docs/signed-apk-android.html","banner":"ejected","next":"android-building-from-source","previous":"headless-js-android","filename":"SignedAPKAndroid.md"}}>
+      <Layout metadata={{"id":"signed-apk-android","title":"Generating Signed APK","layout":"docs","category":"Guides (Android)","permalink":"docs/signed-apk-android.html","next":"android-ui-performance","previous":"headless-js-android","filename":"SignedAPKAndroid.md"}}>
         {content}
       </Layout>
     );

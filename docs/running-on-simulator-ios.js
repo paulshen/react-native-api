@@ -18,7 +18,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"running-on-simulator-ios","title":"Running On Simulator","layout":"docs","category":"Guides (iOS)","permalink":"docs/running-on-simulator-ios.html","banner":"ejected","next":"communication-ios","previous":"linking-libraries-ios","filename":"RunningOnSimulatorIOS.md"}}>
+      <Layout metadata={{"id":"running-on-simulator-ios","title":"Running On Simulator","layout":"docs","category":"Guides (iOS)","permalink":"docs/running-on-simulator-ios.html","next":"communication-ios","previous":"linking-libraries-ios","filename":"RunningOnSimulatorIOS.md"}}>
         {content}
       </Layout>
     );

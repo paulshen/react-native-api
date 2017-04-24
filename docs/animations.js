@@ -22,33 +22,34 @@ The [\`Animated\`](docs/animated.html) API is designed to make it very easy to c
 
 For example, a container view that fades in when it is mounted may look like this:
 
-\`\`\`SnackPlayer
-import React from 'react';
-import \{ Animated, Text, View } from 'react-native';
+\`\`\`javascript
+// FadeInView.js
+import React, \{ Component } from 'react';
+import \{
+  Animated,
+} from 'react-native';
 
-class FadeInView extends React.Component \{
-  state = \{
-    fadeAnim: new Animated.Value(0),  // Initial value for opacity: 0
+class FadeInView extends Component \{
+  constructor(props) \{
+    super(props);
+    this.state = \{
+      fadeAnim: new Animated.Value(0),          // Initial value for opacity: 0
+    };
   }
-
   componentDidMount() \{
-    Animated.timing(                  // Animate over time
-      this.state.fadeAnim,            // The animated value to drive
+    Animated.timing(                            // Animate over time
+      this.state.fadeAnim,                      // The animated value to drive
       \{
-        toValue: 1,                   // Animate to opacity: 1 (opaque)
-        duration: 10000,              // Make it take a while
+        toValue: 1,                             // Animate to opacity: 1, or fully opaque
       }
-    ).start();                        // Starts the animation
+    ).start();                                  // Starts the animation
   }
-
   render() \{
-    let \{ fadeAnim } = this.state;
-
     return (
-      <Animated.View                 // Special animatable View
+      <Animated.View                            // Special animatable View
         style=\{\{
           ...this.props.style,
-          opacity: fadeAnim,         // Bind opacity to animated value
+          opacity: this.state.fadeAnim,          // Bind opacity to animated value
         }}
       >
         \{this.props.children}
@@ -57,19 +58,22 @@ class FadeInView extends React.Component \{
   }
 }
 
-// You can then use your \`FadeInView\` in place of a \`View\` in your components:
-export default class App extends React.Component \{
-  render() \{
-    return (
-      <View style=\{\{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <FadeInView style=\{\{width: 250, height: 50, backgroundColor: 'powderblue'}}>
-          <Text style=\{\{fontSize: 28, textAlign: 'center', margin: 10}}>Fading in</Text>
-        </FadeInView>
-      </View>
-    )
-  }
+module.exports = FadeInView;
+\`\`\`
+
+You can then use your \`FadeInView\` in place of a \`View\` in your components, like so:
+
+\`\`\`javascript
+render() \{
+  return (
+    <FadeInView style=\{\{width: 250, height: 50, backgroundColor: 'powderblue'}}>
+      <Text style=\{\{fontSize: 28, textAlign: 'center', margin: 10}}>Fading in</Text>
+    </FadeInView>
+  )
 }
 \`\`\`
+
+![FadeInView](img/AnimatedFadeInView.gif)
 
 Let's break down what's happening here.
 In the \`FadeInView\` constructor, a new \`Animated.Value\` called \`fadeAnim\` is initialized as part of \`state\`.
@@ -385,29 +389,22 @@ Note that in order to get this to work on **Android** you need to set the follow
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 \`\`\`
 
-\`\`\`SnackPlayer
-import React from 'react';
-import \{
-  NativeModules,
-  LayoutAnimation,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  View,
-} from 'react-native';
+![](img/LayoutAnimationExample.gif)
 
-const \{ UIManager } = NativeModules;
+\`\`\`javascript
+class App extends React.Component \{
+  constructor(props) \{
+    super(props);
+    this.state = \{ w: 100, h: 100 };
+    this._onPress = this._onPress.bind(this);
+  }
 
-UIManager.setLayoutAnimationEnabledExperimental &&
-  UIManager.setLayoutAnimationEnabledExperimental(true);
+  componentWillMount() \{
+    // Animate creation
+    LayoutAnimation.spring();
+  }
 
-export default class App extends React.Component \{
-  state = \{
-    w: 100,
-    h: 100,
-  };
-
-  _onPress = () => \{
+  _onPress() \{
     // Animate the update
     LayoutAnimation.spring();
     this.setState(\{w: this.state.w + 15, h: this.state.h + 15})
@@ -426,30 +423,8 @@ export default class App extends React.Component \{
     );
   }
 }
-
-const styles = StyleSheet.create(\{
-  container: \{
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: \{
-    width: 200,
-    height: 200,
-    backgroundColor: 'red',
-  },
-  button: \{
-    backgroundColor: 'black',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    marginTop: 15,
-  },
-  buttonText: \{
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-});
 \`\`\`
+[Run this example](https://rnplay.org/apps/uaQrGQ)
 
 This example uses a preset value, you can customize the animations as
 you need, see [LayoutAnimation.js](https://github.com/facebook/react-native/blob/master/Libraries/LayoutAnimation/LayoutAnimation.js)
@@ -478,20 +453,54 @@ We could use this in the Rebound example to update the scale - this
 might be helpful if the component that we are updating is deeply nested
 and hasn't been optimized with \`shouldComponentUpdate\`.
 
-If you find your animations with dropping frames (performing below 60 frames
-per second), look into using \`setNativeProps\` or \`shouldComponentUpdate\` to
-optimize them. Or you could run the animations on the UI thread rather than
-the JavaScript thread [with the useNativeDriver
-option](http://facebook.github.io/react-native/blog/2017/02/14/using-native-driver-for-animated.html).
-You may also want to defer any computationally intensive work until after
-animations are complete, using the
-[InteractionManager](docs/interactionmanager.html). You can monitor the
-frame rate by using the In-App Developer Menu "FPS Monitor" tool.`;
+\`\`\`javascript
+// Back inside of the App component, replace the scrollSpring listener
+// in componentWillMount with this:
+this._scrollSpring.addListener(\{
+  onSpringUpdate: () => \{
+    if (!this._photo) \{ return }
+    var v = this._scrollSpring.getCurrentValue();
+    var newProps = \{style: \{transform: [\{scaleX: v}, \{scaleY: v}]}};
+    this._photo.setNativeProps(newProps);
+  },
+});
+
+// Lastly, we update the render function to no longer pass in the
+// transform via style (avoid clashes when re-rendering) and to set the
+// photo ref
+render() \{
+  return (
+    <View style=\{styles.container}>
+      <TouchableWithoutFeedback onPressIn=\{this._onPressIn} onPressOut=\{this._onPressOut}>
+        <Image ref=\{component => this._photo = component}
+               source=\{\{uri: "img/ReboundExample.png"}}
+               style=\{\{width: 250, height: 200}} />
+      </TouchableWithoutFeedback>
+    </View>
+  );
+}
+\`\`\`
+[Run this example](https://rnplay.org/apps/fUqjAg)
+
+It would not make sense to use \`setNativeProps\` with react-tween-state
+because the updated tween values are set on the state automatically by
+the library - Rebound on the other hand gives us an updated value for
+each frame with the \`onSpringUpdate\` function.
+
+If you find your animations with dropping frames (performing below 60
+frames per second), look into using \`setNativeProps\` or
+\`shouldComponentUpdate\` to optimize them. You may also want to defer any
+computationally intensive work until after animations are complete,
+using the
+[InteractionManager](docs/interactionmanager.html). You
+can monitor the frame rate by using the In-App Developer Menu "FPS
+Monitor" tool.
+`;
 var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"animations","title":"Animations","layout":"docs","category":"Guides","permalink":"docs/animations.html","next":"navigation","previous":"handling-touches","filename":"Animations.md"}}>
+      <Layout metadata={{"id":"animations","title":"Animations","layout":"docs","category":"Guides","permalink":"docs/animations.html","next":"accessibility","previous":"handling-touches","filename":"Animations.md"}}>
         {content}
       </Layout>
     );

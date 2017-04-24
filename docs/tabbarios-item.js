@@ -127,7 +127,7 @@ var content = `\{
     "style": \{
       "type": \{
         "name": "custom",
-        "raw": "ViewPropTypes.style"
+        "raw": "View.propTypes.style"
       },
       "required": false,
       "description": "React style object."
@@ -148,7 +148,7 @@ var content = `\{
     }
   },
   "composes": [
-    "ViewPropTypes"
+    "View"
   ],
   "type": "component",
   "filepath": "Libraries/Components/TabBarIOS/TabBarItemIOS.ios.js",

@@ -213,8 +213,6 @@ target 'NumberTileGame' do
     'RCTWebSocket', # needed for debugging
     # Add any other subspecs you want to use in your project
   ]
-  # Explicitly include Yoga if you are using RN >= 0.42.0
-  pod "Yoga", :path => "../node_modules/react-native/ReactCommon/yoga"
 
 end
 \`\`\`
@@ -240,8 +238,6 @@ target 'swift-2048' do
     'RCTWebSocket', # needed for debugging
     # Add any other subspecs you want to use in your project
   ]
-  # Explicitly include Yoga if you are using RN >= 0.42.0
-  pod "Yoga", :path => "../node_modules/react-native/ReactCommon/yoga"
 
 end
 \`\`\`
@@ -374,10 +370,10 @@ We will, for debugging purposes, log that the event handler was invoked. Then, w
 
 <block class="objc" />
 
-First \`import\` the \`RCTRootView\` header.
+First \`import\` the \`RCTRootView\` library.
 
 \`\`\`
-#import <React/RCTRootView.h>
+#import "RCTRootView.h"
 \`\`\`
 
 > The \`initialProperties\` are here for illustration purposes so we have some data for our high score screen. In our React Native component, we will use \`this.props\` to get access to that data.
@@ -856,7 +852,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"integration-with-existing-apps","title":"Integration With Existing Apps","layout":"docs","category":"Guides","permalink":"docs/integration-with-existing-apps.html","banner":"ejected","next":"running-on-device","previous":"testing","filename":"IntegrationWithExistingApps.md"}}>
+      <Layout metadata={{"id":"integration-with-existing-apps","title":"Integration With Existing Apps","layout":"docs","category":"Guides","permalink":"docs/integration-with-existing-apps.html","next":"colors","previous":"more-resources","filename":"IntegrationWithExistingApps.md"}}>
         {content}
       </Layout>
     );

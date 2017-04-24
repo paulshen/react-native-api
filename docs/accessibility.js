@@ -179,7 +179,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"accessibility","title":"Accessibility","layout":"docs","category":"Guides","permalink":"docs/accessibility.html","next":"timers","previous":"debugging","filename":"Accessibility.md"}}>
+      <Layout metadata={{"id":"accessibility","title":"Accessibility","layout":"docs","category":"Guides","permalink":"docs/accessibility.html","next":"timers","previous":"animations","filename":"Accessibility.md"}}>
         {content}
       </Layout>
     );

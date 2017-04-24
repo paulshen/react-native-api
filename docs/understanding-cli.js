@@ -31,12 +31,13 @@ module.exports = \{
 ### Parameters
 
 The command name identifies the parameters that a command would expect.  When the command parameter is surrounded by greater-than, less-than symbols \`< >\`, this indicates that the parameter is expected.  When a parameter is surrounded by brackets \`[ ]\`, this indicates that the parameter is optional.
+
 `;
 var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"understanding-cli","title":"Understanding the CLI","layout":"docs","category":"Guides","permalink":"docs/understanding-cli.html","banner":"ejected","next":"integration-with-existing-apps","previous":"running-on-device","filename":"UnderstandingCLI.md"}}>
+      <Layout metadata={{"id":"understanding-cli","title":"Understanding the CLI","layout":"docs","category":"Guides","permalink":"docs/understanding-cli.html","next":"upgrading","previous":"performance","filename":"UnderstandingCLI.md"}}>
         {content}
       </Layout>
     );

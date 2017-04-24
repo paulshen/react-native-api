@@ -178,7 +178,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"native-components-android","title":"Native UI Components","layout":"docs","category":"Guides (Android)","permalink":"docs/native-components-android.html","banner":"ejected","next":"headless-js-android","previous":"native-modules-android","filename":"NativeComponentsAndroid.md"}}>
+      <Layout metadata={{"id":"native-components-android","title":"Native UI Components","layout":"docs","category":"Guides (Android)","permalink":"docs/native-components-android.html","next":"headless-js-android","previous":"native-modules-android","filename":"NativeComponentsAndroid.md"}}>
         {content}
       </Layout>
     );

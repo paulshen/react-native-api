@@ -133,7 +133,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"upgrading","title":"Upgrading","layout":"docs","category":"Guides","permalink":"docs/upgrading.html","banner":"ejected","next":"native-modules-ios","previous":"understanding-cli","filename":"Upgrading.md"}}>
+      <Layout metadata={{"id":"upgrading","title":"Upgrading","layout":"docs","category":"Guides","permalink":"docs/upgrading.html","next":"platform-specific-code","previous":"understanding-cli","filename":"Upgrading.md"}}>
         {content}
       </Layout>
     );

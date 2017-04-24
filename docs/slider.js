@@ -10,7 +10,7 @@ var content = `\{
     "style": \{
       "type": \{
         "name": "custom",
-        "raw": "ViewPropTypes.style"
+        "raw": "View.propTypes.style"
       },
       "required": false,
       "description": "Used to style and layout the \`Slider\`.  See \`StyleSheet.js\` and\\n\`ViewStylePropTypes.js\` for more info."
@@ -138,7 +138,7 @@ var content = `\{
         "name": "func"
       },
       "required": false,
-      "description": "Callback that is called when the user releases the slider,\\nregardless if the value has changed. The current value is passed\\nas an argument to the callback handler."
+      "description": "Callback called when the user finishes changing the value (e.g. when\\nthe slider is released)."
     },
     "testID": \{
       "type": \{
@@ -149,7 +149,7 @@ var content = `\{
     }
   },
   "composes": [
-    "ViewPropTypes"
+    "View"
   ],
   "type": "component",
   "filepath": "Libraries/Components/Slider/Slider.js",

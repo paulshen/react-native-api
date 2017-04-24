@@ -84,7 +84,7 @@ var content = `\{
     }
   },
   "composes": [
-    "ViewPropTypes"
+    "View"
   ],
   "type": "component",
   "filepath": "Libraries/Components/ProgressBarAndroid/ProgressBarAndroid.android.js",

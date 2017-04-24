@@ -4,7 +4,7 @@
 var React = require("React");
 var Layout = require("AutodocsLayout");
 var content = `\{
-  "description": "Base implementation for the more convenient [\`<FlatList>\`](/react-native/docs/flatlist.html)\\nand [\`<SectionList>\`](/react-native/docs/sectionlist.html) components, which are also better\\ndocumented. In general, this should only really be used if you need more flexibility than\\n\`FlatList\` provides, e.g. for use with immutable data instead of plain arrays.\\n\\nVirtualization massively improves memory consumption and performance of large lists by\\nmaintaining a finite render window of active items and replacing all items outside of the render\\nwindow with appropriately sized blank space. The window adapts to scrolling behavior, and items\\nare rendered incrementally with low-pri (after any running interactions) if they are far from the\\nvisible area, or with hi-pri otherwise to minimize the potential of seeing blank space.\\n\\nSome caveats:\\n\\n- Internal state is not preserved when content scrolls out of the render window. Make sure all\\n  your data is captured in the item data or external stores like Flux, Redux, or Relay.\\n- This is a \`PureComponent\` which means that it will not re-render if \`props\` remain shallow-\\n  equal. Make sure that everything your \`renderItem\` function depends on is passed as a prop\\n  (e.g. \`extraData\`) that is not \`===\` after updates, otherwise your UI may not update on\\n  changes. This includes the \`data\` prop and parent component state.\\n- In order to constrain memory and enable smooth scrolling, content is rendered asynchronously\\n  offscreen. This means it's possible to scroll faster than the fill rate ands momentarily see\\n  blank content. This is a tradeoff that can be adjusted to suit the needs of each application,\\n  and we are working on improving it behind the scenes.\\n- By default, the list looks for a \`key\` prop on each item and uses that for the React key.\\n  Alternatively, you can provide a custom \`keyExtractor\` prop.\\n\\nNOTE: \`removeClippedSubviews\` might not be necessary and may cause bugs. If you see issues with\\ncontent not rendering, e.g when using \`LayoutAnimation\`, try setting\\n\`removeClippedSubviews=\{false}\`, and we may change the default in the future after more\\nexperimentation in production apps.",
+  "description": "Base implementation for the more convenient [\`<FlatList>\`](/react-native/docs/flatlist.html)\\nand [\`<SectionList>\`](/react-native/docs/sectionlist.html) components, which are also better\\ndocumented. In general, this should only really be used if you need more flexibility than\\n\`FlatList\` provides, e.g. for use with immutable data instead of plain arrays.\\n\\nVirtualization massively improves memory consumption and performance of large lists by\\nmaintaining a finite render window of active items and replacing all items outside of the render\\nwindow with appropriately sized blank space. The window adapts to scrolling behavior, and items\\nare rendered incrementally with low-pri (after any running interactions) if they are far from the\\nvisible area, or with hi-pri otherwise to minimize the potential of seeing blank space.\\n\\nSome caveats:\\n\\n- Internal state is not preserved when content scrolls out of the render window. Make sure all\\n  your data is captured in the item data or external stores like Flux, Redux, or Relay.\\n- This is a \`PureComponent\` which means that it will not re-render if \`props\` remain shallow-\\n  equal. Make sure that everything your \`renderItem\` function depends on is passed as a prop that\\n  is not \`===\` after updates, otherwise your UI may not update on changes. This includes the\\n  \`data\` prop and parent component state.\\n- In order to constrain memory and enable smooth scrolling, content is rendered asynchronously\\n  offscreen. This means it's possible to scroll faster than the fill rate ands momentarily see\\n  blank content. This is a tradeoff that can be adjusted to suit the needs of each application,\\n  and we are working on improving it behind the scenes.\\n- By default, the list looks for a \`key\` prop on each item and uses that for the React key.\\n  Alternatively, you can provide a custom \`keyExtractor\` prop.\\n\\nNOTE: \`LayoutAnimation\` and sticky section headers both have bugs when used with this and are\\ntherefore not officially supported yet.\\n\\nNOTE: \`removeClippedSubviews\` might not be necessary and may cause bugs. If you see issues with\\ncontent not rendering, try disabling it, and we may change the default there.",
   "methods": [
     \{
       "name": "scrollToEnd",
@@ -154,13 +154,6 @@ var content = `\{
         "computed": false
       }
     },
-    "extraData": \{
-      "flowType": \{
-        "name": "any"
-      },
-      "required": false,
-      "description": "A marker property for telling the list to re-render (since it implements \`PureComponent\`). If\\nany of your \`renderItem\`, Header, Footer, etc. functions depend on anything outside of the\\n\`data\` prop, stick it here and treat it immutably."
-    },
     "getItem": \{
       "flowType": \{
         "name": "signature",
@@ -292,7 +285,7 @@ var content = `\{
         "name": "number"
       },
       "required": true,
-      "description": "How many items to render in the initial batch. This should be enough to fill the screen but not\\nmuch more. Note these items will never be unmounted as part of the windowed rendering in order\\nto improve perceived performance of scroll-to-top actions.",
+      "description": "How many items to render in the initial batch. This should be enough to fill the screen but not\\nmuch more.",
       "defaultValue": \{
         "value": "10",
         "computed": false
@@ -375,7 +368,11 @@ var content = `\{
         "nullable": true
       },
       "required": false,
-      "description": ""
+      "description": "",
+      "defaultValue": \{
+        "value": "() => \{}",
+        "computed": false
+      }
     },
     "onEndReachedThreshold": \{
       "flowType": \{
@@ -409,7 +406,7 @@ var content = `\{
       "flowType": \{
         "name": "signature",
         "type": "function",
-        "raw": "(info: \{\\n  viewableItems: Array<ViewToken>,\\n  changed: Array<ViewToken>,\\n}) => void",
+        "raw": "(info: \{viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => void",
         "signature": \{
           "arguments": [
             \{
@@ -417,7 +414,7 @@ var content = `\{
               "type": \{
                 "name": "signature",
                 "type": "object",
-                "raw": "\{\\n  viewableItems: Array<ViewToken>,\\n  changed: Array<ViewToken>,\\n}",
+                "raw": "\{viewableItems: Array<ViewToken>, changed: Array<ViewToken>}",
                 "signature": \{
                   "properties": [
                     \{
@@ -510,6 +507,78 @@ var content = `\{
         "computed": false
       }
     },
+    "shouldItemUpdate": \{
+      "flowType": \{
+        "name": "signature",
+        "type": "function",
+        "raw": "(\\n  props: \{item: Item, index: number},\\n  nextProps: \{item: Item, index: number}\\n) => boolean",
+        "signature": \{
+          "arguments": [
+            \{
+              "name": "props",
+              "type": \{
+                "name": "signature",
+                "type": "object",
+                "raw": "\{item: Item, index: number}",
+                "signature": \{
+                  "properties": [
+                    \{
+                      "key": "item",
+                      "value": \{
+                        "name": "any",
+                        "required": true
+                      }
+                    },
+                    \{
+                      "key": "index",
+                      "value": \{
+                        "name": "number",
+                        "required": true
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            \{
+              "name": "nextProps",
+              "type": \{
+                "name": "signature",
+                "type": "object",
+                "raw": "\{item: Item, index: number}",
+                "signature": \{
+                  "properties": [
+                    \{
+                      "key": "item",
+                      "value": \{
+                        "name": "any",
+                        "required": true
+                      }
+                    },
+                    \{
+                      "key": "index",
+                      "value": \{
+                        "name": "number",
+                        "required": true
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "return": \{
+            "name": "boolean"
+          }
+        }
+      },
+      "required": true,
+      "description": "",
+      "defaultValue": \{
+        "value": "(\\n  props: \{item: Item, index: number},\\n  nextProps: \{item: Item, index: number},\\n) => true",
+        "computed": false
+      }
+    },
     "updateCellsBatchingPeriod": \{
       "flowType": \{
         "name": "number"
@@ -538,12 +607,6 @@ var content = `\{
         "value": "21",
         "computed": false
       }
-    },
-    "scrollEventThrottle": \{
-      "defaultValue": \{
-        "value": "50",
-        "computed": false
-      }
     }
   },
   "typedef": [
@@ -559,7 +622,7 @@ var content = `\{
     }
   ],
   "type": "component",
-  "filepath": "Libraries/Lists/VirtualizedList.js",
+  "filepath": "Libraries/CustomComponents/Lists/VirtualizedList.js",
   "componentName": "VirtualizedList",
   "componentPlatform": "cross",
   "styles": \{
@@ -1198,7 +1261,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"virtualizedlist","title":"VirtualizedList","layout":"autodocs","category":"components","permalink":"docs/virtualizedlist.html","platform":"cross","next":"webview","previous":"viewpagerandroid","sidebar":true,"runnable":false,"path":"Libraries/Lists/VirtualizedList.js","filename":null}}>
+      <Layout metadata={{"id":"virtualizedlist","title":"VirtualizedList","layout":"autodocs","category":"components","permalink":"docs/virtualizedlist.html","platform":"cross","next":"webview","previous":"viewpagerandroid","sidebar":true,"runnable":false,"path":"Libraries/CustomComponents/Lists/VirtualizedList.js","filename":null}}>
         {content}
       </Layout>
     );

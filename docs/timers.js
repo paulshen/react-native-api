@@ -79,7 +79,7 @@ var Post = React.createClass({
   statics: { content: content },
   render: function() {
     return (
-      <Layout metadata={{"id":"timers","title":"Timers","layout":"docs","category":"Guides","permalink":"docs/timers.html","next":"javascript-environment","previous":"accessibility","filename":"Timers.md"}}>
+      <Layout metadata={{"id":"timers","title":"Timers","layout":"docs","category":"Guides","permalink":"docs/timers.html","next":"direct-manipulation","previous":"accessibility","filename":"Timers.md"}}>
         {content}
       </Layout>
     );

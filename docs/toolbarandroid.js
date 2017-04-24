@@ -148,7 +148,7 @@ var content = `\{
     }
   },
   "composes": [
-    "ViewPropTypes"
+    "View"
   ],
   "type": "component",
   "filepath": "Libraries/Components/ToolbarAndroid/ToolbarAndroid.android.js",
