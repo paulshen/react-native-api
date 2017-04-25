@@ -29,6 +29,14 @@ class MainPage extends React.Component {
 
   componentDidMount() {
     window.addEventListener('keydown', this._onKeyDown);
+    this.props.history.listen((location, action) => {
+      if (action === 'POP' && location.pathname === '/') {
+        this.setState({
+          query: '',
+          filteredComponents: DataKeys,
+        });
+      }
+    });
   }
 
   _processParams = (componentName, query) => {
@@ -133,7 +141,7 @@ class MainPage extends React.Component {
     this.setState({
       query: componentName,
     });
-    this.props.history.replace(e.target.getAttribute('href'));
+    this.props.history.push(e.target.getAttribute('href'));
     e.preventDefault();
   };
 
