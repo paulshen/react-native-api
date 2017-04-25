@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Radium from 'radium';
 
 import Data from '../../Data';
 import ComponentPage from './ComponentPage';
@@ -7,7 +8,7 @@ import formatComponentName from '../utils/formatComponentName';
 
 const DataKeys = Object.keys(Data);
 
-export default class MainPage extends React.Component {
+class MainPage extends React.Component {
   props: {
     match: Object,
   };
@@ -201,11 +202,13 @@ export default class MainPage extends React.Component {
     );
   }
 }
+export default Radium(MainPage);
 
 const Styles = {
   Page: {
     margin: '0 auto',
     maxWidth: 1200,
+    paddingBottom: 100,
     paddingTop: 100,
   },
   InputSection: {
@@ -218,11 +221,18 @@ const Styles = {
   },
   InputRight: {
     width: '65%',
+    '@media (max-width: 800px)': {
+      display: 'none',
+    },
   },
   InputWrapper: {
     marginLeft: 30,
     marginRight: 30,
     position: 'relative',
+    '@media (max-width: 800px)': {
+      marginLeft: 20,
+      marginRight: 20,
+    },
   },
   Input: {
     borderColor: '#d0d0d0',
@@ -235,6 +245,9 @@ const Styles = {
     paddingBottom: 4,
     paddingTop: 4,
     width: '100%',
+    '@media (max-width: 420px)': {
+      fontSize: 16,
+    },
   },
   InputNote: {
     color: '#999999',
@@ -247,7 +260,12 @@ const Styles = {
   ComponentList: {
     paddingLeft: 30,
     paddingRight: 30,
-    WebkitColumnCount: 4,
+    WebkitColumnCount: '4',
+    '@media (max-width: 800px)': {
+      paddingLeft: 20,
+      paddingRight: 20,
+      WebkitColumnCount: '2',
+    },
   },
   ComponentListEntry: {},
   ComponentLink: {

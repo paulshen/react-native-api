@@ -154,21 +154,34 @@ class ComponentPage extends React.Component {
 export default Radium(ComponentPage);
 const Styles = {
   Root: {
-    paddingBottom: 100,
     paddingTop: 40,
   },
   Columns: {
     display: 'flex',
+    '@media (max-width: 800px)': {
+      display: 'block',
+    },
   },
   LeftColumn: {
     width: '35%',
+    '@media (max-width: 800px)': {
+      paddingBottom: 60,
+      width: 'auto',
+    },
   },
   RightColumn: {
     width: '65%',
+    '@media (max-width: 800px)': {
+      width: 'auto',
+    },
   },
   ColumnInner: {
     paddingLeft: 30,
     paddingRight: 30,
+    '@media (max-width: 800px)': {
+      paddingLeft: 20,
+      paddingRight: 20,
+    },
   },
   ComponentName: {
     fontFamily: 'Inconsolata',
@@ -182,11 +195,14 @@ const Styles = {
   },
   ComponentDescription: {
     fontSize: 12,
-    lineHeight: 1.5,
+    lineHeight: 1.4,
     opacity: 0.5,
     transition: 'opacity 0.2s',
     ':hover': {
       opacity: 1,
+    },
+    '@media (max-width: 800px)': {
+      display: 'none',
     },
   },
   Section: {

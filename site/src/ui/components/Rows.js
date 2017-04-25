@@ -140,11 +140,17 @@ const Styles = {
     display: 'flex',
     paddingBottom: 16,
     paddingTop: 16,
+    '@media (max-width: 420px)': {
+      display: 'block',
+    },
   },
   PropLeft: {
     boxSizing: 'border-box',
     paddingRight: 20,
     width: '36%',
+    '@media (max-width: 420px)': {
+      width: 'auto',
+    },
   },
   PropName: {
     fontFamily: 'Inconsolata',
@@ -152,6 +158,11 @@ const Styles = {
   },
   PropRight: {
     width: '64%',
+    '@media (max-width: 420px)': {
+      paddingLeft: 50,
+      paddingTop: 10,
+      width: 'auto',
+    },
   },
   PropType: {
     fontFamily: 'Inconsolata',
@@ -159,7 +170,7 @@ const Styles = {
   },
   PropMeta: {
     fontSize: 12,
-    lineHeight: 1.3,
+    lineHeight: 1.4,
     overflow: 'hidden',
   },
   PropMetaCollapsed: {
