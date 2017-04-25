@@ -45,7 +45,7 @@ function renderBaseType(type) {
   if (type.name === 'shape') {
     return <span>{'{'}{spanJoinMapper(
       Object.keys(type.value),
-      (key) => <span>{key + ': '}{renderType(type.value[key])}</span>,
+      (key) => <span key={key}>{key + ': '}{renderType(type.value[key])}</span>,
       ', '
     )}{'}'}</span>;
   }

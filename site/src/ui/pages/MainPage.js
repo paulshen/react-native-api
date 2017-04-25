@@ -192,6 +192,7 @@ class MainPage extends React.Component {
                   <a
                     href={`/${Data[componentName].componentName}`}
                     onClick={(e) => this._onClickComponent(e, componentName)}
+                    key={componentName}
                     style={Styles.ComponentLink}>
                     {formatComponentName(componentName)}
                   </a>
@@ -272,5 +273,8 @@ const Styles = {
     color: '#333333',
     fontSize: 12,
     textDecoration: 'none',
+    ':hover': {
+      fontWeight: 700,
+    },
   },
 };
