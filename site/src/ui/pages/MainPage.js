@@ -142,6 +142,7 @@ class MainPage extends React.Component {
 
     return (
       <div style={Styles.Page}>
+        <div style={Styles.Header}>React Native 0.43 API</div>
         <div style={Styles.InputSection}>
           <div style={Styles.InputLeft}>
             <div style={Styles.InputWrapper}>
@@ -177,7 +178,7 @@ class MainPage extends React.Component {
             </div>}
         </div>
         {filteredComponents.length <= 1
-          ? <div>
+          ? <div style={Styles.ComponentPageWrapper}>
               {filteredComponents.map(componentName => (
                 <ComponentPage
                   componentName={componentName}
@@ -191,7 +192,7 @@ class MainPage extends React.Component {
                 <div style={Styles.ComponentListEntry} key={componentName}>
                   <a
                     href={`/${Data[componentName].componentName}`}
-                    onClick={(e) => this._onClickComponent(e, componentName)}
+                    onClick={e => this._onClickComponent(e, componentName)}
                     key={componentName}
                     style={Styles.ComponentLink}>
                     {formatComponentName(componentName)}
@@ -199,6 +200,33 @@ class MainPage extends React.Component {
                 </div>
               ))}
             </div>}
+        <div style={Styles.Footer}>
+          API documentation is generated from React Native 0.43-stable
+          {' '}
+          <a
+            href="https://github.com/facebook/react-native/tree/0.43-stable"
+            key="footerlink3"
+            style={Styles.FooterLink}>
+            source code
+          </a>
+          , whose documentation is licensed under
+          {' '}
+          <a
+            href="https://github.com/facebook/react-native/blob/master/LICENSE-docs"
+            key="footerlink1"
+            style={Styles.FooterLink}>
+            CC BY 4.0
+          </a>
+          . A small project by
+          {' '}
+          <a
+            href="http://bypaulshen.com"
+            key="footerlink2"
+            style={Styles.FooterLink}>
+            paul shen
+          </a>
+          . I hope you find it useful.
+        </div>
       </div>
     );
   }
@@ -210,7 +238,40 @@ const Styles = {
     margin: '0 auto',
     maxWidth: 1200,
     paddingBottom: 100,
-    paddingTop: 100,
+    paddingTop: 60,
+  },
+  Header: {
+    color: '#cccccc',
+    fontFamily: 'Inconsolata',
+    fontSize: 14,
+    letterSpacing: 0.3,
+    marginBottom: 40,
+    marginLeft: 30,
+    marginRight: 30,
+    textTransform: 'uppercase',
+    '@media (max-width: 800px)': {
+      marginLeft: 20,
+      marginRight: 20,
+    },
+  },
+  Footer: {
+    color: '#cccccc',
+    fontSize: 12,
+    lineHeight: 1.4,
+    marginLeft: 30,
+    marginRight: 30,
+    marginTop: 80,
+    maxWidth: 520,
+    '@media (max-width: 800px)': {
+      marginLeft: 20,
+      marginRight: 20,
+    },
+  },
+  FooterLink: {
+    color: '#cccccc',
+    ':hover': {
+      color: '#999999',
+    },
   },
   InputSection: {
     display: 'flex',
@@ -258,11 +319,19 @@ const Styles = {
     position: 'absolute',
     top: '100%',
   },
+  ComponentPageWrapper: {
+    minHeight: 380,
+    '@media (max-width: 800px)': {
+      minHeight: 200,
+    },
+  },
   ComponentList: {
+    minHeight: 380,
     paddingLeft: 30,
     paddingRight: 30,
     WebkitColumnCount: '4',
     '@media (max-width: 800px)': {
+      minHeight: 200,
       paddingLeft: 20,
       paddingRight: 20,
       WebkitColumnCount: '2',
