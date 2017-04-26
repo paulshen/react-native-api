@@ -102,9 +102,9 @@ class ComponentPage extends React.Component {
     let { componentName, propQuery } = this.props;
     let component = Data[componentName.toLowerCase()];
     let filteredProps = component.props &&
-      this._filterNames(Object.keys(component.props));
+      this._filterNames(Object.keys(component.props).sort());
     let filteredMethods = component.methods &&
-      this._filterNames(component.methods.map(m => m.name));
+      this._filterNames(component.methods.map(m => m.name).sort());
     return (
       <div style={Styles.Root}>
         <div style={Styles.Columns}>
