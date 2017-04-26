@@ -214,6 +214,7 @@ class MainPage extends React.Component {
           <a
             href="https://github.com/facebook/react-native/tree/0.43-stable"
             key="footerlink3"
+            target="_blank"
             style={Styles.FooterLink}>
             source code
           </a>
@@ -222,6 +223,7 @@ class MainPage extends React.Component {
           <a
             href="https://github.com/facebook/react-native/blob/master/LICENSE-docs"
             key="footerlink1"
+            target="_blank"
             style={Styles.FooterLink}>
             CC BY 4.0
           </a>
@@ -230,6 +232,7 @@ class MainPage extends React.Component {
           <a
             href="http://bypaulshen.com"
             key="footerlink2"
+            target="_blank"
             style={Styles.FooterLink}>
             paul shen
           </a>
@@ -313,6 +316,8 @@ const Styles = {
     fontSize: 24,
     outline: 'none',
     paddingBottom: 4,
+    paddingLeft: 0,
+    paddingRight: 0,
     paddingTop: 4,
     width: '100%',
     '@media (max-width: 420px)': {

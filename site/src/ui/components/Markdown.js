@@ -8,7 +8,7 @@ renderer.link = function(href, title, text) {
   if (href.indexOf('http') !== 0) {
     href = `${Config.OfficialDocsUrl}${href}`;
   }
-  return `<a href="${href}"${title ? ` title="${title}"` : ''}>${text}</a>`;
+  return `<a href="${href}"${title ? ` title="${title}"` : ''} target="_blank">${text}</a>`;
 };
 
 export default class Markdown extends React.Component {
