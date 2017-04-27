@@ -141,6 +141,17 @@ class MainPage extends React.Component {
     }
   };
 
+  _clearAll = e => {
+    this.setState(
+      {
+        query: '',
+        filteredComponents: DataKeys,
+      },
+      () => this.props.history.replace('/')
+    );
+    e.preventDefault();
+  };
+
   _onClickComponent = (e, componentName) => {
     this.setState({
       query: componentName,
@@ -154,7 +165,9 @@ class MainPage extends React.Component {
 
     return (
       <div style={Styles.Page}>
-        <div style={Styles.Header}>React Native 0.43 API</div>
+        <div style={Styles.Header}>
+          <a href="#" onClick={this._clearAll} style={Styles.HeaderLink}>React Native 0.43 API</a>
+        </div>
         <div style={Styles.InputSection}>
           <div style={Styles.InputLeft}>
             <div style={Styles.InputWrapper}>
@@ -267,7 +280,6 @@ const Styles = {
     paddingTop: 60,
   },
   Header: {
-    color: '#cccccc',
     fontFamily: 'Inconsolata',
     fontSize: 14,
     letterSpacing: 0.3,
@@ -279,6 +291,10 @@ const Styles = {
       marginLeft: 20,
       marginRight: 20,
     },
+  },
+  HeaderLink: {
+    color: '#cccccc',
+    textDecoration: 'none',
   },
   Footer: {
     color: '#cccccc',
