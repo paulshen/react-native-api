@@ -8,6 +8,12 @@ import formatComponentName from '../utils/formatComponentName';
 
 const DataKeys = Object.keys(Data);
 
+function _logGoogleAnalyticsPageview() {
+  let location = `${window.location.protocol}//${window.location.hostname}${window.location.pathname}${window.location.search}`;
+  window.ga('set', 'location', location);
+  window.ga('send', 'pageview');
+}
+
 class MainPage extends React.Component {
   props: {
     match: Object,
@@ -29,6 +35,7 @@ class MainPage extends React.Component {
 
   componentDidMount() {
     window.addEventListener('keydown', this._onKeyDown);
+
     this.props.history.listen((location, action) => {
       if (action === 'POP' && location.pathname === '/') {
         this.setState({
@@ -36,6 +43,7 @@ class MainPage extends React.Component {
           filteredComponents: DataKeys,
         });
       }
+      _logGoogleAnalyticsPageview();
     });
   }
 
@@ -166,7 +174,9 @@ class MainPage extends React.Component {
     return (
       <div style={Styles.Page}>
         <div style={Styles.Header}>
-          <a href="#" onClick={this._clearAll} style={Styles.HeaderLink}>React Native 0.43 API</a>
+          <a href="#" onClick={this._clearAll} style={Styles.HeaderLink}>
+            React Native 0.43 API
+          </a>
         </div>
         <div style={Styles.InputSection}>
           <div style={Styles.InputLeft}>
