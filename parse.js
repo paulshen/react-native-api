@@ -18,14 +18,21 @@ fs.readdir(`${__dirname}/docs`, function(err, files) {
               data[klass.name.toLowerCase()] = Object.assign(
                 {},
                 d,
-                { docblock: null },
+                { docblock: null, classes: [] },
                 klass,
                 {
                   componentName: klass.name,
                 }
               );
             });
+            delete d.classes;
           }
+          if (d.methods && d.methods.length > 0) {
+            d.methods.forEach(function(method) {
+              delete method.source;
+            });
+          }
+          delete d.styles;
           break;
       }
     }
