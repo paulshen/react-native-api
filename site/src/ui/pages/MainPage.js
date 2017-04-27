@@ -195,7 +195,7 @@ class MainPage extends React.Component {
                 />
               ))}
             </div>
-          : <div style={Styles.ComponentList}>
+          : <div style={Styles.ComponentList} className="ComponentList">
               {filteredComponents.map(componentName => (
                 <div style={Styles.ComponentListEntry} key={componentName}>
                   <a
@@ -218,7 +218,7 @@ class MainPage extends React.Component {
             style={Styles.FooterLink}>
             source code
           </a>
-          , whose documentation is licensed under
+          ; documentation is licensed under
           {' '}
           <a
             href="https://github.com/facebook/react-native/blob/master/LICENSE-docs"
@@ -355,8 +355,5 @@ const Styles = {
     color: '#333333',
     fontSize: 12,
     textDecoration: 'none',
-    ':hover': {
-      fontWeight: 700,
-    },
   },
 };

@@ -13,8 +13,8 @@ function ExternalLinks({ componentName, component }) {
   return (
     <div>
       <div>
-        <a href={officialDocUrl} style={Styles.Link} target="_blank">
-          Official Docs &rarr;
+        <a href={officialDocUrl} style={Styles.Link} target="_blank" className="ExternalLink">
+          <span className="ExternalLinkText">Official Docs</span> &#8599;
         </a>
       </div>
       <div>
@@ -23,8 +23,9 @@ function ExternalLinks({ componentName, component }) {
             `https://github.com/facebook/react-native/tree/${Config.Branch}/${component.filepath}`
           }
           target="_blank"
+          className="ExternalLink"
           style={Styles.Link}>
-          Source &rarr;
+          <span className="ExternalLinkText">Source</span> &#8599;
         </a>
       </div>
       {component.hasExamples &&
@@ -32,8 +33,9 @@ function ExternalLinks({ componentName, component }) {
           <a
             href={`${officialDocUrl}#examples`}
             target="_blank"
+            className="ExternalLink"
             style={Styles.Link}>
-            Examples &rarr;
+            <span className="ExternalLinkText">Examples</span> &#8599;
           </a>
         </div>}
     </div>

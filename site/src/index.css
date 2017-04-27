@@ -35,3 +35,11 @@ ul {
   line-height: 1.5;
   padding-left: 20px;
 }
+
+.ComponentList a:hover {
+  font-weight: 700 !important;
+}
+
+.ExternalLink:hover .ExternalLinkText {
+  text-decoration: underline;
+}
