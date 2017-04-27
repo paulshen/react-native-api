@@ -172,7 +172,7 @@ const Styles = {
   LeftColumn: {
     width: '35%',
     '@media (max-width: 800px)': {
-      paddingBottom: 60,
+      paddingBottom: 30,
       width: 'auto',
     },
   },
