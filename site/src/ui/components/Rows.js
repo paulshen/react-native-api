@@ -21,6 +21,7 @@ function PlatformToken({ platform }) {
     </div>
   );
 }
+PlatformToken = Radium(PlatformToken);
 
 class PropRowImpl extends React.Component {
   state = {
@@ -113,7 +114,10 @@ class MethodRowImpl extends React.Component {
       forceExpand,
     } = this.props;
     let { collapsed } = this.state;
-    let { description: processedDescription, platforms } = extractPlatformFromDescription(
+    let {
+      description: processedDescription,
+      platforms,
+    } = extractPlatformFromDescription(
       description || (docblock && removeCommentsFromDocblock(docblock)) || ''
     );
 
@@ -220,20 +224,24 @@ const Styles = {
     },
   },
   PlatformToken: {
-    backgroundColor: '#cccccc',
+    backgroundColor: '#999999',
     borderRadius: 2,
     color: '#ffffff',
     display: 'inline-block',
     fontSize: 9,
-    fontWeight: 300,
+    fontWeight: 400,
     letterSpacing: 0.4,
     marginLeft: 6,
+    opacity: 0.4,
     paddingBottom: 3,
-    paddingLeft: 6,
-    paddingRight: 6,
+    paddingLeft: 5,
+    paddingRight: 5,
     paddingTop: 3,
     position: 'relative',
     textTransform: 'uppercase',
     top: -2,
+    ':hover': {
+      opacity: 1,
+    },
   },
 };
