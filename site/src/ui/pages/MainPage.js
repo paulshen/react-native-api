@@ -172,47 +172,29 @@ class MainPage extends React.Component {
     let { filteredComponents } = this.state;
 
     return (
-      <div style={Styles.Page}>
+      <div>
         <div style={Styles.Header}>
-          <a href="#" onClick={this._clearAll} style={Styles.HeaderLink}>
-            React Native 0.43 API
-          </a>
-        </div>
-        <div style={Styles.InputSection}>
-          <div style={Styles.InputLeft}>
-            <div style={Styles.InputWrapper}>
-              <input
-                type="text"
-                value={this.state.query}
-                placeholder="Start typing a component or API name..."
-                onChange={this._onChangeQuery}
-                ref={c => this._input = c}
-                style={Styles.Input}
-              />
-              <div style={Styles.InputNote}>
-                {this.state.query &&
-                  !this.state.propQuery &&
-                  <button
-                    onClick={this._clear}
-                    style={Styles.ClearButton}
-                    tabIndex={-1}>
-                    Press ESC to clear
-                  </button>}
-              </div>
-            </div>
+          <div style={Styles.HeaderContent}>
+            <a href="#" onClick={this._clearAll} style={Styles.HeaderLink}>
+              React Native 0.43 API
+            </a>
           </div>
-          {filteredComponents.length <= 1 &&
-            <div style={Styles.InputRight}>
+        </div>
+        <div style={Styles.Page}>
+          <div style={Styles.InputSection}>
+            <div style={Styles.InputLeft}>
               <div style={Styles.InputWrapper}>
                 <input
                   type="text"
-                  value={this.state.propQuery}
-                  placeholder="Filter props and methods..."
-                  onChange={this._onChangePropQuery}
+                  value={this.state.query}
+                  placeholder="Start typing a component or API name..."
+                  onChange={this._onChangeQuery}
+                  ref={c => this._input = c}
                   style={Styles.Input}
                 />
                 <div style={Styles.InputNote}>
-                  {this.state.propQuery &&
+                  {this.state.query &&
+                    !this.state.propQuery &&
                     <button
                       onClick={this._clear}
                       style={Styles.ClearButton}
@@ -221,60 +203,82 @@ class MainPage extends React.Component {
                     </button>}
                 </div>
               </div>
-            </div>}
-        </div>
-        {filteredComponents.length <= 1
-          ? <div style={Styles.ComponentPageWrapper}>
-              {filteredComponents.map(componentName => (
-                <ComponentPage
-                  componentName={componentName}
-                  propQuery={this.state.propQuery}
-                  key={componentName}
-                />
-              ))}
             </div>
-          : <div style={Styles.ComponentList} className="ComponentList">
-              {filteredComponents.map(componentName => (
-                <div style={Styles.ComponentListEntry} key={componentName}>
-                  <a
-                    href={`/${Data[componentName].componentName}`}
-                    onClick={e => this._onClickComponent(e, componentName)}
-                    key={componentName}
-                    style={Styles.ComponentLink}>
-                    {formatComponentName(componentName)}
-                  </a>
+            {filteredComponents.length <= 1 &&
+              <div style={Styles.InputRight}>
+                <div style={Styles.InputWrapper}>
+                  <input
+                    type="text"
+                    value={this.state.propQuery}
+                    placeholder="Filter props and methods..."
+                    onChange={this._onChangePropQuery}
+                    style={Styles.Input}
+                  />
+                  <div style={Styles.InputNote}>
+                    {this.state.propQuery &&
+                      <button
+                        onClick={this._clear}
+                        style={Styles.ClearButton}
+                        tabIndex={-1}>
+                        Press ESC to clear
+                      </button>}
+                  </div>
                 </div>
-              ))}
-            </div>}
-        <div style={Styles.Footer}>
-          API documentation is generated from React Native 0.43-stable
-          {' '}
-          <a
-            href="https://github.com/facebook/react-native/tree/0.43-stable"
-            key="footerlink3"
-            target="_blank"
-            style={Styles.FooterLink}>
-            source code
-          </a>
-          ; documentation is licensed under
-          {' '}
-          <a
-            href="https://github.com/facebook/react-native/blob/master/LICENSE-docs"
-            key="footerlink1"
-            target="_blank"
-            style={Styles.FooterLink}>
-            CC BY 4.0
-          </a>
-          . A small project by
-          {' '}
-          <a
-            href="http://bypaulshen.com"
-            key="footerlink2"
-            target="_blank"
-            style={Styles.FooterLink}>
-            paul shen
-          </a>
-          . I hope you find it useful.
+              </div>}
+          </div>
+          {filteredComponents.length <= 1
+            ? <div style={Styles.ComponentPageWrapper}>
+                {filteredComponents.map(componentName => (
+                  <ComponentPage
+                    componentName={componentName}
+                    propQuery={this.state.propQuery}
+                    key={componentName}
+                  />
+                ))}
+              </div>
+            : <div style={Styles.ComponentList} className="ComponentList">
+                {filteredComponents.map(componentName => (
+                  <div style={Styles.ComponentListEntry} key={componentName}>
+                    <a
+                      href={`/${Data[componentName].componentName}`}
+                      onClick={e => this._onClickComponent(e, componentName)}
+                      key={componentName}
+                      style={Styles.ComponentLink}>
+                      {formatComponentName(componentName)}
+                    </a>
+                  </div>
+                ))}
+              </div>}
+          <div style={Styles.Footer}>
+            API documentation is generated from React Native 0.43-stable
+            {' '}
+            <a
+              href="https://github.com/facebook/react-native/tree/0.43-stable"
+              key="footerlink3"
+              target="_blank"
+              style={Styles.FooterLink}>
+              source code
+            </a>
+            ; documentation is licensed under
+            {' '}
+            <a
+              href="https://github.com/facebook/react-native/blob/master/LICENSE-docs"
+              key="footerlink1"
+              target="_blank"
+              style={Styles.FooterLink}>
+              CC BY 4.0
+            </a>
+            . A small project by
+            {' '}
+            <a
+              href="http://bypaulshen.com"
+              key="footerlink2"
+              target="_blank"
+              style={Styles.FooterLink}>
+              paul shen
+            </a>
+            . I hope you find it useful.
+          </div>
         </div>
       </div>
     );
@@ -287,23 +291,32 @@ const Styles = {
     margin: '0 auto',
     maxWidth: 1200,
     paddingBottom: 100,
-    paddingTop: 60,
   },
   Header: {
+    backgroundColor: '#303030',
     fontFamily: 'Inconsolata',
     fontSize: 14,
     letterSpacing: 0.3,
-    marginBottom: 40,
-    marginLeft: 30,
-    marginRight: 30,
     textTransform: 'uppercase',
+  },
+  HeaderContent: {
+    boxSizing: 'border-box',
+    margin: '0 auto 60px',
+    maxWidth: 1200,
+    paddingBottom: 24,
+    paddingLeft: 30,
+    paddingRight: 30,
+    paddingTop: 40,
     '@media (max-width: 800px)': {
-      marginLeft: 20,
-      marginRight: 20,
+      margin: '0 auto 40px',
+      paddingBottom: 20,
+      paddingLeft: 20,
+      paddingRight: 20,
+      paddingTop: 30,
     },
   },
   HeaderLink: {
-    color: '#cccccc',
+    color: '#ffffff',
     textDecoration: 'none',
   },
   Footer: {
