@@ -94,6 +94,7 @@ function MethodsSection({ component, filteredProps, filteredMethods }) {
 class ComponentPage extends React.Component {
   _filterNames = names => {
     let { propQuery } = this.props;
+    names = names.filter(name => name.substr(0, 2) !== '__');
     if (propQuery) {
       let regex = new RegExp(propQuery.split('').join('.*'), 'i');
       return names.filter(name => regex.exec(name));

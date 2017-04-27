@@ -13,13 +13,30 @@ fs.readdir(`${__dirname}/docs`, function(err, files) {
           d.hasExamples = d.examples && d.examples.length > 0;
           delete d.examples;
           data[d.componentName.toLowerCase()] = d;
+          if (d.classes && d.classes.length > 0) {
+            d.classes.forEach(klass => {
+              data[klass.name.toLowerCase()] = Object.assign(
+                {},
+                d,
+                { docblock: null },
+                klass,
+                {
+                  componentName: klass.name,
+                }
+              );
+            });
+          }
           break;
       }
     }
   });
-  fs.writeFile(`${__dirname}/site/src/Data.js`, `module.exports=${JSON.stringify(data)};`, function(err) {
-    if (!err) {
-      console.log('done');
+  fs.writeFile(
+    `${__dirname}/site/src/Data.js`,
+    `module.exports=${JSON.stringify(data)};`,
+    function(err) {
+      if (!err) {
+        console.log('done');
+      }
     }
-  })
+  );
 });
