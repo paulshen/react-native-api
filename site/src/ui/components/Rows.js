@@ -6,6 +6,22 @@ import Markdown from '../components/Markdown';
 import renderTypehint from '../utils/renderTypehint';
 import removeCommentsFromDocblock from '../utils/removeCommentsFromDocblock';
 
+function extractPlatformFromDescription(description) {
+  let platforms = description.match(/\@platform (.+)/);
+  platforms = platforms && platforms[1].replace(/ /g, '').split(',');
+  description = description.replace(/\@platform (.+)/, '');
+
+  return { description, platforms };
+}
+
+function PlatformToken({ platform }) {
+  return (
+    <div style={Styles.PlatformToken}>
+      {platform}
+    </div>
+  );
+}
+
 class PropRowImpl extends React.Component {
   state = {
     collapsed: true,
@@ -26,10 +42,19 @@ class PropRowImpl extends React.Component {
   render() {
     let { prop, propName, forceExpand } = this.props;
     let { collapsed } = this.state;
+
+    let { description, platforms } = extractPlatformFromDescription(
+      prop.description || ''
+    );
+
     return (
       <div style={Styles.PropRow} key={propName}>
         <div style={Styles.PropLeft}>
-          <div style={Styles.PropName} onClick={this._expand}>{propName}</div>
+          <span style={Styles.PropName} onClick={this._expand}>{propName}</span>
+          {platforms &&
+            platforms.map(platform => (
+              <PlatformToken key={platform} platform={platform} />
+            ))}
         </div>
         <div style={Styles.PropRight}>
           <div style={Styles.PropType}>
@@ -48,7 +73,7 @@ class PropRowImpl extends React.Component {
               collapsed && !forceExpand && Styles.PropMetaCollapsed,
             ]}>
             <Markdown>
-              {prop.description}
+              {description}
             </Markdown>
           </div>
         </div>
@@ -88,10 +113,18 @@ class MethodRowImpl extends React.Component {
       forceExpand,
     } = this.props;
     let { collapsed } = this.state;
+    let { description: processedDescription, platforms } = extractPlatformFromDescription(
+      description || (docblock && removeCommentsFromDocblock(docblock)) || ''
+    );
+
     return (
       <div style={Styles.PropRow} key={name}>
         <div style={Styles.PropLeft}>
-          <div style={Styles.PropName} onClick={this._expand}>{name}</div>
+          <span style={Styles.PropName} onClick={this._expand}>{name}</span>
+          {platforms &&
+            platforms.map(platform => (
+              <PlatformToken key={platform} platform={platform} />
+            ))}
         </div>
         <div style={Styles.PropRight}>
           <div style={Styles.PropType}>
@@ -122,10 +155,7 @@ class MethodRowImpl extends React.Component {
               Styles.PropMeta,
               collapsed && !forceExpand && Styles.PropMetaCollapsed,
             ]}>
-            <Markdown>
-              {description ||
-                (docblock && removeCommentsFromDocblock(docblock))}
-            </Markdown>
+            <Markdown>{processedDescription}</Markdown>
           </div>
         </div>
       </div>
@@ -138,7 +168,6 @@ const Styles = {
   PropRow: {
     alignItems: 'baseline',
     display: 'flex',
-    paddingBottom: 16,
     paddingTop: 16,
     '@media (max-width: 420px)': {
       display: 'block',
@@ -157,6 +186,7 @@ const Styles = {
     wordBreak: 'break-word',
   },
   PropRight: {
+    paddingBottom: 16,
     width: '64%',
     '@media (max-width: 420px)': {
       paddingLeft: 50,
@@ -188,5 +218,22 @@ const Styles = {
     ':hover': {
       opacity: 0.5,
     },
+  },
+  PlatformToken: {
+    backgroundColor: '#cccccc',
+    borderRadius: 2,
+    color: '#ffffff',
+    display: 'inline-block',
+    fontSize: 9,
+    fontWeight: 300,
+    letterSpacing: 0.4,
+    marginLeft: 6,
+    paddingBottom: 3,
+    paddingLeft: 6,
+    paddingRight: 6,
+    paddingTop: 3,
+    position: 'relative',
+    textTransform: 'uppercase',
+    top: -2,
   },
 };
