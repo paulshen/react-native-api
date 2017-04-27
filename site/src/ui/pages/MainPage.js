@@ -113,19 +113,7 @@ class MainPage extends React.Component {
 
   _onKeyDown = e => {
     if (e.keyCode === 27) {
-      if (this.state.propQuery) {
-        this.setState({
-          propQuery: '',
-        });
-      } else {
-        this.setState(
-          {
-            query: '',
-            filteredComponents: DataKeys,
-          },
-          () => this.props.history.replace('/')
-        );
-      }
+      this._clear();
     } else {
       if (
         document.activeElement.tagName !== 'INPUT' &&
@@ -134,6 +122,22 @@ class MainPage extends React.Component {
       ) {
         this._input.focus();
       }
+    }
+  };
+
+  _clear = () => {
+    if (this.state.propQuery) {
+      this.setState({
+        propQuery: '',
+      });
+    } else {
+      this.setState(
+        {
+          query: '',
+          filteredComponents: DataKeys,
+        },
+        () => this.props.history.replace('/')
+      );
     }
   };
 
@@ -163,9 +167,14 @@ class MainPage extends React.Component {
                 style={Styles.Input}
               />
               <div style={Styles.InputNote}>
-                {this.state.query && !this.state.propQuery
-                  ? 'Press ESC to clear'
-                  : ''}
+                {this.state.query &&
+                  !this.state.propQuery &&
+                  <button
+                    onClick={this._clear}
+                    style={Styles.ClearButton}
+                    tabIndex={-1}>
+                    Press ESC to clear
+                  </button>}
               </div>
             </div>
           </div>
@@ -180,7 +189,13 @@ class MainPage extends React.Component {
                   style={Styles.Input}
                 />
                 <div style={Styles.InputNote}>
-                  {this.state.propQuery ? 'Press ESC to clear' : ''}
+                  {this.state.propQuery &&
+                    <button
+                      onClick={this._clear}
+                      style={Styles.ClearButton}
+                      tabIndex={-1}>
+                      Press ESC to clear
+                    </button>}
                 </div>
               </div>
             </div>}
@@ -331,6 +346,14 @@ const Styles = {
     marginTop: 6,
     position: 'absolute',
     top: '100%',
+  },
+  ClearButton: {
+    border: 0,
+    backgroundColor: 'transparent',
+    cursor: 'pointer',
+    margin: 0,
+    outline: 0,
+    padding: 0,
   },
   ComponentPageWrapper: {
     minHeight: 380,
